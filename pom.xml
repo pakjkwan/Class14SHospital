@@ -104,12 +104,12 @@
 			<artifactId>jstl</artifactId>
 			<version>1.2</version>
 		</dependency>
-		<!-- AspectJ -->
+		<!-- AspectJ-->
 		<dependency>
 			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjrt</artifactId>
 			<version>${aspectj-version}</version>
-		</dependency>
+		</dependency> 
 		<!-- Logging -->
 		<dependency>
 			<groupId>org.lazyluke</groupId>
@@ -238,11 +238,11 @@
 			<artifactId>commons-dbcp</artifactId>
 			<version>1.4</version>
 		</dependency>
-	<!-- 	 <dependency>
+	 	<!--  <dependency>
     <groupId>com.oracle</groupId>
     <artifactId>ojdbc6</artifactId>
     <version>11.1.0.7.0</version>
-</dependency>  -->
+</dependency>   -->
 		<!-- mysql -->
 		<dependency>
 			<groupId>mysql</groupId>
@@ -360,9 +360,9 @@
 			<url>http://mesir.googlecode.com/svn/trunk/mavenrepo</url>
 		</repository> 
 		<repository>
-			<id>oracle</id>
-   			<name>ORACLE JDBC Repository</name> 
-   			<url>http://maven.jahia.org/maven2</url>
-			</repository>
+        <id>oracle</id>
+        <name>ORACLE JDBC Repository</name>
+        <url>http://maven.jahia.org/maven2</url>
+    </repository>
 	</repositories>
 </project>

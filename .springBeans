@@ -9,6 +9,7 @@
 	<configs>
 		<config>src/main/resources/META-INF/root-context.xml</config>
 		<config>src/main/resources/META-INF/servlet-context.xml</config>
+		<config>src/main/webapp/WEB-INF/tiles.xml</config>
 	</configs>
 	<autoconfigs>
 	</autoconfigs>
