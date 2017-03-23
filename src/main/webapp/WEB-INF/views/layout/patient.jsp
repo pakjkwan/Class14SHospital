@@ -18,7 +18,7 @@
 			<tiles:insertAttribute name="header"/>
 		</div>
 	</header>
-	<section>
+	<section style="height: 550px">
 		<article id="patientGnb">
 			<tiles:insertAttribute name="gnb"/>
 		</article>

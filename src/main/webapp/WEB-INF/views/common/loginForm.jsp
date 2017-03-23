@@ -40,7 +40,7 @@ $(function() {
 	$loginForm.addClass('margin_center').css('width','20%');
 	var tab=$loginForm.find('table');
 	$loginForm.find('input[value=로그인]').click(function(){
-		$loginForm.attr("action", "${context}/patient.do");
+		$loginForm.attr("action", "${context.path}/patient/login");
 		$loginForm.attr("method", "post");
 		var idVal=tab.find('input[name=id]').val();
 		var pwVal=tab.find('input[name=password]').val(); 

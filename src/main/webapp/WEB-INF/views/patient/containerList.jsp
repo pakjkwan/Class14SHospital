@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <div id="container" class="width_full_size" style="height: 200px;position: relative;top: 100px">
-<form action="${context}/patient.do" method="get" style="width: 90%;" class="margin_center">
+<form action="${context.path}/patient" method="get" style="width: 90%;" class="margin_center">
 <table class="table_default" style="width: 900px;">
 	<tr>
 		<th>순서</th>
