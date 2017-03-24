@@ -53,7 +53,7 @@
 <script>
 function docDetail(){
 	alert('의사ID 클릭');
-	location.href="${context.path}/doctor";
+	location.href="${context.path}/patient/doctor/han";
 }
 </script>
            
