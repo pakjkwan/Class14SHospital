@@ -15,4 +15,5 @@ public interface PatientService {
 	// 추가된 로직
 	public String getBirth(String patJumin);
 	public PatientDTO getSession();
+	public int count()throws Exception;
 }
