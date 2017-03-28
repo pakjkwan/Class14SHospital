@@ -9,10 +9,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-
 import com.hospital.web.domain.PatientDTO;
 import com.hospital.web.mapper.PatientMapper;
-import com.hospital.web.service.ExistService;
+import com.hospital.web.service.CRUD;
 import com.hospital.web.service.PatientService;
 
 @Controller
@@ -41,7 +40,7 @@ public class PatientController {
 		patient.setPatID(id);
 		patient.setPatPass(password);
 		
-		ExistService ex=new ExistService() {
+		CRUD.ExistService ex=new CRUD.ExistService() {
 			
 			@Override
 			public int exist(Object o) throws Exception {
