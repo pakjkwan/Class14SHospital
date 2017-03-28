@@ -22,7 +22,6 @@ public class PatientMapper implements IPatientMapper {
 	public PatientDTO selectById(String id) throws Exception {
 		logger.info("PatientMapper - selectById() {}", "ENTER");
 		System.out.println("진입전 아이디========"+id);
-		this.test(id);
 		PatientDTO a=sqlSession.selectOne(namespace+".selectById",id);
 		System.out.println("결과========"+a.getPatName());
 		return a;
@@ -40,16 +39,7 @@ public class PatientMapper implements IPatientMapper {
 	@Override
 	public int count() throws Exception {
 		logger.info("PatientMapper - count() {}", "ENTER");
-		int a=sqlSession.selectOne(namespace+".count");
-		
-		return a;
-	}
-	@Override
-	public String test(String id) throws Exception {
-		logger.info("PatientMapper - test() {}", "ENTER");
-		String a=sqlSession.selectOne(namespace+".test",id);
-		System.out.println("테스트 DB 다녀옴:"+a);
-		return a;
+		return sqlSession.selectOne(namespace+".count");
 	}
 	
 

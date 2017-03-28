@@ -37,8 +37,8 @@ public class PatientController {
 		logger.info("PatientController - id, pw: {}", id+","+password);
 		patient.setPatID(id);
 		patient.setPatPass(password);
-		int a=service.count();
-		logger.info("DB 다녀온 갯수: {}", a);
+		int count=service.count();
+		logger.info("DB 다녀온 갯수: {}", count);
 		patient=service.login(patient);
 		logger.info("DB 다녀온 결과: {}", patient.getPatID()+","+patient.getPatPass());
 		model.addAttribute("name", "홍길동");

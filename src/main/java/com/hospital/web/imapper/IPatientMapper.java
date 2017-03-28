@@ -10,6 +10,4 @@ public interface IPatientMapper {
 	public int update(PatientDTO member)throws Exception;
 	public int delete(PatientDTO member)throws Exception;
 	public int count()throws Exception;
-	public String test(String id)throws Exception;
-
 }
