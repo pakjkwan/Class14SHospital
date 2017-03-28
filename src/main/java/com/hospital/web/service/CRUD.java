@@ -1,9 +1,7 @@
 package com.hospital.web.service;
 
-import org.springframework.stereotype.Component;
 
-@Component
+@org.springframework.stereotype.Service
 public interface CRUD {
-	public abstract interface ExistService{public abstract int exist(Object o)throws Exception;}
-	
+	public static interface Service{public Object execute(Object o)throws Exception;}
 }

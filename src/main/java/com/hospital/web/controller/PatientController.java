@@ -9,10 +9,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import com.hospital.web.domain.PatientDTO;
+import com.hospital.web.domain.Patient;
 import com.hospital.web.mapper.PatientMapper;
 import com.hospital.web.service.CRUD;
-import com.hospital.web.service.PatientService;
 /**
  * ========================================
  * @fileName: Patient Controller
@@ -28,8 +27,7 @@ import com.hospital.web.service.PatientService;
 @RequestMapping("/patient")
 public class PatientController {
 	private static final Logger logger = LoggerFactory.getLogger(PatientController.class);
-	@Autowired PatientService service;
-	@Autowired PatientDTO patient;
+	@Autowired Patient patient;
 	@Autowired PatientMapper mapper;
 	@RequestMapping("/join")
 	public String join(){
@@ -50,22 +48,28 @@ public class PatientController {
 		patient.setPatID(id);
 		patient.setPatPass(password);
 		
-		CRUD.ExistService ex=new CRUD.ExistService() {
+		CRUD.Service ex=new CRUD.Service() {
 			
 			@Override
-			public int exist(Object o) throws Exception {
+			public Object execute(Object o) throws Exception {
 				logger.info("======ID ? {} ======", o);
 				return mapper.exist(id);
 			}
 		};
-		int count=ex.exist(id);
+		Integer count=(Integer)ex.execute(id);
 		logger.info("ID exist ? {}", count);
 		String movePosition="";
 		if(count==0){
 			logger.info("DB RESULT: {}", "ID not exist");
 			movePosition="public:common/loginForm";
 		}else{
-			patient=service.login(patient);
+			CRUD.Service service=new CRUD.Service() {
+				@Override
+				public Object execute(Object o) throws Exception {
+					return mapper.selectById(id);
+				}
+			};
+			patient=(Patient) service.execute(patient);
 			
 			if(patient.getPatPass().equals(password)){
 				logger.info("DB RESULT: {}", "success");
