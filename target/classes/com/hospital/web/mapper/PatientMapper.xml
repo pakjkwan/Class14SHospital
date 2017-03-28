@@ -19,8 +19,11 @@
 	    	pat_job AS patJob
     	 FROM Patient WHERE pat_id = #{id}
   </select>
-   <select id="count" resultType="int">
+  <select id="count" resultType="int">
     	SELECT COUNT(*) FROM Patient
+  </select>
+  <select id="exist" resultType="int" parameterType="String">
+    	SELECT COUNT(*) FROM Patient WHERE pat_id=#{id}
   </select>
  
 </mapper>
