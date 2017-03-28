@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import com.hospital.web.domain.Patient;
+import com.hospital.web.domain.Person;
 import com.hospital.web.mapper.PatientMapper;
 import com.hospital.web.service.CRUD;
 /**
@@ -45,8 +46,11 @@ public class PatientController {
 			Model model) throws Exception{
 		logger.info("PatientController - goLogin() {}", "POST");
 		logger.info("PatientController - id, pw: {}", id+","+password);
-		patient.setPatID(id);
-		patient.setPatPass(password);
+		patient.setId(id);
+		patient.setPass(password);
+		String group=patient.getGroup();
+		Person<Patient> p=new Person<Patient>(patient);
+		
 		
 		CRUD.Service ex=new CRUD.Service() {
 			
@@ -71,7 +75,7 @@ public class PatientController {
 			};
 			patient=(Patient) service.execute(patient);
 			
-			if(patient.getPatPass().equals(password)){
+			if(patient.getPass().equals(password)){
 				logger.info("DB RESULT: {}", "success");
 				model.addAttribute("patient", patient);
 				movePosition="patient:patient/containerDetail";
