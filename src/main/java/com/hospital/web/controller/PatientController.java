@@ -13,7 +13,17 @@ import com.hospital.web.domain.PatientDTO;
 import com.hospital.web.mapper.PatientMapper;
 import com.hospital.web.service.CRUD;
 import com.hospital.web.service.PatientService;
-
+/**
+ * ========================================
+ * @fileName: Patient Controller
+ * @date: 2017-03-28
+ * @author: Pakjkwan@gmail.com
+ * @story:
+ * @method:
+ * join()
+ * login()
+ * ========================================
+ * */
 @Controller
 @RequestMapping("/patient")
 public class PatientController {
@@ -22,17 +32,17 @@ public class PatientController {
 	@Autowired PatientDTO patient;
 	@Autowired PatientMapper mapper;
 	@RequestMapping("/join")
-	public String goJoin(){
+	public String join(){
 		logger.info("PatientController - goJoin() {}", "ENTER");
 		return "public:patient/registerForm";
 	}
 	@RequestMapping("/login")
-	public String goLogin(){
+	public String login(){
 		logger.info("PatientController - goLogin() {}", "ENTER");
 		return "public:common/loginForm";
 	}
 	@RequestMapping(value="/login",method=RequestMethod.POST)
-	public String goLogin(@RequestParam("id") String id,
+	public String login(@RequestParam("id") String id,
 			@RequestParam("password") String password,
 			Model model) throws Exception{
 		logger.info("PatientController - goLogin() {}", "POST");
