@@ -9,7 +9,7 @@
 			<param name="ConversionPattern" value="%-5p: %c - %m%n" />
 		</layout>
 	</appender>
-	<!-- dataSourceSpied 를 하기 위해 추가 시작 -->
+	<!-- dataSourceSpied START -->
 	<appender name="console-infolog" class="org.apache.log4j.ConsoleAppender">
         <layout class="org.apache.log4j.PatternLayout">
             <param name="ConversionPattern" value="%d %5p %m%n" />
@@ -31,7 +31,7 @@
         <level value="INFO"/>  
         <appender-ref ref="console"/>  
     </logger>  
-    <!-- dataSourceSpied 를 하기 위해 추가 끝 -->
+    <!-- dataSourceSpied END-->
 	<!-- Application Loggers -->
 	<logger name="com.hanbit.web">
 		<level value="info" />
