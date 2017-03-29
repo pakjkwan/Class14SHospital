@@ -2,19 +2,19 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.hospital.web.mapper.PatientMapper" >
+<mapper namespace="com.hospital.web.mapper.Mapper" >
  	<resultMap id="Patient" type="com.hospital.web.domain.Patient">
-        <id property="patID" column="pat_id"/>
+        <id property="id" column="pat_id"/>
         <result property="nurID" column="nur_id"/>
         <result property="docID" column="doc_id"/>
-        <result property="patPass" column="pat_pass"/>
-        <result property="patName" column="pat_name"/>
-        <result property="patGen" column="pat_gen"/>
-        <result property="patJumin" column="pat_jumin"/>
-        <result property="patAddr" column="pat_addr"/>
-        <result property="patPhone" column="pat_phone"/>
-        <result property="patEmail" column="pat_email"/>
-        <result property="patJob" column="pat_job"/>
+        <result property="pass" column="pat_pass"/>
+        <result property="name" column="pat_name"/>
+        <result property="gen" column="pat_gen"/>
+        <result property="jumin" column="pat_jumin"/>
+        <result property="addr" column="pat_addr"/>
+        <result property="phone" column="pat_phone"/>
+        <result property="email" column="pat_email"/>
+        <result property="job" column="pat_job"/>
     </resultMap>
   <select id="selectById" resultMap="Patient" parameterType="String">
     	SELECT * FROM Patient WHERE pat_id = #{id}

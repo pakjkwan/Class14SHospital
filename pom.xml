@@ -110,6 +110,7 @@
 			<artifactId>aspectjrt</artifactId>
 			<version>${aspectj-version}</version>
 		</dependency> 
+		
 		<!-- Logging -->
 		<dependency>
 			<groupId>org.lazyluke</groupId>
