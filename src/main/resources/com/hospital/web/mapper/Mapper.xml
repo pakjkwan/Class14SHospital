@@ -16,8 +16,8 @@
         <result property="email" column="pat_email"/>
         <result property="job" column="pat_job"/>
     </resultMap>
-  <select id="selectById" resultMap="Patient" parameterType="String">
-    	SELECT * FROM Patient WHERE pat_id = #{id}
+  <select id="find" resultMap="Patient" parameterType="hashMap">
+    	SELECT * FROM ${group} WHERE pat_id = #{id}
   </select>
   <select id="count" resultType="int">
     	SELECT COUNT(*) FROM Patient

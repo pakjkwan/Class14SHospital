@@ -1,5 +1,8 @@
 package com.hospital.web.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,10 +30,10 @@ public class PermissionController {
 		return "public:common/loginForm";
 	}
 	
-	@RequestMapping(value="/{group}/login",method=RequestMethod.POST)
+	@RequestMapping(value="/{permission}/login",method=RequestMethod.POST)
 	public String login(@RequestParam("id") String id,
 			@RequestParam("password") String password,
-			@PathVariable String group,
+			@PathVariable String permission,
 			Model model) throws Exception{
 		logger.info("Permission - login() {}", "POST");
 		logger.info("Permission - id, pw: {}", id+","+password);
@@ -39,7 +42,10 @@ public class PermissionController {
 		Patient patient=(Patient) person.getInfo();
 		patient.setId(id);
 		patient.setPass(password);
-		switch (group) {
+		Map<String,Object> map=new HashMap<>();
+		map.put("id", id);
+		map.put("group", patient.getGroup());
+		switch (permission) { 
 		case "patient":
 			CRUD.Service ex=new CRUD.Service() {
 				
@@ -59,7 +65,7 @@ public class PermissionController {
 				CRUD.Service service=new CRUD.Service() {
 					@Override
 					public Object execute(Object o) throws Exception {
-						return mapper.selectById(id);
+						return mapper.find(map);
 					}
 				};
 				patient=(Patient) service.execute(patient);
