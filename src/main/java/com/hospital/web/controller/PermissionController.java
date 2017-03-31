@@ -2,6 +2,9 @@ package com.hospital.web.controller;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Function;
+
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,15 +15,18 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.hospital.web.domain.Info;
 import com.hospital.web.domain.Patient;
 import com.hospital.web.domain.Person;
-import com.hospital.web.domain.Schema;
+import com.hospital.web.domain.Enums;
 import com.hospital.web.mapper.Mapper;
-import com.hospital.web.service.CRUD;
+import com.hospital.web.service.CreateService;
+import com.hospital.web.service.ReadService;
 
 @Controller
+@SessionAttributes("permission")
 public class PermissionController {
 	private static final Logger logger = LoggerFactory.getLogger(PermissionController.class);
 	@Autowired Mapper mapper;
@@ -33,46 +39,47 @@ public class PermissionController {
 	@RequestMapping(value="/{permission}/login",method=RequestMethod.POST)
 	public String login(@RequestParam("id") String id,
 			@RequestParam("password") String password,
-			@PathVariable String permission,
+			@PathVariable String permission,HttpSession session,
 			Model model) throws Exception{
 		logger.info("Permission - login() {}", "POST");
 		logger.info("Permission - id, pw: {}", id+","+password);
 		String movePosition="";
-		Person<?> person=new Person<Info>(new Patient());
-		Patient patient=(Patient) person.getInfo();
-		patient.setId(id);
-		patient.setPass(password);
-		Map<String,Object> map=new HashMap<>();
-		map.put("id", id);
-		map.put("group", patient.getGroup());
 		switch (permission) { 
 		case "patient":
-			CRUD.Service ex=new CRUD.Service() {
-				
+			Person<?> person=new Person<Info>(new Patient());
+			Patient patient=(Patient) person.getInfo();
+			patient.setId(id);
+			patient.setPass(password);
+			Map<String,Object> map=new HashMap<>();
+			map.put("group", patient.getGroup());
+			map.put("key", Enums.PATIENT.val());
+			map.put("value", id);
+			ReadService exist2=new ReadService() {
 				@Override
-				public Object execute(Object o) throws Exception {
-					logger.info("======ID ? {} ======", o);
-					return mapper.exist(id);
+				public Object execute(Map<?,?>map) throws Exception {
+					logger.info("======ID ? {} ======", map.get("key"));
+					return mapper.exist(map);
 				}
 			};
-			Integer count=(Integer)ex.execute(id);
+			ReadService exist=(Map<?,?>mapp)->{return mapper.exist(mapp);};
+			Integer count=(Integer)exist.execute(map);
 			logger.info("ID exist ? {}", count);
-			
 			if(count==0){
 				logger.info("DB RESULT: {}", "ID not exist");
 				movePosition="public:common/loginForm";
 			}else{
-				CRUD.Service service=new CRUD.Service() {
+				ReadService findPatient=new ReadService() {
 					@Override
-					public Object execute(Object o) throws Exception {
-						return mapper.find(map);
+					public Object execute(Map<?,?>mapp) throws Exception {
+						return mapper.findPatient(mapp);
 					}
 				};
-				patient=(Patient) service.execute(patient);
-				
+
+				patient=(Patient) findPatient.execute(map);
 				if(patient.getPass().equals(password)){
 					logger.info("DB RESULT: {}", "success");
-					model.addAttribute("patient", patient);
+					session.setAttribute("permission", patient);
+					model.addAttribute("user", patient);
 					movePosition="patient:patient/containerDetail";
 				}else{
 					logger.info("DB RESULT: {}", "password not match");
@@ -86,7 +93,10 @@ public class PermissionController {
 			break;
 		}
 		return movePosition;
-		
-		
+	}
+	@RequestMapping("/logout")
+	public String logout(HttpSession session) {
+		session.invalidate(); 
+		return "redirect:/"; 
 	}
 }

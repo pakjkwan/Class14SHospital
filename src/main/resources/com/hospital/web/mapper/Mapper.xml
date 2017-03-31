@@ -3,28 +3,134 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hospital.web.mapper.Mapper" >
- 	<resultMap id="Patient" type="com.hospital.web.domain.Patient">
-        <id property="id" column="pat_id"/>
-        <result property="nurID" column="nur_id"/>
-        <result property="docID" column="doc_id"/>
-        <result property="pass" column="pat_pass"/>
-        <result property="name" column="pat_name"/>
-        <result property="gen" column="pat_gen"/>
-        <result property="jumin" column="pat_jumin"/>
-        <result property="addr" column="pat_addr"/>
-        <result property="phone" column="pat_phone"/>
-        <result property="email" column="pat_email"/>
-        <result property="job" column="pat_job"/>
-    </resultMap>
-  <select id="find" resultMap="Patient" parameterType="hashMap">
-    	SELECT * FROM ${group} WHERE pat_id = #{id}
+	<resultMap id="Patient" type="com.hospital.web.domain.Patient">
+       <id property="id" column="pat_id"/>
+       <result property="nurID" column="nur_id"/>
+       <result property="docID" column="doc_id"/>
+       <result property="pass" column="pat_pass"/>
+       <result property="name" column="pat_name"/>
+       <result property="gen" column="pat_gen"/>
+       <result property="jumin" column="pat_jumin"/>
+       <result property="addr" column="pat_addr"/>
+       <result property="phone" column="pat_phone"/>
+       <result property="email" column="pat_email"/>
+       <result property="job" column="pat_job"/>
+	</resultMap>
+	<resultMap id="Doctor" type="com.hospital.web.domain.Doctor" >
+		<id property="id" column="doc_id"/>
+		<result property="pass" column="doc_pass"/>
+		<result property="name" column="doc_name"/>
+		<result property="gen" column="doc_gen"/>
+		<result property="phone" column="doc_phone"/>
+		<result property="email" column="doc_email"/>
+		<result property="major" column="major_treat"/>
+		<result property="position" column="doc_position"/>
+	</resultMap>
+	<resultMap id="Nurse" type="com.hospital.web.domain.Nurse" >
+		<id property="id" column="nur_id"/>
+		<result property="pass" column="nur_pass"/>
+		<result property="name" column="nur_name"/>
+		<result property="gen" column="nur_gen"/>
+		<result property="phone" column="nur_phone"/>
+		<result property="email" column="nur_email"/>
+		<result property="major" column="major_job"/>
+		<result property="position" column="nur_position"/>
+	</resultMap>
+   <insert id="registPatient">
+   INSERT INTO ${group}( ) VALUES (#{id}, #{name})
+   </insert>
+   <insert id="registDoctor">
+   INSERT INTO ${group}( ) VALUES (#{id}, #{name})
+   </insert>
+   <insert id="registNurse">
+   INSERT INTO ${group}( ) VALUES (#{id}, #{name})
+   </insert>
+   <!-- TODO 
+   <insert id="registArticle" parameterType="hashmap"> 
+		INSERT INTO Buy(write_date,patient_id,title)
+		VALUES(now(),#{patient_id},#{title},SYSDATE());
+	</insert>
+	-->
+  <select id="findPatient" resultMap="Patient" parameterType="hashMap">
+  	SELECT * FROM ${group} WHERE ${key} = #{value}
   </select>
-  <select id="count" resultType="int">
-    	SELECT COUNT(*) FROM Patient
+   <select id="findDoctor" resultMap="Doctor" parameterType="hashMap">
+  	SELECT * FROM ${group} WHERE ${key} = #{value}
   </select>
-  <select id="exist" resultType="int" parameterType="String">
-    	SELECT COUNT(*) FROM Patient WHERE pat_id=#{id}
+  <select id="findNurse" resultMap="Nurse" parameterType="hashMap">
+  	SELECT * FROM ${group} WHERE ${key} = #{value}
   </select>
+  <select id="findPatients" resultMap="Patient" parameterType="hashMap">
+  	SELECT * FROM ${group} 
+  	 WHERE
+	  <if test="state != null">
+	    state = #{state}
+	  </if>
+	  <if test="title != null">
+	    AND title like #{title}
+	  </if>
+	  <if test="author != null and author.name != null">
+	    AND author_name like #{author.name}
+	  </if>
+  </select>
+   <select id="findDoctors" resultMap="Doctor" parameterType="hashMap">
+  	SELECT * FROM ${group} 
+  	 WHERE
+	  <if test="state != null">
+	    state = #{state}
+	  </if>
+	  <if test="title != null">
+	    AND title like #{title}
+	  </if>
+	  <if test="author != null and author.name != null">
+	    AND author_name like #{author.name}
+	  </if>
+  </select>
+  <select id="findNurses" resultMap="Nurse" parameterType="hashMap">
+  	SELECT * FROM ${group} 
+  	WHERE
+	  <if test="state != null">
+	    state = #{state}
+	  </if>
+	  <if test="title != null">
+	    AND title like #{title}
+	  </if>
+	  <if test="author != null and author.name != null">
+	    AND author_name like #{author.name}
+	  </if>
+  </select>
+  <select id="count" resultType="int" parameterType="hashMap">
+    	SELECT COUNT(*) FROM ${group}
+  </select>
+  <select id="exist" resultType="int" parameterType="hashMap">
+    	SELECT COUNT(*) FROM ${group} WHERE ${key}=#{value}
+  </select>
+  
+<!-- 
+     	<select id="getBuy" resultType="com.rainbow.app.buy.BuyDTO" parameterType="int">
+	    SELECT 
+    		buy_seq AS buySeq,
+    		member_seq AS memberSeq,
+    		vod_name AS vodName,
+   			DATE_FORMAT(buy_date,'%Y-%m-%d %T') AS buyDate
+    	FROM Buy
+    	WHERE member_seq = #{memberSeq}
+	</select> 
+	<select id="selectByName" parameterType="com.rainbow.web.member.MemberDTO" resultType="com.rainbow.web.member.MemberDTO"> 
+		SELECT 
+    		id,
+			password,
+			name,
+			birth,
+			addr,
+			email,
+   			point,
+   			grade,
+   			DATE_FORMAT(reg_date,'%Y-%m-%d %T') AS regDate
+    	FROM Member
+    	WHERE name = #{name}
+	</select>
+	
   <select id="find1" resultType="com.hospital.web.domain.Patient">
      
   		SELECT  
@@ -147,16 +253,7 @@
     </if>
   </where>
 </select>
-<update id="updateAuthorIfNecessary">
-  update Patient
-    <set>
-      <if test="username != null">username=#{username},</if>
-      <if test="password != null">password=#{password},</if>
-      <if test="email != null">email=#{email},</if>
-      <if test="bio != null">bio=#{bio}</if>
-    </set>
-  where id=#{id}
-</update>
+
 <select id="selectPostIn" resultType="com.hospital.web.domain.Patient">
   SELECT 
   			pat_id AS patID,
@@ -194,17 +291,69 @@
    FROM Patient
   WHERE title LIKE #{pattern}
 </select>
-<insert id="insert">
-  <selectKey keyProperty="id" resultType="int" order="BEFORE">
-    <if test="_databaseId == 'oracle'">
-      select seq_users.nextval from dual
-    </if>
-    <if test="_databaseId == 'db2'">
-      select nextval for seq_users from sysibm.sysdummy1"
-    </if>
-  </selectKey>
-  insert into Patient values (#{id}, #{name})
-</insert>
+<select id="selectList" parameterType="com.rainbow.web.movie.MovieDTO" resultType="com.rainbow.web.movie.MovieDTO">
+		SELECT movie_seq AS movieSeq, rating, title, genre, open_date AS openDate, grade, runningtime,director,actor,content,image 
+		FROM Movie
+		ORDER BY rating DESC
+		LIMIT #{start}, #{end}
+	</select>
+	
+	<select id="selectByName" parameterType="com.rainbow.web.movie.MovieDTO" resultType="com.rainbow.web.movie.MovieDTO"> 
+		SELECT movie_seq AS movieSeq, rating, title, genre, open_date AS openDate, grade, runningtime,director,actor,content,image 
+		FROM Movie
+		WHERE ${title} LIKE CONCAT('%',#{title},'%')
+	</select>
+		
+	<select id="selectBySearch" parameterType="com.rainbow.web.movie.MovieDTO" resultType="com.rainbow.web.movie.MovieDTO"> 
+		SELECT movie_seq AS movieSeq, rating, title, genre, open_date AS openDate, grade, runningtime,director,actor,content,image 
+		FROM Movie
+		WHERE ${keyField} LIKE CONCAT('%',#{keyWord},'%') 
+		ORDER BY rating DESC
+		LIMIT #{start}, #{end}
+	</select>
+	-->
+  <update id="updatePatient">
+  UPDATE ${group}
+    <set>
+      <if test="username != null">username=#{username},</if>
+      <if test="password != null">password=#{password},</if>
+      <if test="email != null">email=#{email},</if>
+      <if test="bio != null">bio=#{bio}</if>
+    </set>
+  WHERE ${key}=#{value}
+</update>
+    <update id="updateDoctor">
+  UPDATE ${group}
+    <set>
+      <if test="username != null">username=#{username},</if>
+      <if test="password != null">password=#{password},</if>
+      <if test="email != null">email=#{email},</if>
+      <if test="bio != null">bio=#{bio}</if>
+    </set>
+  WHERE ${key}=#{value}
+</update>
+  <update id="updateNurse">
+  UPDATE ${group}
+    <set>
+      <if test="username != null">username=#{username},</if>
+      <if test="password != null">password=#{password},</if>
+      <if test="email != null">email=#{email},</if>
+      <if test="bio != null">bio=#{bio}</if>
+    </set>
+  WHERE ${key}=#{value}
+</update>
+  <delete id="delete" parameterType="hashMap">
+		DELETE 
+		FROM ${group} 
+		WHERE ${key} = #{value}
+	</delete>
+  
+  
+  
+  
+  
+  
+
 </mapper>
 
 
