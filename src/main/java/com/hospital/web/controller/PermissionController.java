@@ -54,6 +54,7 @@ public class PermissionController {
 			map.put("group", patient.getGroup());
 			map.put("key", Enums.PATIENT.val());
 			map.put("value", id);
+		
 			ReadService exist2=new ReadService() {
 				@Override
 				public Object execute(Map<?,?>map) throws Exception {
@@ -63,7 +64,7 @@ public class PermissionController {
 			};
 			ReadService exist=(Map<?,?>mapp)->{return mapper.exist(mapp);};
 			Integer count=(Integer)exist.execute(map);
-			logger.info("ID exist ? {}", count);
+			logger.info("ID exist ?? {}", count);
 			if(count==0){
 				logger.info("DB RESULT: {}", "ID not exist");
 				movePosition="public:common/loginForm";
