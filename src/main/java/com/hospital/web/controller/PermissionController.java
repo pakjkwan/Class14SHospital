@@ -2,8 +2,6 @@ package com.hospital.web.controller;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Function;
-
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -16,13 +14,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
-
 import com.hospital.web.domain.Info;
 import com.hospital.web.domain.Patient;
 import com.hospital.web.domain.Person;
 import com.hospital.web.domain.Enums;
 import com.hospital.web.mapper.Mapper;
-import com.hospital.web.service.CreateService;
 import com.hospital.web.service.ReadService;
 
 @Controller
@@ -54,28 +50,14 @@ public class PermissionController {
 			map.put("group", patient.getGroup());
 			map.put("key", Enums.PATIENT.val());
 			map.put("value", id);
-		
-			ReadService exist2=new ReadService() {
-				@Override
-				public Object execute(Map<?,?>map) throws Exception {
-					logger.info("======ID ? {} ======", map.get("key"));
-					return mapper.exist(map);
-				}
-			};
-			ReadService exist=(Map<?,?>mapp)->{return mapper.exist(mapp);};
+			ReadService exist=(a)->mapper.exist(a);
 			Integer count=(Integer)exist.execute(map);
 			logger.info("ID exist ?? {}", count);
 			if(count==0){
 				logger.info("DB RESULT: {}", "ID not exist");
 				movePosition="public:common/loginForm";
 			}else{
-				ReadService findPatient=new ReadService() {
-					@Override
-					public Object execute(Map<?,?>mapp) throws Exception {
-						return mapper.findPatient(mapp);
-					}
-				};
-
+				ReadService findPatient=(a)->mapper.findPatient(a);
 				patient=(Patient) findPatient.execute(map);
 				if(patient.getPass().equals(password)){
 					logger.info("DB RESULT: {}", "success");
