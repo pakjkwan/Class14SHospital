@@ -8,6 +8,7 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" >
+  <script src="${context.js}/app.js"></script>
 </head><body>
 <nav class="navbar navbar-inverse">
   <div class="container-fluid">
@@ -47,13 +48,11 @@
       <ul class="nav navbar-nav navbar-right">
         <li><a href="#">Link</a></li>
         <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">OOP<span class="caret"></span></a>
           <ul class="dropdown-menu">
-            <li><a href="#">Action</a></li>
-            <li><a href="#">Another action</a></li>
-            <li><a href="#">Something else here</a></li>
-            <li role="separator" class="divider"></li>
-            <li><a href="#">Separated link</a></li>
+            <li><a id="encap" href="#">Encapsulation</a></li>
+            <li><a id="inherit" href="#">Inheritance</a></li>
+            <li><a id="poly" href="#">Polymorphism</a></li>
           </ul>
         </li>
       </ul>
@@ -61,124 +60,9 @@
   </div><!-- /.container-fluid -->
 </nav>
 <div id="wrapper">
-	
 </div>
 </body>
 <script>
-var body=$('body');
-var wrapper=$('#wrapper');
-var aButton=$('<a href="#" id="aButton" class="btn btn-primary" role="button">example</a>');
-var bButton=$('<button id="bButton" type="button" class="btn btn-default">example</button>');
-var inputText=$('<input id="inputText" type="text" class="form-control" placeholder="example" aria-describedby="basic-addon1">');
-var divAlert=$('<div class="alert alert-danger" role="alert">example</div>');
-var series=$('#series');
-var arr=$('#array');
-var matrix=$('#matrix');
-var math=$('#math');
-var appl=$('#appl');
-var table=
-	'<table id="table" style="width:800px;height:300px;border-collapse: collapse;border: 1px solid black;margin:0 auto">'
-	+	'<tr style="border: 1px solid black;">'
-	+		'<td id="tableLeft" style="width: 50%;border: 1px solid black;"></td>'
-	+		'<td id="tableRight" style="width: 50%;border: 1px solid black;"></td>'
-	+	'</tr>'
-	+'</table>';
-var seriesMenu=
-	'<ul class="list-group">'
-	+	'<li id="aSeries" class="list-group-item"><a href="#">등차수열 합</a></li>'
-	+	'<li id="swSeries" class="list-group-item"><a href="#">스위치수열 합</a></li>'
-	+	'<li id="dSeries" class="list-group-item"><a href="#">계차수열 합</a></li>'
-	+	'<li id="factorial" class="list-group-item"><a href="#">팩토리얼</a></li>'
-	+	'<li id="fibonacci" class="list-group-item"><a href="#">피보나치수열 합</a></li>'
-	+'</ul>';
-wrapper.empty();  
-inputText.attr('placeholder','이 름').appendTo(wrapper);
-aButton.html('CLICK ME').appendTo(wrapper).on('click',function(){
-	var name=$('#inputText').val();
-	wrapper.empty();
-	divAlert.html('Hello '+name+' !!').appendTo(wrapper);
-});
-wrapper.empty();
-
-series.on('click',function(){
-	wrapper.append(table);
-	$('#tableLeft').html(seriesMenu);
-	var tableRight=$('#tableRight');
-	inputText.attr('placeholder','limit').appendTo(tableRight);
-	aButton.html('등차수열의 합').appendTo(tableRight)
-		.css('margin','10px auto')
-		.on('click',function(){
-		var limit=$('#inputText').val();
-		divAlert.html('1부터'+limit+'등차수열의 합은'+aSeries(limit)+'입니다.').appendTo(tableRight);
-	});
-	$('#aSeries').on(function(){
-		inputText.attr('placeholder','limit').appendTo(tableRight);
-		aButton.html('등차수열의 합').appendTo(tableRight)
-			.css('margin','10px auto')
-			.on('click',function(){
-			var limit=$('#inputText').val();
-			divAlert.html('1부터'+limit+'등차수열의 합은'+aSeries(limit)+'입니다.').appendTo(tableRight);
-		});
-	});
-	$('#swSeries').on(function(){
-		inputText.attr('placeholder','limit').appendTo(tableRight);
-		aButton.html('스위치수열의 합').appendTo(tableRight)
-			.css('margin','10px auto')
-			.on('click',function(){
-			var limit=$('#inputText').val();
-			divAlert.html('1부터'+limit+'스위치수열의 합은'+aSeries(limit)+'입니다.').appendTo(tableRight);
-		});
-	});
-	$('#dSeries').on(function(){});
-	$('#factorial').on(function(){});
-	$('#fibonacci').on(function(){});
-});
-function aSeries(limit){
-	var sum=0;
-	for(i=0;i<=limit;i++){
-		sum+=i;
-	}
-	return sum;
-}
-function swSeries(limit){
-	var sum=0;
-	
-	return sum;
-}
-function dSeries(limit){
-	var sum=0;
-	
-	return sum;
-}
-function factorial(limit){
-	var sum=0;
-	
-	return sum;
-}
-function fibonacci(limit){
-	var sum=0;
-	
-	
-	return sum;
-}
-
-	
-	
-  
-  
-  
-  
-  
-  
-
-  
-  
-  
-  
-  
-  
-  
-  
-  
+	app.context.init();
 </script>  
 </html>
