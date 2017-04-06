@@ -8,7 +8,7 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" >
-  <script src="${context.js}/app.js"></script>
+  <script src="${context}/resources/js/app.js"></script>
 </head><body>
 <nav class="navbar navbar-inverse">
   <div class="container-fluid">
@@ -20,7 +20,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="${context.img}/common/evernote.png">Brand</a>
+      <a class="navbar-brand" href="${context}/resources/img/common/evernote.png">Brand</a>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
@@ -63,6 +63,6 @@
 </div>
 </body>
 <script>
-	app.context.init();
+	app.context.init('${context}');
 </script>  
 </html>
