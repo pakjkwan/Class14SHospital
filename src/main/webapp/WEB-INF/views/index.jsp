@@ -32,7 +32,7 @@
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Algorithm <span class="caret"></span></a>
           <ul class="dropdown-menu">
             <li><a id="series" href="#">Series</a></li>
-            <li><a id="array" href="#">Array</a></li>
+            <li><a id="arr" href="#">Array</a></li>
             <li><a id="matrix" href="#">Matrix</a></li>
             <li><a id="math" href="#">Math</a></li>
             <li><a id="appl" href="#">Application</a></li>

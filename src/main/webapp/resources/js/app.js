@@ -26,21 +26,6 @@ app.context=(function(){
 		setContentView : setContentView,
 		onCreate : onCreate
 		
-			
-			
-			/*
-			 * function(){
-			 * 
-			 * app.algorithm.series(); wrapper.empty();
-			 * app.component.inputText('inputText').attr('placeholder','이
-			 * 름').appendTo(app.component.wrapper);
-			 * app.component.aButton('aButton','btn-primary').html('CLICK
-			 * ME').appendTo(app.component.wrapper).on('click',function(){ var
-			 * name=$('#inputText').val(); app.component.wrapper.empty();
-			 * app.component.divAlert('alert-danger').html('Hello '+name+'
-			 * !!').appendTo(app.component.wrapper); });
-			 *  }
-			 */
 	};
 	
 })();
@@ -72,6 +57,7 @@ app.algorithm=(function(){
 	var onCreate=function(){
 		setContentView();
 		series();
+		arr();
 	};
 	var setContentView=function(){};
 	var series=function(){
@@ -85,7 +71,7 @@ app.algorithm=(function(){
 			$('#aSeries').on('click',function(){aSeries();});
 			$('#swSeries').on('click',function(){
 				tableRight.empty();
-				app.component.inputText('inputText').attr('placeholder','한계값 입력').appendTo(tableRight);
+				app.component.inputText('inputText').attr('placeholder','한계값입력(100 -> -50)').appendTo(tableRight);
 				app.component.aButton('aButton','btn-success').html('스위치수열의 합').appendTo(tableRight)
 					.css('margin','10px auto')
 					.on('click',function(){
@@ -95,7 +81,7 @@ app.algorithm=(function(){
 			});
 			$('#dSeries').on('click',function(){
 				tableRight.empty();
-				app.component.inputText('inputText').attr('placeholder','한계값 입력').appendTo(tableRight);
+				app.component.inputText('inputText').attr('placeholder','한계값입력(5 -> 25)').appendTo(tableRight);
 				app.component.aButton('aButton','btn-info').html('계차수열의 합').appendTo(tableRight)
 					.css('margin','10px auto')
 					.on('click',function(){
@@ -105,7 +91,7 @@ app.algorithm=(function(){
 			});
 			$('#factorial').on('click',function(){
 				tableRight.empty();
-				app.component.inputText('inputText').attr('placeholder','한계값 입력').appendTo(tableRight);
+				app.component.inputText('inputText').attr('placeholder','한계값입력(5 -> 153)').appendTo(tableRight);
 				app.component.aButton('aButton','btn-warning').html('팩토리얼수열의 합').appendTo(tableRight)
 					.css('margin','10px auto')
 					.on('click',function(){
@@ -115,7 +101,7 @@ app.algorithm=(function(){
 			});
 			$('#fibonacci').on('click',function(){
 				tableRight.empty();
-				app.component.inputText('inputText').attr('placeholder','한계값 입력').appendTo(tableRight);
+				app.component.inputText('inputText').attr('placeholder','한계값입력((5 -> 12))').appendTo(tableRight);
 				app.component.aButton('aButton','btn-danger').html('피보나치수열의 합').appendTo(tableRight)
 					.css('margin','10px auto')
 					.on('click',function(){
@@ -155,39 +141,113 @@ app.algorithm=(function(){
 	
 	};
 	var swSeries = function(limit){
-		var sum=0;//1,-2,3,-4,5,-6
-		var flag = 0;
-		for(i=0;i<=limit;i++){
-			if(i%2==0){
-				flag = -1;
-			}else{
-				flag = 1;
-			}
-			sum = sum+i*flag ;
-		}
+		//1,-2,3,-4,5,-6
+		var sum = 0;
+		 var flag=-1;
+		 for(i=0;i<=limit;i++){
+			sum += flag*i;
+			flag = -1*flag;
+		 }
 		return sum;
 	};
 	var dSeries = function(limit){
-		var sum = 0;//1,2,4,7,11
-		for(i=0;i<=limit;i++){
-			sum	= sum + i;
+		//1,2,4,7,11
+		var sum = 1,total=0;
+		var total = 0;
+		for(i=0;i<limit;i++){
+			sum += i;
+			total += sum ;
 		}
-		return sum;
+		return total;
 	};
 	var factorial = function(limit){
-		var sum = 1; //1!,1!+2!,1!+2!+3!,1!+2!+3!+4!,1!+2!+3!+4!+5!
-		if(limit==0){sum=0;}
-		for(i=2;i<=limit;i++){
-			sum = sum +sum*i;
-		}
+		//1!,1!+2!,1!+2!+3!,1!+2!+3!+4!,1!+2!+3!+4!+5!
+		 var sum = 1, total = 0;
+		 for(i=1;i<=limit;i++){
+			 sum = sum*i;
+			 total += sum;
+		 }
+		 if(limit == 0){total = 0;}else if(limit == 1){total = 1;}
+		return total;
+	};
+	var fibonacci = function(limit){
+		//1,1,2,3,5,8,13,21,
+		 var sum = 2,a = 1,b = 1,c = 0;
+		 for(i=3;i<=limit;i++){
+			 c=a+b;
+			 sum+=c;
+			 a=b;
+			 b=c;
+		 }
+		 if(limit == 0){sum = 0;}else if(limit == 1){sum = 1;}else if(limit == 2){sum = 2;} 
 		return sum;
 	};
-	var fibonacci = function(){
-		//1,1,2,3,5,8,13,21,
-		
-	};
 /* 알고리즘배열 */
-	var arr=function(){};
+	var arr=function(){
+		var wrapper=app.component.getWrapper();
+		$('#arr').on('click',function(){
+			wrapper.empty();
+			wrapper.append(app.algorithm.TABLE);
+			var arr=[{id:'selectSort',txt:'선택정렬'},
+				{id:'bubleSort',txt:'버블정렬'},
+				{id:'insertSort',txt:'삽입정렬'},
+				{id:'ranking',txt:'석차구하기'},
+				{id:'binSearch',txt:'이분검색'},
+				{id:'merge',txt:'병합'},
+				{id:'stack',txt:'스택'}];
+			var str='';
+			$.each(arr,function(i,j){
+				str+='<li id="'+j.id+'" class="list-group-item"><a href="#">'+j.txt+'</a></li>';
+			});
+			$('#tableLeft').html(str);
+			$('#selectSort').on('click',function(){
+				var ran = Math.floor(Math.random() * 10) + 1;
+				alert('selectSort click!'+ran);
+			});
+			var tstart = "<table class='bordered idcMap' style='margin: auto;'><tbody>";
+			var tend = "</tbody></table>"
+			var tcontent = "";
+			function makeTable() {
+			    var nrow = $("#mRow").val();
+			    var ncol = $("#mCol").val();
+			    for(var i=0; i<ncol; i++) {
+			        tcontent += "<tr class='bordered' style='height: 100px;'>";
+			        for(var j=0; j<nrow; j++) {
+			            tcontent += "<td class='bordered' style='width: 100px;'></td>";
+			        }
+			        tcontent += "</tr>"
+			    }
+			    //$(".show-map").html(tstart+tcontent+tend);
+			    $("#tableRight").html(tstart+tcontent+tend);
+			    $(".init-table").hide();
+			    $(".control-box").show();
+			}
+			$(".tc-btn").click(function() {
+			    makeTable();
+			});
+			$(".mRow-add").click(function() {
+			    var tRow = $('.idcMap > tbody > tr:last').clone();
+			    $('.idcMap > tbody:last').append(tRow);
+			});
+			$(".mRow-del").click(function() {
+			    $('.idcMap > tbody > tr:last').remove();
+			});
+			$(".mCol-add").click(function() {
+			    var trlength = $('.idcMap > tbody > tr').length;
+			    for(var i=0; i<trlength; i++) {
+			        var t = $('.idcMap > tbody > tr').eq(i);
+			        t.append('<td class="bordered" style="width: 100px;"></td>')
+			    }
+			});
+			$(".mCol-del").click(function() {
+			    var trlength = $('.idcMap > tbody > tr').length;
+			    for(var i=0; i<trlength; i++) {
+			        var t = $('.idcMap > tbody > tr').eq(i);
+			        t.children().last().remove();
+			    }
+			});
+		});
+	};
 /* 알고리즘행열 */	
 	var matrix=function(){};
 /* 알고리즘수학 */	
@@ -337,6 +397,36 @@ app.oop.OOP_MENU=
 	+	'<li id="inherit" class="list-group-item"><a href="#">상 속</a></li>'
 	+	'<li id="poly" class="list-group-item"><a href="#">다형성</a></li>'
 	+'</ul>';
+app.algorithm.ARR_TABLE=
+	'<div class="row">'
+    +'<div class="col-sm-12">'
+    +'<div class="panel colourable">'
+    +'<div class="panel-heading">'
+    +'<span class="panel-title">IDC 2D Map</span>'
+    +'</div>'
+    +'<div class="panel-body">'
+    +    '<div class="init-table">'
+    +        '<span>Make Map</span>'
+    +        '<input type="text" id="mRow" placeholder="가로 행">'
+    +        '<input type="text" id="mCol" placeholder="세로 열">'
+    +        '<button type="submit" class="tc-btn btn btn-default">Create</button>'
+    +    '</div>'
+    +    '<div class="control-box" style="display: none;">'
+    +        '<span class="btn mRow-add">가로 행 추가 <i class="fa fa-plus"></i></span>'
+    +        '<span class="btn mRow-del">가로 행 제거 <i class="fa fa-minus"></i></span>'
+    +        '<span class="btn mCol-add">세로 열 추가 <i class="fa fa-plus"></i></span>'
+    +        '<span class="btn mCol-del">세로 열 제거 <i class="fa fa-minus"></i></span>'
+    +    '</div>'
+    +    '<div class="show-map text-center" style="padding-top: 15px;"><span>Not exist map. first, create map.</span></div>'
+    +'</div>'
+    +'</div>'
+    +'</div>'
+    +'</div>';
+
+
+
+
+
 
 
 
