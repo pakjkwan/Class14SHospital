@@ -58,6 +58,7 @@ app.algorithm=(function(){
 		setContentView();
 		series();
 		arr();
+		matrix();
 	};
 	var setContentView=function(){};
 	var series=function(){
@@ -189,7 +190,7 @@ app.algorithm=(function(){
 			wrapper.empty();
 			wrapper.append(app.algorithm.TABLE);
 			var arr=[{id:'selectSort',txt:'선택정렬'},
-				{id:'bubleSort',txt:'버블정렬'},
+				{id:'bubbleSort',txt:'버블정렬'},
 				{id:'insertSort',txt:'삽입정렬'},
 				{id:'ranking',txt:'석차구하기'},
 				{id:'binSearch',txt:'이분검색'},
@@ -201,11 +202,56 @@ app.algorithm=(function(){
 			});
 			$('#tableLeft').html(str);
 			$('#selectSort').on('click',function(){
-				var ran = Math.floor(Math.random() * 10) + 1;
-				alert('selectSort click!'+ran);
+				var i=0,j=0;
+				var arr=randomGen();
+				for(;i<arr.length;i++){
+					for(;j<arr.length;j++){
+						if(arr[i]>arr[j+1]){arr[i]=arr[j+1];}
+					}
+				}
+				$('#tableRight').html(app.component.horList(arr,'default'));	
 			});
-			var tstart = "<table class='bordered idcMap' style='margin: auto;'><tbody>";
-			var tend = "</tbody></table>"
+			$('#bubbleSort').on('click',function(){
+				
+				var arr=randomGen();
+				var num=0,i=0,j=0;
+				for(i=0;i<arr.length;i++){
+					for(j=0;j<arr.length;j++){
+						if(arr[j]>arr[j+1]){
+							num=arr[j];
+							arr[j]=arr[j+1];
+							arr[j+1]=num;
+						}
+					}
+				}
+				$('#tableRight').html(app.component.horList(arr,'default'));	
+			});
+			$('#insertSort').on('click',function(){
+				var arr=randomGen();
+				var i=0,j=0;
+				for(;i<arr.length;i++){
+					for(;j<i;j++){
+						if(arr[j]>arr[i]){arr[j]=arr[i];}
+					}
+				}
+				
+				$('#tableRight').html(app.component.horList(arr,'default'));	
+			});
+			$('#ranking').on('click',function(){
+				var arr=randomGen();
+				var rank=[1,1,1,1,1,1];
+				var i=0,k=0;
+				for(;i<arr.length;i++){
+					for(;k<arr.length;k++){
+						if(arr[i]<arr[k]){
+							rank[i]++;
+						}
+					}
+				}
+				$('#tableRight').html(app.component.horList(arr,'default'));
+				$('#tableRight').append(app.component.horList(rank,'default'));
+			});
+			
 			var tcontent = "";
 			function makeTable() {
 			    var nrow = $("#mRow").val();
@@ -248,8 +294,85 @@ app.algorithm=(function(){
 			});
 		});
 	};
+	var randomGen=function(){
+		var i=0,k=0;
+		var arr=[];
+		for(;i<6;i++){
+			arr[i]=Math.floor(Math.random() * 45) + 1;
+			for(k=i;k>0;k--){
+				if(arr[i]==arr[k-1]){
+					i--;
+				}
+			}
+		}
+		return arr;
+	};
 /* 알고리즘행열 */	
-	var matrix=function(){};
+	var matrix=function(){
+		var wrapper=app.component.getWrapper();
+		$('#matrix').on('click',function(){
+			var wrapper=app.component.getWrapper();
+			wrapper.empty();
+			wrapper.append(app.algorithm.TABLE);
+			var arr=[{id:'basic',txt:'기본5X5'},
+				{id:'ziazag',txt:'지그재그'},
+				{id:'diamond',txt:'다이아몬드'},
+				{id:'sandGlass',txt:'모래시계'},
+				{id:'snail',txt:'달팽이'},
+				{id:'magicSquare',txt:'마방진'}];
+			var str='';
+			$.each(arr,function(i,j){
+				str+='<li id="'+j.id+'" class="list-group-item"><a href="#">'+j.txt+'</a></li>';
+			});
+			$('#tableLeft').html(str);	
+			basic();
+		});
+		
+	};
+	var basic=function(){
+		$('#basic').on('click',function(){
+			var mtx = new Array(new Array(5), new Array(5),new Array(5), new Array(5),new Array(5));
+			var jason=[
+		        {
+		            a : 1,
+		            b : 2,
+		            c : 3,
+		            d : 4,
+		            e : 5
+		        },
+		        {
+		        	a : 6,
+		            b : 7,
+		            c : 8,
+		            d : 9,
+		            e : 10
+		        },
+		        {
+		        	a : 11,
+		            b : 12,
+		            c : 13,
+		            d : 14,
+		            e : 15
+		        },
+		        {
+		        	a : 16,
+		            b : 17,
+		            c : 18,
+		            d : 19,
+		            e : 20
+		        },
+		        {
+		        	a : 21,
+		            b : 22,
+		            c : 23,
+		            d : 24,
+		            e : 25
+		        }
+		    ]
+			$('#tableRight').html(app.component.panelTable(jason,'Basic','default'));
+		});
+		
+	};
 /* 알고리즘수학 */	
 	var math=function(){};
 /* 알고리즘응용 */	
@@ -263,7 +386,9 @@ app.algorithm=(function(){
 		factorial : factorial,
 		fibonacci : fibonacci,
 		arr : arr,
+		randomGen : randomGen,
 		matrix : matrix,
+		basic : basic,
 		math : math,
 		appl : appl
 	};
@@ -370,8 +495,52 @@ app.component=(function(){
 		},
 		divAlert : function(type){ // alert-danger
 			return $('<div class="alert '+type+'" role="alert">example</div>');
+		},
+		horList : function(arr,type){
+			var list='<div class="btn-group" role="group" aria-label="...">';
+			$.each(arr,function(i,j){
+				list+='<button id="list-button-"'+i+' type="button" class="btn btn-'+type+'">'+arr[i]+'</button>';
+			});
+			list+='</div>';
+			return list;
+		},
+		panelTable : function(jason,txt,type){
+			
+		    var table = 
+				'<div class="panel panel-'+type+'">'
+				+'<div class="panel-heading">행렬</div>'
+				+'<table id="table">'
+				+'<tr style="width:250px">'
+				+'<th colspan="5">'+txt+'</th>'
+				+'</tr>'
+				+'<tbody>';
+				$.each(jason, function(i,j){
+					table +=
+						'<tr>'
+						+'<td style="width:20%">'+j.a+'</td>'
+						+'<td style="width:20%">'+j.b+'</td>'
+						+'<td style="width:20%">'+j.c+'</td>'
+						+'<td style="width:20%">'+j.d+'</td>'
+						+'<td style="width:20%">'+j.e+'</td>'
+						+'</tr>';
+				});
+				
+				table += '</tbody></table>'
+		    
+			return table;
+		},
+		Border : function(){
+			
 		}
 		
+	};
+})();
+app.style=(function(){
+	var tableBorder=function(){
+		
+	};
+	return {
+		tableBorder : tableBorder
 	};
 })();
 app.navi=(function(){})();
