@@ -59,6 +59,8 @@ app.algorithm=(function(){
 		series();
 		arr();
 		matrix();
+		math();
+		appl();
 	};
 	var setContentView=function(){};
 	var series=function(){
@@ -202,13 +204,18 @@ app.algorithm=(function(){
 			});
 			$('#tableLeft').html(str);
 			$('#selectSort').on('click',function(){
-				var i=0,j=0;
+				var i=0,j=0,temp=0;
 				var arr=randomGen();
-				for(;i<arr.length;i++){
-					for(;j<arr.length;j++){
-						if(arr[i]>arr[j+1]){arr[i]=arr[j+1];}
+				for(i=0;i<arr.length;i++){
+					for(j=i;j<arr.length;j++){
+						if(arr[i]>arr[j+1]){
+							temp = arr[i];
+							arr[i] = arr[j+1];
+							arr[j+1] = temp;
+						}
 					}
 				}
+				
 				$('#tableRight').html(app.component.horList(arr,'default'));	
 			});
 			$('#bubbleSort').on('click',function(){
@@ -229,20 +236,15 @@ app.algorithm=(function(){
 			$('#insertSort').on('click',function(){
 				var arr=randomGen();
 				var i=0,j=0;
-				for(;i<arr.length;i++){
-					for(;j<i;j++){
-						if(arr[j]>arr[i]){arr[j]=arr[i];}
-					}
-				}
+				
 				
 				$('#tableRight').html(app.component.horList(arr,'default'));	
 			});
 			$('#ranking').on('click',function(){
 				var arr=randomGen();
 				var rank=[1,1,1,1,1,1];
-				var i=0,k=0;
-				for(;i<arr.length;i++){
-					for(;k<arr.length;k++){
+				for(var i=0;i<arr.length;i++){
+					for(var k=0;k<arr.length;k++){
 						if(arr[i]<arr[k]){
 							rank[i]++;
 						}
@@ -252,46 +254,6 @@ app.algorithm=(function(){
 				$('#tableRight').append(app.component.horList(rank,'default'));
 			});
 			
-			var tcontent = "";
-			function makeTable() {
-			    var nrow = $("#mRow").val();
-			    var ncol = $("#mCol").val();
-			    for(var i=0; i<ncol; i++) {
-			        tcontent += "<tr class='bordered' style='height: 100px;'>";
-			        for(var j=0; j<nrow; j++) {
-			            tcontent += "<td class='bordered' style='width: 100px;'></td>";
-			        }
-			        tcontent += "</tr>"
-			    }
-			    //$(".show-map").html(tstart+tcontent+tend);
-			    $("#tableRight").html(tstart+tcontent+tend);
-			    $(".init-table").hide();
-			    $(".control-box").show();
-			}
-			$(".tc-btn").click(function() {
-			    makeTable();
-			});
-			$(".mRow-add").click(function() {
-			    var tRow = $('.idcMap > tbody > tr:last').clone();
-			    $('.idcMap > tbody:last').append(tRow);
-			});
-			$(".mRow-del").click(function() {
-			    $('.idcMap > tbody > tr:last').remove();
-			});
-			$(".mCol-add").click(function() {
-			    var trlength = $('.idcMap > tbody > tr').length;
-			    for(var i=0; i<trlength; i++) {
-			        var t = $('.idcMap > tbody > tr').eq(i);
-			        t.append('<td class="bordered" style="width: 100px;"></td>')
-			    }
-			});
-			$(".mCol-del").click(function() {
-			    var trlength = $('.idcMap > tbody > tr').length;
-			    for(var i=0; i<trlength; i++) {
-			        var t = $('.idcMap > tbody > tr').eq(i);
-			        t.children().last().remove();
-			    }
-			});
 		});
 	};
 	var randomGen=function(){
@@ -309,7 +271,6 @@ app.algorithm=(function(){
 	};
 /* 알고리즘행열 */	
 	var matrix=function(){
-		var wrapper=app.component.getWrapper();
 		$('#matrix').on('click',function(){
 			var wrapper=app.component.getWrapper();
 			wrapper.empty();
@@ -368,15 +329,46 @@ app.algorithm=(function(){
 		            d : 24,
 		            e : 25
 		        }
-		    ]
+		    ];
 			$('#tableRight').html(app.component.panelTable(jason,'Basic','default'));
 		});
 		
 	};
 /* 알고리즘수학 */	
-	var math=function(){};
+	var math=function(){
+		var wrapper=app.component.getWrapper();
+		$('#math').on('click',function(){
+			wrapper.empty();
+			wrapper.append(app.algorithm.TABLE);
+			var arr=[{id:'determinePrime',txt:'소수판별'},
+				{id:'primeSum',txt:'소수의합'},
+				{id:'primeCount',txt:'소수의개수'},
+				{id:'lcmGcd',txt:'최대최소공배수'},
+				{id:'euclid',txt:'유클리드 호제법'},
+				{id:'fatorization',txt:'약수구하기'},
+				{id:'primeFactor',txt:'소인수분해'},
+				{id:'multiSum',txt:'배수의 합'},
+				{id:'approx',txt:'근사값 구하기'}];
+			var str='';
+			$.each(arr,function(i,j){
+				str+='<li id="'+j.id+'" class="list-group-item"><a href="#">'+j.txt+'</a></li>';
+			});
+			$('#tableLeft').html(str);
+			determinePrime();
+		});
+		
+	};
+	var determinePrime=function(){
+		$('#determinePrime').on('click',function(){
+			alert('determinePrime click');
+		});
+	};
 /* 알고리즘응용 */	
-	var appl=function(){};	
+	var appl=function(){
+		$('#appl').on('click',function(){
+			alert('appl click');
+		});
+	};	
 	return {
 		init : init,
 		series : series,
@@ -390,6 +382,7 @@ app.algorithm=(function(){
 		matrix : matrix,
 		basic : basic,
 		math : math,
+		determinePrime : determinePrime,
 		appl : appl
 	};
 })();
