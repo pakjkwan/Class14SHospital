@@ -23,9 +23,7 @@ DROP TABLE IF EXISTS Patient;
 DROP TABLE IF EXISTS Nurse;
 DROP TABLE IF EXISTS Doctor;
 
-CREATE TABLE Test(
-	.....
-)DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+
 
 
 -- doc_id, doc_pass, major_treat, doc_name, doc_gen, doc_phone, doc_email, doc_position

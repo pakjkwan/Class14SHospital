@@ -393,11 +393,11 @@ app.oop=(function(){
 	var onCreate=function(){
 		setContentView();
 		encap();
+		inherit();
 	};
 	var setContentView=function(){};
 	var encap=function(){
 		$('#encap').on('click',function(){
-			alert('encap click');
 			var wrapper=app.component.getWrapper();
 			wrapper.empty()
 			.append(app.algorithm.TABLE);
@@ -410,44 +410,86 @@ app.oop=(function(){
 					var inputVal=$('#inputText').val();
 					var arr=inputVal.split(' ');
 					console.log(inputVal);
-					app.person.setName(arr[0]);
-					app.person.setAge(arr[1]);
-					app.person.setGender(arr[2]);
-					app.person.setJob(arr[3]);
-					console.log(app.person);
-					var spec='<h5>'+app.person.toString()+'</h5>';
+					var doctor=new app.Person();
+					doctor.setId(arr[0]);
+					doctor.setPass(arr[1]);
+					doctor.setName(arr[2]);
+					doctor.setGen(arr[3]);
+					console.log(doctor);
+					var spec='<h5>'+doctor.toString()+'</h5>';
 					app.component.divAlert('alert-danger').html(spec).appendTo(tableRight);
+			});
+		});
+	};
+	var inherit=function(){
+		$('#inherit').on('click',function(){
+			var wrapper=app.component.getWrapper();
+			wrapper.empty()
+			.append(app.algorithm.TABLE);
+			$('#tableLeft').html(app.oop.OOP_MENU);
+			var tableRight=$('#tableRight');
+			app.component.inputText('inputText').attr('placeholder','이름 나이 성별 직업(공백으로 구분)입력').appendTo(tableRight);
+			app.component.aButton('aButton','btn-primary').html('스펙보기').appendTo(tableRight)
+				.css('margin','10px auto')
+				.on('click',function(){
+					var inputVal=$('#inputText').val();
+					var arr=inputVal.split(' ');
+					console.log(inputVal);
+					var doctor=new app.Person();
+					doctor.setId(arr[0]);
+					doctor.setPass(arr[1]);
+					doctor.setName(arr[2]);
+					doctor.setGen(arr[3]);
+			
+					var spec='<h5>'+doctor.toString()+'</h5>';
+					app.component.divAlert('alert-primary').html(spec).appendTo(tableRight);
 			});
 		});
 	};
 	return {
 		init : init,
 		encap : encap,
-		inherit : function(){},
+		inherit : inherit,
 		poly : function(){}
 	};
 })();
 /*
  * 알고리즘 클래스
  */
-
-app.person=(function() { 
-	var _name,_age,_gender,_job;
+// id,pass,name,gen,phone,email;
+app.Person=function() { 
+	var _id,_pass,_name,_gen,_phone,_email;
 	return {
-		setName : function(name){this._name=name;},
-		setAge : function(age){this._age=age;},
-		setGender : function(gender){this._gender=gender;},
-		setJob : function(job){this._job=job;},
-		getName : function(){return this._name;},
-		getAge : function(){return this._age;},
-		getGender : function(){return this._gender;},
-		getJob : function(){return this._job;},
+		setId : function(id){this._id=id;},getName : function(){return this._id;},
+		setPass : function(pass){this._pass=pass;},getPass : function(){return this._pass;},
+		setName : function(name){this._name=name;},getName : function(){return this._name;},
+		setGen : function(gen){this._gen=gen;},getGen : function(){return this._gen;},
+		setPhone : function(phone){this._phone=phone;},getPhone : function(){this._phone;},
+		setEmail : function(email){this._email=email;},setEmail : function(){this._email;},
 		toString : function() { 
-			 return this._name+','+this._age+','+this._gender+','+this._job; 
+			 return this._id+','+this._pass+','+this._name+','+this._gen+','+this._phone+','+this._email; 
 		}
 	};
 	
+};
+
+app.Info=(function(){
+    var Constructor = function(id,pass,name,gen,phone,email){
+        this.id = id || 0;
+    };
+
+    Constructor.prototype = {
+        value: null,
+        add: function(numToAdd) {
+            this.value += numToAdd;
+        }
+    };
+
+    return Constructor;
 })();
+var Y = new app.Info(13);
+Y.add(1);
+Y.value;
 /*******************************************************************************
  * View 
  * app.component 
@@ -584,17 +626,6 @@ app.algorithm.ARR_TABLE=
     +'</div>'
     +'</div>'
     +'</div>';
-
-
-
-
-
-
-
-
-
-
-
 
 
 /*******************************************************************************

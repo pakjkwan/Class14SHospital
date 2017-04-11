@@ -63,6 +63,6 @@
 </div>
 </body>
 <script>
-	app.context.init('${context}');
+app.context.init('${context}');
 </script>  
 </html>
