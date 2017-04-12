@@ -11,7 +11,6 @@ delimiter;
 
 show procedure status;
 
-
 set @name = 'James', @rs='';
 call sp_hello_name(@name,@rs );
 select @rs;

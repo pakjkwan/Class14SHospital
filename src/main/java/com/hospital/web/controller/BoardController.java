@@ -1,27 +1,33 @@
 package com.hospital.web.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
-@RequestMapping("/board")
+import com.hospital.web.domain.Article;
+import com.hospital.web.domain.Doctor;
+import com.hospital.web.domain.Enums;
+import com.hospital.web.domain.Info;
+import com.hospital.web.domain.Nurse;
+import com.hospital.web.domain.Patient;
+import com.hospital.web.domain.Person;
+import com.hospital.web.mapper.Mapper;
+import com.hospital.web.service.IDeleteService;
+@RestController
 public class BoardController {
-	private static final Logger logger = LoggerFactory.getLogger(BoardController.class);
-	@RequestMapping("/list")
-	public String goList(){
-		logger.info("BoardController-goList() {} !!", "ENTER");
-		return "public:board/containerList";
-	}
-	@RequestMapping("/find")
-	public String find(
-			@RequestParam(value="search",required=false)String search,
-			@RequestParam(value="pageNO",defaultValue="1")String pageNO){
+	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
+	@Autowired Mapper mapper;
 	
-		logger.info("BoardController-goList() {} !!", "ENTER");
-		
-		return "public:board/containerList";
+	private Article getArticle(String target){
+		Article o = new Article();
+		return o;
 	}
 }

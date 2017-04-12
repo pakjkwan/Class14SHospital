@@ -37,7 +37,8 @@
 		<result property="position" column="nur_position"/>
 	</resultMap>
    <insert id="registPatient">
-   INSERT INTO ${group}( ) VALUES (#{id}, #{name})
+    INSERT INTO ${group}(pat_id,pat_pass,pat_name,pat_gen,pat_phone,pat_email,pat_job,pat_jumin,pat_addr,doc_id,nur_id) 
+   VALUES ( #{id}, #{pass}, #{name}, #{gen}, #{phone}, #{email},#{job}, #{jumin}, #{addr}, #{docID}, #{nurID})
    </insert>
    <insert id="registDoctor">
    INSERT INTO ${group}( ) VALUES (#{id}, #{name})
@@ -107,6 +108,9 @@
   </select>
   
 <!-- 
+
+
+
      	<select id="getBuy" resultType="com.rainbow.app.buy.BuyDTO" parameterType="int">
 	    SELECT 
     		buy_seq AS buySeq,

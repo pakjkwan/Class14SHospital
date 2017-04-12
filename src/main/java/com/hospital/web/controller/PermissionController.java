@@ -13,15 +13,16 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import com.hospital.web.domain.Info;
 import com.hospital.web.domain.Patient;
 import com.hospital.web.domain.Person;
 import com.hospital.web.domain.Enums;
 import com.hospital.web.mapper.Mapper;
-import com.hospital.web.service.ReadService;
+import com.hospital.web.service.IGetService;
 
-@Controller
+@RestController
 @SessionAttributes("permission")
 public class PermissionController {
 	private static final Logger logger = LoggerFactory.getLogger(PermissionController.class);
@@ -32,15 +33,15 @@ public class PermissionController {
 		return "public:common/loginForm";
 	}
 	
-	@RequestMapping(value="/{permission}/login",method=RequestMethod.POST)
+	@RequestMapping(value="/{type}/login",method=RequestMethod.POST)
 	public String login(@RequestParam("id") String id,
 			@RequestParam("password") String password,
-			@PathVariable String permission,HttpSession session,
+			@PathVariable String type,HttpSession session,
 			Model model) throws Exception{
 		logger.info("Permission - login() {}", "POST");
 		logger.info("Permission - id, pw: {}", id+","+password);
 		String movePosition="";
-		switch (permission) { 
+		switch (type) { 
 		case "patient":
 			Person<?> person=new Person<Info>(new Patient());
 			Patient patient=(Patient) person.getInfo();
@@ -50,14 +51,14 @@ public class PermissionController {
 			map.put("group", patient.getGroup());
 			map.put("key", Enums.PATIENT.val());
 			map.put("value", id);
-			ReadService exist=(a)->mapper.exist(a);
+			IGetService exist=(a)->mapper.exist(a);
 			Integer count=(Integer)exist.execute(map);
 			logger.info("ID exist ?? {}", count);
 			if(count==0){
 				logger.info("DB RESULT: {}", "ID not exist");
 				movePosition="public:common/loginForm";
 			}else{
-				ReadService findPatient=(a)->mapper.findPatient(a);
+				IGetService findPatient=(a)->mapper.findPatient(a);
 				patient=(Patient) findPatient.execute(map);
 				if(patient.getPass().equals(password)){
 					logger.info("DB RESULT: {}", "success");
