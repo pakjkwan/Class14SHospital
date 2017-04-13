@@ -89,6 +89,16 @@ public class PersonController {
 		}
 		return o;
 	}
+	@RequestMapping(value="/login",
+			method=RequestMethod.POST,
+			consumes="application/json")
+	public @ResponseBody Map<?,?> login(){
+		Map<String,String>map=new HashMap<>();
+		logger.info("PersonController-login() {} !!", "ENTER");
+		map.put("name", "홍길동");
+		map.put("login", "success");
+		return map;
+	}
 	@RequestMapping(value="/list/{group}",
 					method=RequestMethod.POST,
 					consumes="application/json")

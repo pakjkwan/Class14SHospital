@@ -1,10 +1,13 @@
 /*******************************************************************************
  * Model 
- * app.context 
- * app.session 
- * app.util 
- * app.algorithm 
- * app.oop
+******************************************************************************/
+/*******************************************************************************
+ * context,session,util,algorithm,oop,info,person
+ * 
+ * 
+ *  
+ * 
+ * 
  ******************************************************************************/
 var app=app || {};
 app.context=(function(){
@@ -17,6 +20,7 @@ app.context=(function(){
 		app.component.init();
 		app.algorithm.init();
 		app.oop.init();
+		app.person.init();
 	};
 	var setContentView=function(){
 	};
@@ -51,7 +55,13 @@ app.session=(function(){
 app.util=(function(){})();
 app.algorithm=(function(){
 /* 알고리즘수열 */	
+	var wrapper,ctx,img,js,css;
 	var init=function(){
+		wrapper=app.component.getWrapper();
+		ctx=app.session.getContextPath();
+		img=app.session.getImagePath();
+		js=app.session.getJavascriptPath();
+		css=app.session.getStylePath();
 		onCreate();
 	};
 	var onCreate=function(){
@@ -64,7 +74,6 @@ app.algorithm=(function(){
 	};
 	var setContentView=function(){};
 	var series=function(){
-		var wrapper=app.component.getWrapper();
 		$('#series').on('click',function(){
 			wrapper.empty();
 			wrapper.append(app.algorithm.TABLE);
@@ -185,9 +194,8 @@ app.algorithm=(function(){
 		 if(limit == 0){sum = 0;}else if(limit == 1){sum = 1;}else if(limit == 2){sum = 2;} 
 		return sum;
 	};
-/* 알고리즘배열 */
+
 	var arr=function(){
-		var wrapper=app.component.getWrapper();
 		$('#arr').on('click',function(){
 			wrapper.empty();
 			wrapper.append(app.algorithm.TABLE);
@@ -457,7 +465,7 @@ app.oop=(function(){
  * 알고리즘 클래스
  */
 // id,pass,name,gen,phone,email;
-app.Person=function() { 
+app.info=function() { 
 	var _id,_pass,_name,_gen,_phone,_email;
 	return {
 		setId : function(id){this._id=id;},getName : function(){return this._id;},
@@ -470,10 +478,9 @@ app.Person=function() {
 			 return this._id+','+this._pass+','+this._name+','+this._gen+','+this._phone+','+this._email; 
 		}
 	};
-	
 };
 
-app.Info=(function(){
+app.Info2=(function(){
     var Constructor = function(id,pass,name,gen,phone,email){
         this.id = id || 0;
     };
@@ -487,14 +494,53 @@ app.Info=(function(){
 
     return Constructor;
 })();
-var Y = new app.Info(13);
-Y.add(1);
-Y.value;
+//var Y = new app.Info(13);
+//Y.add(1);
+//Y.value;
+app.person=(function(){
+	var wrapper,ctx,img,js,css;
+	var init = function(){
+		wrapper=app.component.getWrapper();
+		ctx=app.session.getContextPath();
+		img=app.session.getImagePath();
+		js=app.session.getJavascriptPath();
+		css=app.session.getStylePath();
+		$('#brand').on('click',function(){
+			alert('brand click!!');
+		});
+		$('#wrapper').load(ctx+'/login/form');
+		login();
+	};
+	var login=function() {
+		$('#login-submit').on('click',function(){
+			alert('login-submit click!!');
+		});
+	    $('#login-form-link').on('click',function(e) {
+	    	alert('login-form-link click');
+			$("#login-form").delay(100).fadeIn(100);
+	 		$("#register-form").fadeOut(100);
+			$('#register-form-link').removeClass('active');
+			$(this).addClass('active');
+			e.preventDefault();
+		});
+		$('#register-form-link').on('click',function(e) {
+			alert('register-form-link');
+			$("#register-form").delay(100).fadeIn(100);
+	 		$("#login-form").fadeOut(100);
+			$('#login-form-link').removeClass('active');
+			$(this).addClass('active');
+			e.preventDefault();
+		});
+
+	};
+	return {
+		init : init,
+		login : login
+	};
+})();
+
 /*******************************************************************************
  * View 
- * app.component 
- * app.navi 
- * app.patient
  ******************************************************************************/
 app.component=(function(){
 	var _body,_wrapper;
@@ -578,6 +624,9 @@ app.style=(function(){
 		tableBorder : tableBorder
 	};
 })();
+app.login=(function(){
+	
+})();
 app.navi=(function(){})();
 app.patient=(function(){})();
 app.algorithm.TABLE=
@@ -630,7 +679,5 @@ app.algorithm.ARR_TABLE=
 
 /*******************************************************************************
  * Controller
- * 
- * 
  ******************************************************************************/
 app.controller=(function(){})();

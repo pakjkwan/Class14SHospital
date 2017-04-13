@@ -36,7 +36,7 @@
   <input type="radio" name="permission" value="admin"> 관리자
 <input type="hidden" name="action" value="login" />
 <input type="hidden" name="page" value="main" />
-<input type="button" value="로그인" />
+<input id="loginBtn" type="button" value="로그인" />
 </form>
 </div>
 <%-- <jsp:include page="../common/footer.jsp"/> --%>

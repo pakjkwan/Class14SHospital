@@ -27,13 +27,13 @@ import com.hospital.web.service.IGetService;
 public class PermissionController {
 	private static final Logger logger = LoggerFactory.getLogger(PermissionController.class);
 	@Autowired Mapper mapper;
-	@RequestMapping("/login")
+	@RequestMapping("/test/login")
 	public String login(){
 		logger.info("PatientController - goLogin() {}", "ENTER");
 		return "public:common/loginForm";
 	}
 	
-	@RequestMapping(value="/{type}/login",method=RequestMethod.POST)
+	@RequestMapping(value="/test/{type}/login",method=RequestMethod.POST)
 	public String login(@RequestParam("id") String id,
 			@RequestParam("password") String password,
 			@PathVariable String type,HttpSession session,
@@ -78,7 +78,7 @@ public class PermissionController {
 		}
 		return movePosition;
 	}
-	@RequestMapping("/logout")
+	@RequestMapping("/test/logout")
 	public String logout(HttpSession session) {
 		session.invalidate(); 
 		return "redirect:/"; 

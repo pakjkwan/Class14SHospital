@@ -20,7 +20,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="${context}/resources/img/common/evernote.png">Brand</a>
+      <a id="brand" class="navbar-brand" href="#"><img src="${context}/resources/img/common/evernote.png" style="width: 50px" alt="" /></a>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
@@ -64,5 +64,6 @@
 </body>
 <script>
 app.context.init('${context}');
+
 </script>  
 </html>

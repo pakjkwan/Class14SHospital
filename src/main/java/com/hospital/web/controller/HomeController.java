@@ -20,8 +20,11 @@ public class HomeController {
 	}
 	@RequestMapping(value="/home")
 	public String home(){
-		
 		return "public:common/container";
+	}
+	@RequestMapping(value="/login/form")
+	public String login(){
+		return "common/login.jsp";
 	}
 	
 }
