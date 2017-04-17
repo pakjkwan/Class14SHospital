@@ -177,5 +177,5 @@
 	</div>
 </div>
 <script>
-app.context.init('${context}');
+app.login.execute();
 </script>

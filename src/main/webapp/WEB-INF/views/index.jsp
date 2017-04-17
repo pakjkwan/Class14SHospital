@@ -64,6 +64,5 @@
 </body>
 <script>
 app.context.init('${context}');
-
 </script>  
 </html>

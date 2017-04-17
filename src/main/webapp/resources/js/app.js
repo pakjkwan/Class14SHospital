@@ -4,10 +4,6 @@
 /*******************************************************************************
  * context,session,util,algorithm,oop,info,person
  * 
- * 
- *  
- * 
- * 
  ******************************************************************************/
 var app=app || {};
 app.context=(function(){
@@ -21,6 +17,7 @@ app.context=(function(){
 		app.algorithm.init();
 		app.oop.init();
 		app.person.init();
+		
 	};
 	var setContentView=function(){
 	};
@@ -261,7 +258,64 @@ app.algorithm=(function(){
 				$('#tableRight').html(app.component.horList(arr,'default'));
 				$('#tableRight').append(app.component.horList(rank,'default'));
 			});
-			
+			$('#binSearch').on('click',function(){
+				var num=randomGen();
+				var arr=sort(num);
+				$('#tableRight').html(app.component.horList(arr,'default'));
+				app.component.inputText('inputText').attr('placeholder','찾을 숫자').appendTo(tableRight);
+				app.component.aButton('aButton','btn-warning').html('찾기').appendTo(tableRight)
+					.css('margin','10px auto')
+					.on('click',function(){
+						var val=$('#inputText').val();
+						var fnum=(arr.length-1)-(arr.length-2);
+						var pnum=arr.length-1;
+						var i=val*1;
+						for(i=0;i<pnum;i++){
+							if(fnum<=pnum){
+								var m=Math.floor((fnum+pnum)/2);
+								if(v==arr[m]){
+									var result=m;
+									break;
+								}
+								if(v<arr[m]){
+									fnum=m+1;
+								}else{
+									pnum=m-1;
+								}
+						}
+						}
+						app.component.divAlert('alert-danger').html('index=: '+result + '의 숫자는' +arr[m]+ '입니다.').appendTo(tableRight);
+					});					
+				
+			});
+			$('#merge').on('click',function(){
+				var num1=randomGen();
+				var num2=randomGen();
+				var arr1=sort(randomGen());
+				var arr2=sort(randomGen());
+				var arr=[];
+				var i=0;
+				var j=0;
+				$('#tableRight').html(app.component.horList(arr1,'default'));
+				$('#tableRight').append(app.component.horList(arr2,'default'));
+				app.component.aButton('aButton','btn-warning').html('병합').appendTo(tableRight)
+					.css('margin','10px auto')
+					.on('click',function(){
+				for(k=0;k<12;k++){
+					if(arr1[i]<arr2[j]){
+						arr[k]=arr1[i];
+						i++;
+					}else if(arr1[i]==arr2[2]){
+						arr[k]=arr1[i];
+						i++;
+					}else{
+						arr[k]=arr2[j];
+						j++;
+					}
+				}
+				$('#tableRight').append(app.component.horList(arr,'default'));
+			  });
+			});
 		});
 	};
 	var randomGen=function(){
@@ -277,6 +331,20 @@ app.algorithm=(function(){
 		}
 		return arr;
 	};
+	var sort=function(arr){
+		var i=0,j=0,temp=0;
+		var arr=randomGen();
+		for(i=0;i<arr.length;i++){
+			for(j=i;j<arr.length;j++){
+				if(arr[i]>arr[j+1]){
+					temp = arr[i];
+					arr[i] = arr[j+1];
+					arr[j+1] = temp;
+				}
+			}
+		}
+		return arr;
+	}
 /* 알고리즘행열 */	
 	var matrix=function(){
 		$('#matrix').on('click',function(){
@@ -387,6 +455,7 @@ app.algorithm=(function(){
 		fibonacci : fibonacci,
 		arr : arr,
 		randomGen : randomGen,
+		sort:sort,
 		matrix : matrix,
 		basic : basic,
 		math : math,
@@ -498,46 +567,20 @@ app.Info2=(function(){
 //Y.add(1);
 //Y.value;
 app.person=(function(){
-	var wrapper,ctx,img,js,css;
-	var init = function(){
+	var init=function(){
 		wrapper=app.component.getWrapper();
 		ctx=app.session.getContextPath();
 		img=app.session.getImagePath();
 		js=app.session.getJavascriptPath();
 		css=app.session.getStylePath();
-		$('#brand').on('click',function(){
-			alert('brand click!!');
-		});
 		$('#wrapper').load(ctx+'/login/form');
-		login();
-	};
-	var login=function() {
-		$('#login-submit').on('click',function(){
-			alert('login-submit click!!');
-		});
-	    $('#login-form-link').on('click',function(e) {
-	    	alert('login-form-link click');
-			$("#login-form").delay(100).fadeIn(100);
-	 		$("#register-form").fadeOut(100);
-			$('#register-form-link').removeClass('active');
-			$(this).addClass('active');
-			e.preventDefault();
-		});
-		$('#register-form-link').on('click',function(e) {
-			alert('register-form-link');
-			$("#register-form").delay(100).fadeIn(100);
-	 		$("#login-form").fadeOut(100);
-			$('#login-form-link').removeClass('active');
-			$(this).addClass('active');
-			e.preventDefault();
-		});
-
 	};
 	return {
-		init : init,
-		login : login
+		init : init
+		
 	};
 })();
+
 
 /*******************************************************************************
  * View 
@@ -625,7 +668,28 @@ app.style=(function(){
 	};
 })();
 app.login=(function(){
-	
+	var execute=function(){
+		$('#login-submit').on('click',function(){
+			alert('login-submit click!!');
+		});
+	    $('#login-form-link').on('click',function(e) {
+	    	alert('login-form-link click');
+			$("#login-form").delay(100).fadeIn(100);
+	 		$("#register-form").fadeOut(100);
+			$('#register-form-link').removeClass('active');
+			$(this).addClass('active');
+			e.preventDefault();
+		});
+		$('#register-form-link').on('click',function(e) {
+			alert('register-form-link');
+			$("#register-form").delay(100).fadeIn(100);
+	 		$("#login-form").fadeOut(100);
+			$('#login-form-link').removeClass('active');
+			$(this).addClass('active');
+			e.preventDefault();
+		});
+	};
+	return {execute:execute};
 })();
 app.navi=(function(){})();
 app.patient=(function(){})();

@@ -150,8 +150,6 @@ a:active {color: #408080;} /* selected link */
 .paging li a:hover {
     background-color: white;
 }
-
-
 #admin_tab tr td{height:40px;}
 #admin_tab tr th{height:40px;}
 
