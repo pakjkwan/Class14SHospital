@@ -29,12 +29,10 @@ public class PersonService {
 		return (Patient) service.execute(paramMap);
 	}
 
-	@SuppressWarnings("unused")
 	public Doctor getDoctor(Map<?,?> paramMap)throws Exception{
 		IGetService service= (map)->mapper.findDoctor(map); 
 		return (Doctor) service.execute(paramMap);
 	}
-	@SuppressWarnings("unused")
 	public Nurse getNurse(Map<?,?> paramMap)throws Exception{
 		IGetService service= (map)->mapper.findNurse(map); 
 		return (Nurse) service.execute(paramMap);
@@ -78,6 +76,16 @@ public class PersonService {
 	public List<?> getPatients() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	public int exist(Map<?,?> map){
+		
+		return 0;
+		
+	}
+	public Object login(Map<?,?> map){
+		
+		return 0;
+		
 	}
 	public Map<?,?> putPatient(Object target){
 		Map<?,?>map=new HashMap<>();

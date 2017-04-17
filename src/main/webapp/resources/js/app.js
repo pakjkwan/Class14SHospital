@@ -431,6 +431,8 @@ app.algorithm=(function(){
 			});
 			$('#tableLeft').html(str);
 			determinePrime();
+			primefactor();
+			multiSum();
 		});
 		
 	};
@@ -439,6 +441,52 @@ app.algorithm=(function(){
 			alert('determinePrime click');
 		});
 	};
+	var primefactor=function(){
+		$('#primeFactor').on('click',function(){
+			alert('소인수 분해!!!');
+			app.component.inputText('inputText').attr('placeholder','입력 값').appendTo(tableRight);
+			app.component.aButton('aButton','btn-warning').html('소인수 분해').appendTo(tableRight)
+				.css('margin','10px auto')
+				.on('click',function(){
+					var val=$('#inputText').val();
+					var prime=2;
+					var val=val;
+					var result='';
+					for(i=0;i<=val;i++){
+						if(val%prime!=0){
+							prime++;
+						}else{
+							val/=prime;
+							result+=prime+'*';
+						}
+					}
+					app.component.divAlert('alert-danger').html(val+'의 소인수 분해 :'+result.substr(0,result.lastIndexOf('*'))).appendTo(tableRight);
+				});
+		});
+	};
+	var multiSum=function(){
+		$('#multiSum').on('click',function(){
+			alert('소인수 분해!!!');
+			app.component.inputText('inputText').attr('placeholder','입력 값').appendTo(tableRight);
+			app.component.inputText('limit').attr('placeholder','한계 값').appendTo(tableRight);
+			app.component.aButton('aButton','btn-warning').html('배수의 합').appendTo(tableRight)
+				.css('margin','10px auto')
+				.on('click',function(){
+					var val=$('#inputText').val()*1;
+					var limit=$('#limit').val()*1;
+					var sum=0;
+					for(i=0;i<=limit;i++){
+						if(i%val==0){
+							sum+=i;
+						}
+						
+					}
+					app.component.divAlert('alert-danger').html(val+'의 배수의 합은:'+sum).appendTo(tableRight);
+				});
+			app.component.divAlert.empty();
+		});
+
+	}
 /* 알고리즘응용 */	
 	var appl=function(){
 		$('#appl').on('click',function(){
@@ -460,6 +508,7 @@ app.algorithm=(function(){
 		basic : basic,
 		math : math,
 		determinePrime : determinePrime,
+		primefactor:primefactor,
 		appl : appl
 	};
 })();
@@ -667,13 +716,35 @@ app.style=(function(){
 		tableBorder : tableBorder
 	};
 })();
+
 app.login=(function(){
 	var execute=function(){
-		$('#login-submit').on('click',function(){
-			alert('login-submit click!!');
+		var context=app.session.getContextPath();
+		console.log('app.login context :'+context);
+		$('#login-submit').on('click',function(e){
+			e.preventDefault();
+			$.ajax({
+				 url: context+"/login",
+				 method: "POST",
+				 data: JSON.stringify({ 
+					 	id : $('#username').val(),
+					 	pass : $('#password').val()
+					 }),
+				 dataType: "json",
+				 contentType: 'application/json',
+				 success: function(data){
+					 if(data.result==='success'){
+						 alert('환영합니다 :'+data.name+' '+data.group+'님');
+					 }else{
+						 alert('조회된 ID 가 존재하지 않습니다.');
+					 }
+				 },
+				 error: function(xhr,status,msg) {
+					alert('로그인 실패이유:'+msg);
+				}
+			});
 		});
 	    $('#login-form-link').on('click',function(e) {
-	    	alert('login-form-link click');
 			$("#login-form").delay(100).fadeIn(100);
 	 		$("#register-form").fadeOut(100);
 			$('#register-form-link').removeClass('active');
@@ -681,7 +752,6 @@ app.login=(function(){
 			e.preventDefault();
 		});
 		$('#register-form-link').on('click',function(e) {
-			alert('register-form-link');
 			$("#register-form").delay(100).fadeIn(100);
 	 		$("#login-form").fadeOut(100);
 			$('#login-form-link').removeClass('active');

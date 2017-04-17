@@ -92,11 +92,51 @@ public class PersonController {
 	@RequestMapping(value="/login",
 			method=RequestMethod.POST,
 			consumes="application/json")
-	public @ResponseBody Map<?,?> login(){
+	public @ResponseBody Map<?,?> login(
+			@RequestBody Map<String,String>paramMap) throws Exception{
 		Map<String,String>map=new HashMap<>();
 		logger.info("PersonController-login() {} !!", "ENTER");
-		map.put("name", "홍길동");
-		map.put("login", "success");
+		String id=paramMap.get("id");
+		String pass=paramMap.get("pass");
+		System.out.println("넘어온 id"+id);
+		System.out.println("넘어온 pass"+pass);
+
+
+		String[] gArr={"Patient/pat_id/"+id,
+				"Doctor/doc_id/"+id,
+				"Nurse/nur_id/"+id,
+				"Admin/nur_id/"+id};
+		
+		int rss=0;
+		String target="";
+		for(int i=0;i<gArr.length;i++){
+			paramMap.put("group", gArr[i].split("/")[0]);
+			paramMap.put("idType", gArr[i].split("/")[1]);
+			paramMap.put("id", gArr[i].split("/")[2]);
+			rss=personService.exist(paramMap);
+			if(rss!=0){
+				target=gArr[i];
+				break;
+			}
+		}
+		if(target.equals("")){
+			map.put("result", "fail");
+		}else{	
+			map.put("result", "success");
+			String[] arr=target.split("/");
+			switch (arr[0]) {
+			case "Patient":
+				Patient patient=personService.getPatient(paramMap);
+				map.put("name", patient.getName());
+				map.put("group", "고객");
+				break;
+
+		
+			}
+		}
+		
+		
+	
 		return map;
 	}
 	@RequestMapping(value="/list/{group}",
