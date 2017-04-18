@@ -735,7 +735,8 @@ app.permission=(function(){
 				 contentType: 'application/json',
 				 success: function(data){
 					 if(data.result==='success'){
-						 alert('환영합니다 :'+data.name+' '+data.group+'님');
+						 $('#wrapper').html(app.patient.gnb());
+						 $('#wrapper').append(app.patient.detail());
 					 }else{
 						 alert('조회된 ID 가 존재하지 않습니다.');
 					 }
@@ -789,7 +790,8 @@ app.permission=(function(){
 						 dataType: "json",
 						 contentType: 'application/json',
 						success : function(data){
-							alert(data.name+'환영');
+							alert('회원가입 성공 .. 로그인 바랍니다');
+							location.reload();
 						},
 						error : function(xhr,status,msg){alert('환자등록 시'+msg);}
 					});
@@ -823,6 +825,75 @@ app.util={
 			return true;
 		}
 };
+app.patient={
+		gnb : function(){
+			
+		    	   var gnb = '<div id="app-patient-gnb" class="app-patient-gnb" style="position: relative; "><ul class="index_gnb">';
+		    	   var arr = ['home/홈으로','mypage/MY PAGE','treatlist/나의 진료기록','board/게시판','customer/고객참여마당','main/로그아웃'];
+		    	   for(var i=0; i<6; i++){
+		    		   gnb+='<li><a class="app-patient-gnb-li" href="'+arr[i].split("/")[0]+'">'+arr[i].split("/")[1]+'</a></li>'   
+		    	   }
+				   gnb += '</ul></div>';
+		    	 
+		       
+		    	   /*var gnb='</ul>'
+			$('#patGnb ').attr('href','').text(txtArr[0]);
+			+	'<li><a class="text_no_underline color_black" href="${context}/home.do?action=move&page=main"></a></li>'
+			+	'<li><a class="text_no_underline color_black" href="${context}/patient.do?action=mypage&page=detail"></a></li>'
+			+	'<li><a class="text_no_underline color_black" href="${context}/patient.do?action=move&page=treatmentList"></a></li>'
+			+	'<li><a class="text_no_underline color_black" href=""></a></li>'
+			+	'<li style="float:right;"><a class="text_no_underline color_black" '
+			+	'		href="${context}/home.do?action=logout&page=main"></a></li>'
+			+'</ul>';*/
+			return gnb;
+		},
+		detail : function(){
+			var detail=
+			/*<style>
+			.pat_detail {text-align: center; margin:0 auto;}
+			.pat_detail tr td{border: 1px solid #bbbbbb}
+			</style>*/
+			'<div id="app-patient-detail">'
+			+     '<table class="app-table" >'
+			+          '<tr style="text-align: left;">'
+			+                 '<td colspan="5"><div><img src="" alt="" width="160px"/></div></td>'
+			+           '</tr><tr>'
+			+                '<td style="width: 60px" rowspan="5"><span style="font-size: 20px">내<br />정<br />보</span></td>'
+			+                '<td style="width: 100px">이름</td>'
+			+                 '<td id="patName" style="width: 150px"></td>'
+			+                 '<td style="width: 100px">직업</td>'
+			+                 '<td style="width: 150px"></td></tr>'
+			+ 			'<tr><td>생년월일</td>'
+			+                 '<td></td>'
+			+                 '<td>키</td>'
+			+                 '<td> </td></tr> <tr>'
+			+                 '<td>성별</td>'
+			+                 '<td></td>'
+			+                 '<td>나이/몸무게</td>'
+			+                 '<td>  / 80kg </td>'
+			+           '</tr>'
+			+           '<tr>'
+			+                 '<td>전화번호</td>'
+			+                 '<td></td>'
+			+                 '<td>혈액형</td>'
+			+                 '<td> A형 </td>'
+			+           '</tr>'
+			+           '<tr>'
+			+                 '<td>주소</td>'
+			+                 '<td></td>'
+			+                 '<td>주치의</td>'
+			+                 '<td>'
+			+					'<a onclick="docDetail()" href="#"> 한석규</a>'
+			+                 '</td>'
+			+           '</tr>'
+			+     '</table>'
+			+     '<button>클릭</button>'
+			+'</div>'
+			return detail;
+		}
+};
+	
+	
 app.algorithm.TABLE=
 	'<table id="table" style="width:800px;height:300px;border-collapse: collapse;border: 1px solid black;margin:0 auto">'
 	+	'<tr style="border: 1px solid black;">'
