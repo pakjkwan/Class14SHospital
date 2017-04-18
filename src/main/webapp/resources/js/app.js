@@ -1,57 +1,13 @@
-/*******************************************************************************
- * Model 
-******************************************************************************/
-/*******************************************************************************
- * context,session,util,algorithm,oop,info,person
- * 
- ******************************************************************************/
 var app=app || {};
-app.context=(function(){
-	var init=function(context){
-		app.session.init(context);
-		onCreate();
-	};
-	var onCreate=function(){
-		setContentView();
-		app.component.init();
-		app.algorithm.init();
-		app.oop.init();
-		app.person.init();
-		
-	};
-	var setContentView=function(){
-	};
-	
-	return {
-		init : init,
-		setContentView : setContentView,
-		onCreate : onCreate
-		
-	};
-	
-})();
-app.session=(function(){
-	var init=function(context){
-		sessionStorage.setItem('context',context);
-		sessionStorage.setItem('js',context+'/resources/js');
-		sessionStorage.setItem('css',context+'/resources/css');
-		sessionStorage.setItem('img',context+'/resources/img');
-	};
-	var getContextPath=function(){return sessionStorage.getItem('context');};
-	var getJavascriptPath=function(){return sessionStorage.getItem('js');};
-	var getStylePath=function(){return sessionStorage.getItem('css');};
-	var getImagePath=function(){return sessionStorage.getItem('img');};
-	return {
-		init : init,
-		getContextPath : getContextPath,
-		getJavascriptPath : getJavascriptPath,
-		getStylePath : getStylePath,
-		getImagePath : getImagePath
-	};
-})();
-app.util=(function(){})();
+/*
+========= app-algorithm ====
+@AUTHOR : pakjkwan@gmail.com
+@CREATE DATE : 2017-4-1
+@UPDATE DATE : 2017-4-1
+@DESC : 
+==============================
+*/
 app.algorithm=(function(){
-/* 알고리즘수열 */	
 	var wrapper,ctx,img,js,css;
 	var init=function(){
 		wrapper=app.component.getWrapper();
@@ -73,8 +29,8 @@ app.algorithm=(function(){
 	var series=function(){
 		$('#series').on('click',function(){
 			wrapper.empty();
-			wrapper.append(app.algorithm.TABLE);
-			$('#tableLeft').html(app.algorithm.SERIES_MENU);
+			wrapper.append(app.ui.algorithmTable());
+			$('#tableLeft').html(app.ui.algorithmSeriesMenu());
 			var tableRight=$('#tableRight');
 			aSeries();
 			$('#aSeries').on('click',function(){aSeries();});
@@ -195,7 +151,7 @@ app.algorithm=(function(){
 	var arr=function(){
 		$('#arr').on('click',function(){
 			wrapper.empty();
-			wrapper.append(app.algorithm.TABLE);
+			wrapper.append(app.ui.algorithmTable());
 			var arr=[{id:'selectSort',txt:'선택정렬'},
 				{id:'bubbleSort',txt:'버블정렬'},
 				{id:'insertSort',txt:'삽입정렬'},
@@ -350,7 +306,7 @@ app.algorithm=(function(){
 		$('#matrix').on('click',function(){
 			var wrapper=app.component.getWrapper();
 			wrapper.empty();
-			wrapper.append(app.algorithm.TABLE);
+			wrapper.append(app.ui.algorithmTable());
 			var arr=[{id:'basic',txt:'기본5X5'},
 				{id:'ziazag',txt:'지그재그'},
 				{id:'diamond',txt:'다이아몬드'},
@@ -415,7 +371,7 @@ app.algorithm=(function(){
 		var wrapper=app.component.getWrapper();
 		$('#math').on('click',function(){
 			wrapper.empty();
-			wrapper.append(app.algorithm.TABLE);
+			wrapper.append(app.ui.algorithmTable());
 			var arr=[{id:'determinePrime',txt:'소수판별'},
 				{id:'primeSum',txt:'소수의합'},
 				{id:'primeCount',txt:'소수의개수'},
@@ -512,128 +468,14 @@ app.algorithm=(function(){
 		appl : appl
 	};
 })();
-app.oop=(function(){
-	var init=function(){
-		onCreate();
-	};
-	var onCreate=function(){
-		setContentView();
-		encap();
-		inherit();
-	};
-	var setContentView=function(){};
-	var encap=function(){
-		$('#encap').on('click',function(){
-			var wrapper=app.component.getWrapper();
-			wrapper.empty()
-			.append(app.algorithm.TABLE);
-			$('#tableLeft').html(app.oop.OOP_MENU);
-			var tableRight=$('#tableRight');
-			app.component.inputText('inputText').attr('placeholder','이름 나이 성별 직업(공백으로 구분)입력').appendTo(tableRight);
-			app.component.aButton('aButton','btn-primary').html('스펙보기').appendTo(tableRight)
-				.css('margin','10px auto')
-				.on('click',function(){
-					var inputVal=$('#inputText').val();
-					var arr=inputVal.split(' ');
-					console.log(inputVal);
-					var doctor=new app.Person();
-					doctor.setId(arr[0]);
-					doctor.setPass(arr[1]);
-					doctor.setName(arr[2]);
-					doctor.setGen(arr[3]);
-					console.log(doctor);
-					var spec='<h5>'+doctor.toString()+'</h5>';
-					app.component.divAlert('alert-danger').html(spec).appendTo(tableRight);
-			});
-		});
-	};
-	var inherit=function(){
-		$('#inherit').on('click',function(){
-			var wrapper=app.component.getWrapper();
-			wrapper.empty()
-			.append(app.algorithm.TABLE);
-			$('#tableLeft').html(app.oop.OOP_MENU);
-			var tableRight=$('#tableRight');
-			app.component.inputText('inputText').attr('placeholder','이름 나이 성별 직업(공백으로 구분)입력').appendTo(tableRight);
-			app.component.aButton('aButton','btn-primary').html('스펙보기').appendTo(tableRight)
-				.css('margin','10px auto')
-				.on('click',function(){
-					var inputVal=$('#inputText').val();
-					var arr=inputVal.split(' ');
-					console.log(inputVal);
-					var doctor=new app.Person();
-					doctor.setId(arr[0]);
-					doctor.setPass(arr[1]);
-					doctor.setName(arr[2]);
-					doctor.setGen(arr[3]);
-			
-					var spec='<h5>'+doctor.toString()+'</h5>';
-					app.component.divAlert('alert-primary').html(spec).appendTo(tableRight);
-			});
-		});
-	};
-	return {
-		init : init,
-		encap : encap,
-		inherit : inherit,
-		poly : function(){}
-	};
-})();
 /*
- * 알고리즘 클래스
- */
-// id,pass,name,gen,phone,email;
-app.info=function() { 
-	var _id,_pass,_name,_gen,_phone,_email;
-	return {
-		setId : function(id){this._id=id;},getName : function(){return this._id;},
-		setPass : function(pass){this._pass=pass;},getPass : function(){return this._pass;},
-		setName : function(name){this._name=name;},getName : function(){return this._name;},
-		setGen : function(gen){this._gen=gen;},getGen : function(){return this._gen;},
-		setPhone : function(phone){this._phone=phone;},getPhone : function(){this._phone;},
-		setEmail : function(email){this._email=email;},setEmail : function(){this._email;},
-		toString : function() { 
-			 return this._id+','+this._pass+','+this._name+','+this._gen+','+this._phone+','+this._email; 
-		}
-	};
-};
-
-app.Info2=(function(){
-    var Constructor = function(id,pass,name,gen,phone,email){
-        this.id = id || 0;
-    };
-
-    Constructor.prototype = {
-        value: null,
-        add: function(numToAdd) {
-            this.value += numToAdd;
-        }
-    };
-
-    return Constructor;
-})();
-//var Y = new app.Info(13);
-//Y.add(1);
-//Y.value;
-app.person=(function(){
-	var init=function(){
-		wrapper=app.component.getWrapper();
-		ctx=app.session.getContextPath();
-		img=app.session.getImagePath();
-		js=app.session.getJavascriptPath();
-		css=app.session.getStylePath();
-		$('#wrapper').load(ctx+'/permission/form');
-	};
-	return {
-		init : init
-		
-	};
-})();
-
-
-/*******************************************************************************
- * View 
- ******************************************************************************/
+========= app-component ====
+@AUTHOR : pakjkwan@gmail.com
+@CREATE DATE : 2017-4-1
+@UPDATE DATE : 2017-4-1
+@DESC : 
+==============================
+*/
 app.component=(function(){
 	var _body,_wrapper;
 	var setBody=function(body){this._body=body;}
@@ -701,22 +543,125 @@ app.component=(function(){
 				table += '</tbody></table>'
 		    
 			return table;
-		},
-		Border : function(){
-			
 		}
 		
 	};
 })();
-app.style=(function(){
-	var tableBorder=function(){
+/*
+========= app-context ====
+@AUTHOR : pakjkwan@gmail.com
+@CREATE DATE : 2017-4-1
+@UPDATE DATE : 2017-4-1
+@DESC : 
+==============================
+*/
+app.context=(function(){
+	var init=function(context){
+		app.session.init(context);
+		onCreate();
+	};
+	var onCreate=function(){
+		setContentView();
+		app.component.init();
+		app.algorithm.init();
+		app.oop.init();
+		app.person.init();
 		
 	};
+	var setContentView=function(){
+	};
+	
 	return {
-		tableBorder : tableBorder
+		init : init,
+		setContentView : setContentView,
+		onCreate : onCreate
+		
+	};
+	
+})();
+/*
+========= app-oop ====
+@AUTHOR : pakjkwan@gmail.com
+@CREATE DATE : 2017-4-1
+@UPDATE DATE : 2017-4-1
+@DESC : 
+==============================
+*/
+app.oop=(function(){
+	var init=function(){
+		onCreate();
+	};
+	var onCreate=function(){
+		setContentView();
+		encap();
+		inherit();
+	};
+	var setContentView=function(){};
+	var encap=function(){
+		$('#encap').on('click',function(){
+			var wrapper=app.component.getWrapper();
+			wrapper.empty()
+			.append(app.ui.algorithmTable());
+			$('#tableLeft').html(app.ui.oopMenu());
+			var tableRight=$('#tableRight');
+			app.component.inputText('inputText').attr('placeholder','이름 나이 성별 직업(공백으로 구분)입력').appendTo(tableRight);
+			app.component.aButton('aButton','btn-primary').html('스펙보기').appendTo(tableRight)
+				.css('margin','10px auto')
+				.on('click',function(){
+					var inputVal=$('#inputText').val();
+					var arr=inputVal.split(' ');
+					console.log(inputVal);
+					var doctor=new app.Person();
+					doctor.setId(arr[0]);
+					doctor.setPass(arr[1]);
+					doctor.setName(arr[2]);
+					doctor.setGen(arr[3]);
+					console.log(doctor);
+					var spec='<h5>'+doctor.toString()+'</h5>';
+					app.component.divAlert('alert-danger').html(spec).appendTo(tableRight);
+			});
+		});
+	};
+	var inherit=function(){
+		$('#inherit').on('click',function(){
+			var wrapper=app.component.getWrapper();
+			wrapper.empty()
+			.append(app.ui.algorithmTable());
+			$('#tableLeft').html(app.oop.OOP_MENU);
+			var tableRight=$('#tableRight');
+			app.component.inputText('inputText').attr('placeholder','이름 나이 성별 직업(공백으로 구분)입력').appendTo(tableRight);
+			app.component.aButton('aButton','btn-primary').html('스펙보기').appendTo(tableRight)
+				.css('margin','10px auto')
+				.on('click',function(){
+					var inputVal=$('#inputText').val();
+					var arr=inputVal.split(' ');
+					console.log(inputVal);
+					var doctor=new app.Person();
+					doctor.setId(arr[0]);
+					doctor.setPass(arr[1]);
+					doctor.setName(arr[2]);
+					doctor.setGen(arr[3]);
+			
+					var spec='<h5>'+doctor.toString()+'</h5>';
+					app.component.divAlert('alert-primary').html(spec).appendTo(tableRight);
+			});
+		});
+	};
+	return {
+		init : init,
+		encap : encap,
+		inherit : inherit,
+		poly : function(){}
 	};
 })();
-
+/*
+========= app-permission ====
+@AUTHOR : pakjkwan@gmail.com
+@CREATE DATE : 2017-4-1
+@UPDATE DATE : 2017-4-1
+@DESC : 
+==============================
+*/
 app.permission=(function(){
 	var execute=function(){
 		var context=app.session.getContextPath();
@@ -735,8 +680,11 @@ app.permission=(function(){
 				 contentType: 'application/json',
 				 success: function(data){
 					 if(data.result==='success'){
-						 $('#wrapper').html(app.patient.gnb());
-						 $('#wrapper').append(app.patient.detail());
+						 $('#boot-nav').remove();
+						 $('#wrapper').html(app.ui.patientGnb());
+						 $('#wrapper').append(app.ui.patientDetail());
+						 $('#name').text(data.name);
+						 
 					 }else{
 						 alert('조회된 ID 가 존재하지 않습니다.');
 					 }
@@ -811,56 +759,157 @@ app.permission=(function(){
 	};
 	return {execute:execute};
 })();
-app.navi=(function(){})();
-app.util={
-		validation : function(x) {
-		    return (x != "");
-		},
-		emailCheck : function emailcheck(strValue){
-			var regExp = /[0-9a-zA-Z][_0-9a-zA-Z-]*@[_0-9a-zA-Z-]+(\.[_0-9a-zA-Z-]+){1,2}$/;
-			//입력을 안했으면
-			if(strValue.lenght == 0){return false;}
-			//이메일 형식에 맞지않으면
-			if (!strValue.match(regExp)){return false;}
-			return true;
+/*
+========= app-session ====
+@AUTHOR : pakjkwan@gmail.com
+@CREATE DATE : 2017-4-1
+@UPDATE DATE : 2017-4-1
+@DESC : 
+==============================
+*/
+app.session=(function(){
+	var init=function(context){
+		sessionStorage.setItem('context',context);
+		sessionStorage.setItem('js',context+'/resources/js');
+		sessionStorage.setItem('css',context+'/resources/css');
+		sessionStorage.setItem('img',context+'/resources/img');
+	};
+	var getContextPath=function(){return sessionStorage.getItem('context');};
+	var getJavascriptPath=function(){return sessionStorage.getItem('js');};
+	var getStylePath=function(){return sessionStorage.getItem('css');};
+	var getImagePath=function(){return sessionStorage.getItem('img');};
+	return {
+		init : init,
+		getContextPath : getContextPath,
+		getJavascriptPath : getJavascriptPath,
+		getStylePath : getStylePath,
+		getImagePath : getImagePath
+	};
+})();
+
+app.info=function() { 
+	var _id,_pass,_name,_gen,_phone,_email;
+	return {
+		setId : function(id){this._id=id;},getName : function(){return this._id;},
+		setPass : function(pass){this._pass=pass;},getPass : function(){return this._pass;},
+		setName : function(name){this._name=name;},getName : function(){return this._name;},
+		setGen : function(gen){this._gen=gen;},getGen : function(){return this._gen;},
+		setPhone : function(phone){this._phone=phone;},getPhone : function(){this._phone;},
+		setEmail : function(email){this._email=email;},setEmail : function(){this._email;},
+		toString : function() { 
+			 return this._id+','+this._pass+','+this._name+','+this._gen+','+this._phone+','+this._email; 
 		}
+	};
 };
-app.patient={
-		gnb : function(){
+
+app.Info2=(function(){
+    var Constructor = function(id,pass,name,gen,phone,email){
+        this.id = id || 0;
+    };
+
+    Constructor.prototype = {
+        value: null,
+        add: function(numToAdd) {
+            this.value += numToAdd;
+        }
+    };
+
+    return Constructor;
+})();
+app.person=(function(){
+	var init=function(){
+		wrapper=app.component.getWrapper();
+		ctx=app.session.getContextPath();
+		img=app.session.getImagePath();
+		js=app.session.getJavascriptPath();
+		css=app.session.getStylePath();
+		$('#wrapper').load(ctx+'/permission/form');
+	};
+	return {
+		init : init
+		
+	};
+})();
+/*
+========= app-ui ====
+@AUTHOR : pakjkwan@gmail.com
+@CREATE DATE : 2017-4-1
+@UPDATE DATE : 2017-4-1
+@DESC : 
+==============================
+*/
+app.ui={
+		algorithmArrayTable : function(){
+			return '<div class="row">'
+		    +'<div class="col-sm-12">'
+		    +'<div class="panel colourable">'
+		    +'<div class="panel-heading">'
+		    +'<span class="panel-title">IDC 2D Map</span>'
+		    +'</div>'
+		    +'<div class="panel-body">'
+		    +    '<div class="init-table">'
+		    +        '<span>Make Map</span>'
+		    +        '<input type="text" id="mRow" placeholder="가로 행">'
+		    +        '<input type="text" id="mCol" placeholder="세로 열">'
+		    +        '<button type="submit" class="tc-btn btn btn-default">Create</button>'
+		    +    '</div>'
+		    +    '<div class="control-box" style="display: none;">'
+		    +        '<span class="btn mRow-add">가로 행 추가 <i class="fa fa-plus"></i></span>'
+		    +        '<span class="btn mRow-del">가로 행 제거 <i class="fa fa-minus"></i></span>'
+		    +        '<span class="btn mCol-add">세로 열 추가 <i class="fa fa-plus"></i></span>'
+		    +        '<span class="btn mCol-del">세로 열 제거 <i class="fa fa-minus"></i></span>'
+		    +    '</div>'
+		    +    '<div class="show-map text-center" style="padding-top: 15px;"><span>Not exist map. first, create map.</span></div>'
+		    +'</div>'
+		    +'</div>'
+		    +'</div>'
+		    +'</div>';
+		},
+		algorithmTable : function(){
+			return '<table id="table" style="width:800px;height:300px;border-collapse: collapse;border: 1px solid black;margin:0 auto">'
+			+	'<tr style="border: 1px solid black;">'
+			+		'<td id="tableLeft" style="width: 50%;border: 1px solid black;"></td>'
+			+		'<td id="tableRight" style="width: 50%;border: 1px solid black;"></td>'
+			+	'</tr>'
+			+'</table>';
+		},
+		algorithmSeriesMenu : function(){
+			return '<ul class="list-group">'
+			+	'<li id="aSeries" class="list-group-item"><a href="#">등차수열 합</a></li>'
+			+	'<li id="swSeries" class="list-group-item"><a href="#">스위치수열 합</a></li>'
+			+	'<li id="dSeries" class="list-group-item"><a href="#">계차수열 합</a></li>'
+			+	'<li id="factorial" class="list-group-item"><a href="#">팩토리얼수열 합</a></li>'
+			+	'<li id="fibonacci" class="list-group-item"><a href="#">피보나치수열 합</a></li>'
+			+'</ul>';
+		},
+		oopMenu : function(){
+			return '<ul class="list-group">'
+			+	'<li id="encap" class="list-group-item"><a href="#">캡슐화</a></li>'
+			+	'<li id="inherit" class="list-group-item"><a href="#">상 속</a></li>'
+			+	'<li id="poly" class="list-group-item"><a href="#">다형성</a></li>'
+			+'</ul>';
+		},
+		patientGnb : function(){
 			
-		    	   var gnb = '<div id="app-patient-gnb" class="app-patient-gnb" style="position: relative; "><ul class="index_gnb">';
+		    	   var gnb = '<div style="position: relative; "><ul id="app-gnb" class="app-gnb" >';
 		    	   var arr = ['home/홈으로','mypage/MY PAGE','treatlist/나의 진료기록','board/게시판','customer/고객참여마당','main/로그아웃'];
 		    	   for(var i=0; i<6; i++){
-		    		   gnb+='<li><a class="app-patient-gnb-li" href="'+arr[i].split("/")[0]+'">'+arr[i].split("/")[1]+'</a></li>'   
+		    		   gnb+='<li><a href="'+arr[i].split("/")[0]+'">'+arr[i].split("/")[1]+'</a></li>'   
 		    	   }
 				   gnb += '</ul></div>';
-		    	 
-		       
-		    	   /*var gnb='</ul>'
-			$('#patGnb ').attr('href','').text(txtArr[0]);
-			+	'<li><a class="text_no_underline color_black" href="${context}/home.do?action=move&page=main"></a></li>'
-			+	'<li><a class="text_no_underline color_black" href="${context}/patient.do?action=mypage&page=detail"></a></li>'
-			+	'<li><a class="text_no_underline color_black" href="${context}/patient.do?action=move&page=treatmentList"></a></li>'
-			+	'<li><a class="text_no_underline color_black" href=""></a></li>'
-			+	'<li style="float:right;"><a class="text_no_underline color_black" '
-			+	'		href="${context}/home.do?action=logout&page=main"></a></li>'
-			+'</ul>';*/
 			return gnb;
 		},
-		detail : function(){
+		patientDetail : function(){
+			var image = app.session.getImagePath();
 			var detail=
-			/*<style>
-			.pat_detail {text-align: center; margin:0 auto;}
-			.pat_detail tr td{border: 1px solid #bbbbbb}
-			</style>*/
-			'<div id="app-patient-detail">'
-			+     '<table class="app-table" >'
+			'<div class="app-patient-detail">'
+			+     '<table id="app-table" class="app-table" >'
 			+          '<tr style="text-align: left;">'
-			+                 '<td colspan="5"><div><img src="" alt="" width="160px"/></div></td>'
+			+                 '<td colspan="5"><h3> 마이페이지</h3></td>'
 			+           '</tr><tr>'
-			+                '<td style="width: 60px" rowspan="5"><span style="font-size: 20px">내<br />정<br />보</span></td>'
-			+                '<td style="width: 100px">이름</td>'
-			+                 '<td id="patName" style="width: 150px"></td>'
+			+                '<td style="width: 100px" rowspan="5"><img src="'+image+'/default-profile.jpg" alt="" /></td>'
+			+                '<td style="width: 100px" >이름</td>'
+			+                 '<td id="name" style="width: 150px"></td>'
 			+                 '<td style="width: 100px">직업</td>'
 			+                 '<td style="width: 150px"></td></tr>'
 			+ 			'<tr><td>생년월일</td>'
@@ -887,62 +936,31 @@ app.patient={
 			+                 '</td>'
 			+           '</tr>'
 			+     '</table>'
-			+     '<button>클릭</button>'
+			+     '<input type="button" style="margin-top:20px" id="btn-default" class="btn btn-default" value="클 릭"/>'
 			+'</div>'
 			return detail;
 		}
 };
-	
-	
-app.algorithm.TABLE=
-	'<table id="table" style="width:800px;height:300px;border-collapse: collapse;border: 1px solid black;margin:0 auto">'
-	+	'<tr style="border: 1px solid black;">'
-	+		'<td id="tableLeft" style="width: 50%;border: 1px solid black;"></td>'
-	+		'<td id="tableRight" style="width: 50%;border: 1px solid black;"></td>'
-	+	'</tr>'
-	+'</table>';
-app.algorithm.SERIES_MENU=
-	'<ul class="list-group">'
-	+	'<li id="aSeries" class="list-group-item"><a href="#">등차수열 합</a></li>'
-	+	'<li id="swSeries" class="list-group-item"><a href="#">스위치수열 합</a></li>'
-	+	'<li id="dSeries" class="list-group-item"><a href="#">계차수열 합</a></li>'
-	+	'<li id="factorial" class="list-group-item"><a href="#">팩토리얼수열 합</a></li>'
-	+	'<li id="fibonacci" class="list-group-item"><a href="#">피보나치수열 합</a></li>'
-	+'</ul>';
-app.oop.OOP_MENU=
-	'<ul class="list-group">'
-	+	'<li id="encap" class="list-group-item"><a href="#">캡슐화</a></li>'
-	+	'<li id="inherit" class="list-group-item"><a href="#">상 속</a></li>'
-	+	'<li id="poly" class="list-group-item"><a href="#">다형성</a></li>'
-	+'</ul>';
-app.algorithm.ARR_TABLE=
-	'<div class="row">'
-    +'<div class="col-sm-12">'
-    +'<div class="panel colourable">'
-    +'<div class="panel-heading">'
-    +'<span class="panel-title">IDC 2D Map</span>'
-    +'</div>'
-    +'<div class="panel-body">'
-    +    '<div class="init-table">'
-    +        '<span>Make Map</span>'
-    +        '<input type="text" id="mRow" placeholder="가로 행">'
-    +        '<input type="text" id="mCol" placeholder="세로 열">'
-    +        '<button type="submit" class="tc-btn btn btn-default">Create</button>'
-    +    '</div>'
-    +    '<div class="control-box" style="display: none;">'
-    +        '<span class="btn mRow-add">가로 행 추가 <i class="fa fa-plus"></i></span>'
-    +        '<span class="btn mRow-del">가로 행 제거 <i class="fa fa-minus"></i></span>'
-    +        '<span class="btn mCol-add">세로 열 추가 <i class="fa fa-plus"></i></span>'
-    +        '<span class="btn mCol-del">세로 열 제거 <i class="fa fa-minus"></i></span>'
-    +    '</div>'
-    +    '<div class="show-map text-center" style="padding-top: 15px;"><span>Not exist map. first, create map.</span></div>'
-    +'</div>'
-    +'</div>'
-    +'</div>'
-    +'</div>';
+/*
+========= app-util ====
+@AUTHOR : pakjkwan@gmail.com
+@CREATE DATE : 2017-4-1
+@UPDATE DATE : 2017-4-1
+@DESC : 
+==============================
+*/
 
-
-/*******************************************************************************
- * Controller
- ******************************************************************************/
-app.controller=(function(){})();
+app.util={
+		validation : function(x) {
+		    return (x != "");
+		},
+		emailCheck : function emailcheck(strValue){
+			var regExp = /[0-9a-zA-Z][_0-9a-zA-Z-]*@[_0-9a-zA-Z-]+(\.[_0-9a-zA-Z-]+){1,2}$/;
+			//입력을 안했으면
+			if(strValue.lenght == 0){return false;}
+			//이메일 형식에 맞지않으면
+			if (!strValue.match(regExp)){return false;}
+			return true;
+		}
+};	
+	

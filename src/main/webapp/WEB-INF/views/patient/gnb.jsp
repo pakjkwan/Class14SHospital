@@ -7,6 +7,7 @@
 	<li style="float:right;"><a class="text_no_underline color_black" 
 			href="${context}/home.do?action=logout&page=main">로그아웃</a></li>
 </ul>
+
 <script>
 
 </script>
