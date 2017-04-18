@@ -1,3 +1,33 @@
+/*
+========= app-meta ==========
+app-algorithm 
+	app-algorithm-series
+	app-algorithm-array
+	app-algorithm-matrix
+	app-algorithm-math
+	app-algorithm-application
+app-component
+	app-component-button
+	app-component-input
+	app-component-alert
+	app-component-list
+	app-component-table
+app-context
+app-oop
+	app-oop-encapsulation
+	app-oop-inheritance
+	app-oop-polymorphism
+app-permission
+app-person
+	app-person-patient
+	app-person-doctor
+	app-person-nurse
+	app-person-admin
+app-session
+app-ui
+app-util
+==============================
+*/
 var app=app || {};
 /*
 ========= app-algorithm ====
@@ -26,6 +56,7 @@ app.algorithm=(function(){
 		appl();
 	};
 	var setContentView=function(){};
+/*app-algorithm-series*/	
 	var series=function(){
 		$('#series').on('click',function(){
 			wrapper.empty();
@@ -147,7 +178,7 @@ app.algorithm=(function(){
 		 if(limit == 0){sum = 0;}else if(limit == 1){sum = 1;}else if(limit == 2){sum = 2;} 
 		return sum;
 	};
-
+/*app-algorithm-array*/	
 	var arr=function(){
 		$('#arr').on('click',function(){
 			wrapper.empty();
@@ -301,7 +332,7 @@ app.algorithm=(function(){
 		}
 		return arr;
 	}
-/* 알고리즘행열 */	
+/* app-algorithm-matrix */	
 	var matrix=function(){
 		$('#matrix').on('click',function(){
 			var wrapper=app.component.getWrapper();
@@ -366,7 +397,7 @@ app.algorithm=(function(){
 		});
 		
 	};
-/* 알고리즘수학 */	
+/* app-algorithm-math */	
 	var math=function(){
 		var wrapper=app.component.getWrapper();
 		$('#math').on('click',function(){
@@ -443,7 +474,7 @@ app.algorithm=(function(){
 		});
 
 	}
-/* 알고리즘응용 */	
+/* app-algorithm-application */	
 	var appl=function(){
 		$('#appl').on('click',function(){
 			alert('appl click');
@@ -499,18 +530,22 @@ app.component=(function(){
 		div : function(id){
 			return $(id);
 		},
+/*app-component-button*/
 		aButton : function(id,type){
 			return $('<a href="#" id="'+id+'" class="btn '+type+'" role="button">example</a>');
 		},
 		bButton : function(){
 			return $('<button id="bButton" type="button" class="btn btn-default">example</button>');
 		},
+/*app-component-input*/		
 		inputText : function(id){
 			return $('<input id="'+id+'" type="text" class="form-control" placeholder="example" aria-describedby="basic-addon1">');
 		},
+/*app-component-alert*/			
 		divAlert : function(type){ // alert-danger
 			return $('<div class="alert '+type+'" role="alert">example</div>');
 		},
+/*app-component-list*/			
 		horList : function(arr,type){
 			var list='<div class="btn-group" role="group" aria-label="...">';
 			$.each(arr,function(i,j){
@@ -519,6 +554,7 @@ app.component=(function(){
 			list+='</div>';
 			return list;
 		},
+/*app-component-table*/			
 		panelTable : function(jason,txt,type){
 			
 		    var table = 
@@ -597,6 +633,7 @@ app.oop=(function(){
 		inherit();
 	};
 	var setContentView=function(){};
+/*app-oop-encapsulation*/	
 	var encap=function(){
 		$('#encap').on('click',function(){
 			var wrapper=app.component.getWrapper();
@@ -622,6 +659,7 @@ app.oop=(function(){
 			});
 		});
 	};
+/*app-oop-inheritance*/		
 	var inherit=function(){
 		$('#inherit').on('click',function(){
 			var wrapper=app.component.getWrapper();
@@ -647,6 +685,7 @@ app.oop=(function(){
 			});
 		});
 	};
+/*app-oop-polymorphism*/			
 	return {
 		init : init,
 		encap : encap,
@@ -760,33 +799,13 @@ app.permission=(function(){
 	return {execute:execute};
 })();
 /*
-========= app-session ====
+========= app-person ====
 @AUTHOR : pakjkwan@gmail.com
 @CREATE DATE : 2017-4-1
 @UPDATE DATE : 2017-4-1
 @DESC : 
 ==============================
 */
-app.session=(function(){
-	var init=function(context){
-		sessionStorage.setItem('context',context);
-		sessionStorage.setItem('js',context+'/resources/js');
-		sessionStorage.setItem('css',context+'/resources/css');
-		sessionStorage.setItem('img',context+'/resources/img');
-	};
-	var getContextPath=function(){return sessionStorage.getItem('context');};
-	var getJavascriptPath=function(){return sessionStorage.getItem('js');};
-	var getStylePath=function(){return sessionStorage.getItem('css');};
-	var getImagePath=function(){return sessionStorage.getItem('img');};
-	return {
-		init : init,
-		getContextPath : getContextPath,
-		getJavascriptPath : getJavascriptPath,
-		getStylePath : getStylePath,
-		getImagePath : getImagePath
-	};
-})();
-
 app.info=function() { 
 	var _id,_pass,_name,_gen,_phone,_email;
 	return {
@@ -816,6 +835,7 @@ app.Info2=(function(){
 
     return Constructor;
 })();
+/*app-person*/
 app.person=(function(){
 	var init=function(){
 		wrapper=app.component.getWrapper();
@@ -827,9 +847,37 @@ app.person=(function(){
 	};
 	return {
 		init : init
-		
+/*app-person-patient*/		
 	};
 })();
+/*
+========= app-session ====
+@AUTHOR : pakjkwan@gmail.com
+@CREATE DATE : 2017-4-1
+@UPDATE DATE : 2017-4-1
+@DESC : 
+==============================
+*/
+app.session=(function(){
+	var init=function(context){
+		sessionStorage.setItem('context',context);
+		sessionStorage.setItem('js',context+'/resources/js');
+		sessionStorage.setItem('css',context+'/resources/css');
+		sessionStorage.setItem('img',context+'/resources/img');
+	};
+	var getContextPath=function(){return sessionStorage.getItem('context');};
+	var getJavascriptPath=function(){return sessionStorage.getItem('js');};
+	var getStylePath=function(){return sessionStorage.getItem('css');};
+	var getImagePath=function(){return sessionStorage.getItem('img');};
+	return {
+		init : init,
+		getContextPath : getContextPath,
+		getJavascriptPath : getJavascriptPath,
+		getStylePath : getStylePath,
+		getImagePath : getImagePath
+	};
+})();
+
 /*
 ========= app-ui ====
 @AUTHOR : pakjkwan@gmail.com
