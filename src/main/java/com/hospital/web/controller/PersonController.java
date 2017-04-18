@@ -35,24 +35,15 @@ public class PersonController {
 	@Autowired Patient patient;
 	@Autowired Nurse nurse;
 	@Autowired PersonService personService;
-	@SuppressWarnings("rawtypes")
-	@RequestMapping(value="/post/{group}",
-					method=RequestMethod.POST,
-					consumes="application/json")
+	@RequestMapping(value="/post/patient",
+			method=RequestMethod.POST,
+			consumes="application/json")
 	public @ResponseBody Map<?,?> register(
-			@PathVariable String group,
-			@RequestBody Person target,
-			Command command) throws Exception{
+			@RequestBody Patient p) throws Exception{
 		logger.info("PersonController-register() {} !!", "ENTER");
-		Map<?,?>map=new HashMap<>();
-		switch (group) {
-		case "patient":map=personService.postPatient(target);break;
-		case "doctor":map=personService.postDoctor(target);break;
-		case "nurse":map=personService.postNurse(target);break;
-		case "admin":map=personService.postAdmin(target);break;
-		default:
-			break;
-		}
+		Map<String,String>map=new HashMap<>();
+		
+		map.put("name", p.getName());
 		return map;
 	}
 	@RequestMapping("/get/{group}/{target}")
@@ -126,6 +117,9 @@ public class PersonController {
 			String[] arr=target.split("/");
 			switch (arr[0]) {
 			case "Patient":
+				paramMap.put("group", arr[0]);
+				paramMap.put("key", arr[1]);
+				paramMap.put("value", arr[2]);
 				Patient patient=personService.getPatient(paramMap);
 				map.put("name", patient.getName());
 				map.put("group", "고객");

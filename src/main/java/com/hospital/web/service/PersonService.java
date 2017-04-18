@@ -23,20 +23,6 @@ import com.hospital.web.mapper.Mapper;
 public class PersonService {
 	private static final Logger logger = LoggerFactory.getLogger(PersonService.class);
 	@Autowired Mapper mapper;
-	
-	public Patient getPatient(Map<?,?> paramMap)throws Exception{
-		IGetService service= (map)->mapper.findPatient(map); 
-		return (Patient) service.execute(paramMap);
-	}
-
-	public Doctor getDoctor(Map<?,?> paramMap)throws Exception{
-		IGetService service= (map)->mapper.findDoctor(map); 
-		return (Doctor) service.execute(paramMap);
-	}
-	public Nurse getNurse(Map<?,?> paramMap)throws Exception{
-		IGetService service= (map)->mapper.findNurse(map); 
-		return (Nurse) service.execute(paramMap);
-	}
 	public Map<?,?> postPatient(Object target) throws Exception{
 		Map<String,String>map=new HashMap<>();
 		IPostService service=(patient)->mapper.registPatient(patient);
@@ -61,6 +47,20 @@ public class PersonService {
 		map.put("result", (service.execute(target)==1)?"success":"fail");
 		return map;
 	}
+	public Patient getPatient(Map<?,?> paramMap)throws Exception{
+		IGetService service= (map)->mapper.findPatient(map); 
+		return (Patient) service.execute(paramMap);
+	}
+
+	public Doctor getDoctor(Map<?,?> paramMap)throws Exception{
+		IGetService service= (map)->mapper.findDoctor(map); 
+		return (Doctor) service.execute(paramMap);
+	}
+	public Nurse getNurse(Map<?,?> paramMap)throws Exception{
+		IGetService service= (map)->mapper.findNurse(map); 
+		return (Nurse) service.execute(paramMap);
+	}
+	
 	public List<?> getAdmins() {
 		// TODO Auto-generated method stub
 		return null;
@@ -77,9 +77,9 @@ public class PersonService {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	public int exist(Map<?,?> map){
+	public int exist(Map<?,?> map) throws Exception{
 		
-		return 0;
+		return mapper.exist(map);
 		
 	}
 	public Object login(Map<?,?> map){

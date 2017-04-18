@@ -99,7 +99,35 @@
 	background-color: #1CA347;
 	border-color: #1CA347;
 }
+.btn-addr {
+	background-color: #e21212;
+	outline: none;
+	color: #fff;
+	font-size: 14px;
+	height: auto;
+	font-weight: normal;
+	padding: 14px 0;
+	width:80px;
+	text-transform: uppercase;
+	border-color: #e21212;
+}
+.btn-confirm {
+	background-color: #40a010;
+	outline: none;
+	color: #fff;
+	font-size: 14px;
+	height: auto;
+	font-weight: normal;
+	padding: 14px 0;
+	width:99%;
+	text-transform: uppercase;
+	border-color: #40a010;
+}
 </style>
+
+
+<!-- "검색" 단추를 누르면 팝업 레이어가 열리도록 설정한다 -->
+<script> $(function() { $("#btn-addr").postcodifyPopUp(); }); </script>
 <div id="login-wrapper">
 <div class="container">
     	<div class="row">
@@ -147,26 +175,71 @@
 										</div>
 									</div>
 								</form>
+								
 								 <form id="register-form" role="form" style="display: none;">
-									<div class="form-group">
-										<input type="text" name="username" id="username" tabindex="1" class="form-control" placeholder="Username" value="">
-									</div>
-									<div class="form-group">
-										<input type="email" name="email" id="email" tabindex="1" class="form-control" placeholder="Email Address" value="">
-									</div>
-									<div class="form-group">
-										<input type="password" name="password" id="password" tabindex="2" class="form-control" placeholder="Password">
-									</div>
-									<div class="form-group">
-										<input type="password" name="confirm-password" id="confirm-password" tabindex="2" class="form-control" placeholder="Confirm Password">
-									</div>
-									<div class="form-group">
-										<div class="row">
-											<div class="col-sm-6 col-sm-offset-3">
-												<input type="submit" name="register-submit" id="register-submit" tabindex="4" class="form-control btn btn-register" value="Register Now">
-											</div>
+								 	<label class="radio-inline">
+								      	<input type="radio" name="group" value="patient" checked="checked">고 객 
+								    </label>
+								    <label class="radio-inline">
+								      	<input type="radio" name="group" value="doctor" >의 사
+								    </label>
+								    <label class="radio-inline">
+								      	<input type="radio" name="group" value="nurse" >간호사
+								    </label>
+								    <label class="radio-inline">
+								      	<input type="radio" name="group" value="admin" >관리자
+								    </label>
+								    
+								    <!-- "id","pass","name","gen","phone","email","job","jumin","addr" -->
+										<div class="form-group" style="margin-top: 10px">
+											<input type="text" name="id" id="id" tabindex="1" class="form-control" placeholder="Username" value="">
 										</div>
-									</div>
+										<div class="form-group">
+											<input type="password" name="pass" id="pass" tabindex="2" class="form-control" placeholder="Password">
+										</div>
+										<div class="form-group">
+											<input type="password" name="confirm-pass" id="confirm-pass" tabindex="2" class="form-control" placeholder="Confirm Password">
+										</div>
+										<div class="form-group">
+											<input type="button" class="btn-confirm" id="btn-confirm" value="Confirm"/>
+										</div>
+										<div class="form-group">
+											<input type="text" name="name" id="name" tabindex="1" class="form-control" placeholder="Name" value="">
+										</div>
+										<label class="radio-inline">
+								      		<input type="radio" name="gen" value="male" checked="checked">남
+									    </label>
+									    <label class="radio-inline">
+									      	<input type="radio" name="gen" value="femail" >여
+									    </label>
+									    <div class="form-group" style="margin-top: 10px">
+											<input type="text" name="phone" id="phone" tabindex="1" class="form-control" placeholder="Phone" value="">
+										</div>
+										<div class="form-group">
+											<input type="email" name="email" id="email" tabindex="1" class="form-control" placeholder="Email Address" value="">
+										</div>
+										<div id="incommon-info">
+											<div class="form-group">
+												<input type="text" name="job" id="job" tabindex="1" class="form-control" placeholder="Job" value="">
+											</div>
+											<div class="form-group">
+												<input type="text" name="birth" id="birth" tabindex="1" class="form-control" placeholder="Birth" value="">
+											</div>
+										
+											<!-- 주소와 우편번호를 입력할 <input>들을 생성하고 적당한 name과 class를 부여한다 -->
+											<span style="display:inline-block; width: 100px">우편번호</span> <input type="text" name="" class="postcodify_postcode5" value="" />
+											<input type="button" class="btn-addr" id="postcodify_search_button" value="검색"/><br />
+											<span style="display:inline-block; width: 100px">도로명주소</span> <input type="text" name="" class="postcodify_address" value="" /><br />
+											<span style="display:inline-block; width: 100px">상세주소</span> <input type="text" name="" class="postcodify_details" value="" /><br />
+											<span style="display:inline-block; width: 100px">참고항목</span> <input type="text" name="" class="postcodify_extra_info" value="" /><br />
+											<div class="form-group" style="margin-top: 10px">
+												<div class="row">
+													<div class="col-sm-6 col-sm-offset-3">
+														<input type="submit" name="register-patient" id="register-patient" tabindex="4" class="form-control btn btn-register" value="Register Now">
+													</div>
+												</div>
+											</div>
+									 </div> <!-- incommon-info close -->
 								</form> 
 							</div>
 						</div>
@@ -177,5 +250,5 @@
 	</div>
 </div>
 <script>
-app.login.execute();
+app.permission.execute();
 </script>

@@ -22,9 +22,9 @@ public class HomeController {
 	public String home(){
 		return "public:common/container";
 	}
-	@RequestMapping(value="/login/form")
+	@RequestMapping(value="/permission/form")
 	public String login(){
-		return "common/login.jsp";
+		return "common/permission.jsp";
 	}
 	
 }

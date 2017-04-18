@@ -622,7 +622,7 @@ app.person=(function(){
 		img=app.session.getImagePath();
 		js=app.session.getJavascriptPath();
 		css=app.session.getStylePath();
-		$('#wrapper').load(ctx+'/login/form');
+		$('#wrapper').load(ctx+'/permission/form');
 	};
 	return {
 		init : init
@@ -717,10 +717,11 @@ app.style=(function(){
 	};
 })();
 
-app.login=(function(){
+app.permission=(function(){
 	var execute=function(){
 		var context=app.session.getContextPath();
 		console.log('app.login context :'+context);
+		
 		$('#login-submit').on('click',function(e){
 			e.preventDefault();
 			$.ajax({
@@ -758,11 +759,70 @@ app.login=(function(){
 			$(this).addClass('active');
 			e.preventDefault();
 		});
+		
+		/*
+		radio 체크 할때마다 incommon-info 의 화면이 변동됨
+		 * */
+		
+		$('#register-patient').on('click',function(e){
+			e.preventDefault();
+			var _id=$('#id').val();
+			var _pass=$('#pass').val();
+			var _name=$('#name').val();
+			var _phone=$('#phone').val();
+			if(app.util.validation(_id)
+				&& app.util.validation(_pass)
+				&& app.util.validation(_name)
+				&& app.util.validation(_phone)){
+				var json={
+					'id' : _id,
+					'name' : _name,
+					'pass' : _pass,
+					'phone' : _phone,
+					'email' : $('#email').val()
+				};
+							
+					$.ajax({
+						url : context+'/post/patient',
+						method : 'POST',
+						data : JSON.stringify(json),
+						 dataType: "json",
+						 contentType: 'application/json',
+						success : function(data){
+							alert(data.name+'환영');
+						},
+						error : function(xhr,status,msg){alert('환자등록 시'+msg);}
+					});
+			}else{
+				alert('반드시 입력될 값이 비워져 있습니다');
+			};
+		});
+		$('#register-doctor').on('click',function(e){
+			e.preventDefault();
+		});
+		$('#register-nurse').on('click',function(e){
+			e.preventDefault();
+		});
+		$('#register-admin').on('click',function(e){
+			e.preventDefault();
+		});
 	};
 	return {execute:execute};
 })();
 app.navi=(function(){})();
-app.patient=(function(){})();
+app.util={
+		validation : function(x) {
+		    return (x != "");
+		},
+		emailCheck : function emailcheck(strValue){
+			var regExp = /[0-9a-zA-Z][_0-9a-zA-Z-]*@[_0-9a-zA-Z-]+(\.[_0-9a-zA-Z-]+){1,2}$/;
+			//입력을 안했으면
+			if(strValue.lenght == 0){return false;}
+			//이메일 형식에 맞지않으면
+			if (!strValue.match(regExp)){return false;}
+			return true;
+		}
+};
 app.algorithm.TABLE=
 	'<table id="table" style="width:800px;height:300px;border-collapse: collapse;border: 1px solid black;margin:0 auto">'
 	+	'<tr style="border: 1px solid black;">'
