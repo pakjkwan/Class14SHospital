@@ -1033,26 +1033,15 @@ app.ui={
 			
 			var table=
 				'<table>'
-				+'<tr><td rowspan="5" style="width:100px">환<br/>자<br/>정<br/>보</td><td class="app-chart-bottom-elem">이름</td><td colspan="3" class="app-chart-top-table"></td><td class="app-chart-bottom-elem">직업</td><td class="app-chart-top-table"></td></tr>'
-				+'<tr><td class="app-chart-bottom-elem">생년월일</td><td class="app-chart-top-table"></td><td class="app-chart-col-table">키</td><td class="app-chart-top-table"></td><td class="app-chart-bottom-elem">직업</td><td class="app-chart-top-table"></td></tr>'       
-				+'<tr><td class="app-chart-bottom-elem">성별</td><td colspan="3" class="app-chart-top-table"></td><td class="app-chart-bottom-elem">몸무게</td><td class="app-chart-top-table"></td></tr>'
-			    +'<tr><td class="app-chart-bottom-elem">전화번호</td><td colspan="3" class="app-chart-top-table"></td><td class="app-chart-bottom-elem">혈액형</td><td class="app-chart-top-table"></td></tr>'
-			    +'<tr><td class="app-chart-bottom-elem">주소</td><td colspan="3" class="app-chart-top-table"></td><td class="app-chart-bottom-elem">주치의</td><td class="app-chart-top-table"></td></tr>'
+				+'<tr><td rowspan="5" style="width:100px">환<br/>자<br/>정<br/>보</td><td class="app-chart-table-elem">이름</td><td colspan="3" class="app-chart-top-table"></td><td class="app-chart-table-elem">직업</td><td class="app-chart-top-table"></td></tr>'
+				+'<tr><td class="app-chart-table-elem">생년월일</td><td class="app-chart-top-table"></td><td class="app-chart-col-table">키</td><td class="app-chart-top-table"></td><td class="app-chart-table-elem">직업</td><td class="app-chart-top-table"></td></tr>'       
+				+'<tr><td class="app-chart-table-elem">성별</td><td colspan="3" class="app-chart-top-table"></td><td class="app-chart-table-elem">몸무게</td><td class="app-chart-top-table"></td></tr>'
+			    +'<tr><td class="app-chart-table-elem">전화번호</td><td colspan="3" class="app-chart-top-table"></td><td class="app-chart-table-elem">혈액형</td><td class="app-chart-top-table"></td></tr>'
+			    +'<tr><td class="app-chart-table-elem">주소</td><td colspan="3" class="app-chart-top-table"></td><td class="app-chart-table-elem">주치의</td><td class="app-chart-top-table"></td></tr>'
 				+'</table>';			 
 			$(table).attr('id','app-chart-top-table').appendTo('#app-chart-top');
 			$('#app-chart-top-table').css('width','800px');
-			/*var row = $('<tr />', {})
-		        .appendTo("#app-chart-top-table");
-		    $('<td />', {
-		        'text': 'column1'
-		    }).appendTo(row);
-	
-		    $('<td />', {
-		        'text': 'column2',
-		        'style': 'min-width:100px;'
-		    }).appendTo(row);*/
 			$('#app-chart-top').addClass('app-chart-top').css('text-align','center');
-		//	$('#app-chart-top').html(table);
 			$("<div></div>").attr('id','app-chart-center').appendTo('#app-chart-top');
 			$('#app-chart-center').addClass('app-chart-center');
 			$('#app-chart-center').html(
@@ -1075,142 +1064,9 @@ app.ui={
 			}
 			row+='</tr>';
 			$('#tbody').html(row);
-			$('#thead th').addClass('app-chart-bottom-elem').addClass('app-text-center');
-			$('#tbody td').addClass('app-chart-bottom-elem').addClass('app-text-center');
+			$('#thead th').addClass('app-chart-table-elem').addClass('app-text-center');
+			$('#tbody td').addClass('app-chart-table-elem').addClass('app-text-center');
 			$('#app-chart-bottom-table').css('margin-top','20px').addClass('app-chart-bottom-table');
-		    /*
-			<div class="app-chart-bottom" style="text-align:center"> 
-
-			    <table style="border-collapse: collapse;">
-
-				<tr>
-
-					<td class="app-chart-bottom-table">순서</td>
-
-			        <td class="app-chart-bottom-table">진료일</td>
-
-			        <td class="app-chart-bottom-table">진료 NO</td>
-
-			        <td class="app-chart-bottom-table">담당의사</td>
-
-			        <td class="app-chart-bottom-table">직책</td>
-
-			        <td class="app-chart-bottom-table">진료과목</td>
-
-			        <td class="app-chart-bottom-table">병명</td>
-
-			        <td class="app-chart-bottom-table">처방내역</td>
-
-			        
-
-			        
-
-				</tr>
-
-				<tr>
-
-					<td class="app-chart-bottom-table"></td>
-
-			        <td class="app-chart-bottom-table"></td>
-
-			        <td class="app-chart-bottom-table"></td>
-
-			        <td class="app-chart-bottom-table"></td>
-
-			        <td class="app-chart-bottom-table"></td>
-
-			        <td class="app-chart-bottom-table"></td>
-
-			        <td class="app-chart-bottom-table"></td>
-
-			        <td class="app-chart-bottom-table"></td>
-
-				</tr>
-
-				<tr>
-
-					<td class="app-chart-bottom-table"></td>
-
-			        <td class="app-chart-bottom-table"></td>
-
-			        <td class="app-chart-bottom-table"></td>
-
-			        <td class="app-chart-bottom-table"></td>
-
-			        <td class="app-chart-bottom-table"></td>
-
-			        <td class="app-chart-bottom-table"></td>
-
-			        <td class="app-chart-bottom-table"></td>
-
-			        <td class="app-chart-bottom-table"></td>
-
-				</tr>
-
-				<tr>
-
-					<td class="app-chart-bottom-table"></td>
-
-			        <td class="app-chart-bottom-table"></td>
-
-			        <td class="app-chart-bottom-table"></td>
-
-			        <td class="app-chart-bottom-table"></td>
-
-			        <td class="app-chart-bottom-table"></td>
-
-			        <td class="app-chart-bottom-table"></td>
-
-			        <td class="app-chart-bottom-table"></td>
-
-			        <td class="app-chart-bottom-table"></td>
-
-				</tr>
-
-				<tr>
-
-					<td class="app-chart-bottom-table"></td>
-
-			        <td class="app-chart-bottom-table"></td>
-
-			        <td class="app-chart-bottom-table"></td>
-
-			        <td class="app-chart-bottom-table"></td>
-
-			        <td class="app-chart-bottom-table"></td>
-
-			        <td class="app-chart-bottom-table"></td>
-
-			        <td class="app-chart-bottom-table"></td>
-
-			        <td class="app-chart-bottom-table"></td>
-
-				</tr>
-
-				<tr>
-
-					<td class="app-chart-bottom-table"></td>
-
-			        <td class="app-chart-bottom-table"></td>
-
-			        <td class="app-chart-bottom-table"></td>
-
-			        <td class="app-chart-bottom-table"></td>
-
-			        <td class="app-chart-bottom-table"></td>
-
-			        <td class="app-chart-bottom-table"></td>
-
-			        <td class="app-chart-bottom-table"></td>
-
-			        <td class="app-chart-bottom-table"></td>
-
-				</tr>
-
-			</table>
-
-			</div>*/
-
 		
 		}
 };
