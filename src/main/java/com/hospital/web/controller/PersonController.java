@@ -85,7 +85,7 @@ public class PersonController {
 			consumes="application/json")
 	public @ResponseBody Map<?,?> login(
 			@RequestBody Map<String,String>paramMap) throws Exception{
-		Map<String,String>map=new HashMap<>();
+		Map<String,Object>map=new HashMap<>();
 		logger.info("PersonController-login() {} !!", "ENTER");
 		String id=paramMap.get("id");
 		String pass=paramMap.get("pass");
@@ -120,16 +120,12 @@ public class PersonController {
 				paramMap.put("group", arr[0]);
 				paramMap.put("key", arr[1]);
 				paramMap.put("value", arr[2]);
-				Patient patient=personService.getPatient(paramMap);
-				map.put("name", patient.getName());
-				map.put("group", "고객");
+				map.put("patient", personService.getPatient(paramMap));
 				break;
-
-		
 			}
 		}
 		
-		
+		/*"id","pass","name","","phone","email","job","jumin","addr","docID","nurID"*/	
 	
 		return map;
 	}
