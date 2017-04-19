@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
+import com.hospital.web.domain.Chart;
 import com.hospital.web.domain.Doctor;
 import com.hospital.web.domain.Info;
 import com.hospital.web.domain.Nurse;
@@ -18,6 +19,7 @@ public interface Mapper {
 	public Patient findPatient(Map<?,?>map) throws Exception;
 	public Doctor findDoctor(Map<?,?>map) throws Exception;
 	public Nurse findNurse(Map<?,?>map) throws Exception;
+	public List<Chart> findChart(Map<?,?>map) throws Exception;
 	public List<Patient> findPatients(Map<?,?>map) throws Exception;
 	public List<Doctor> findDoctors(Map<?,?>map) throws Exception;
 	public List<Nurse> findNurses(Map<?,?>map) throws Exception;

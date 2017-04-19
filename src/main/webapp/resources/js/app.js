@@ -740,18 +740,23 @@ app.permission=(function(){
 						 $('#btn-default').on('click',function(e){
 							 $('#wrapper').html(app.ui.patientGnb());
 							 $('#wrapper').append(app.ui.chart());
-							 
-							/*e.preventDefault();
+							e.preventDefault();
 							$.ajax({
-								url : '',
+								url : context+'/get/chart',
 								method : 'POST',
-								data : JSON.stringify({}),
+								data : JSON.stringify({id : 'pkim'}),
 								dataType : 'json',
 								contentType : 'application/json',
-								success : function(data){},
+								success : function(data){
+									if(data.result==='fail'){
+										alert('차트 없슴');
+									}else{
+										alert('차트 있슴');
+									}
+								},
 								error : function(x,s,m){alert(m);}
 							});
-							 */
+							 
 							 
 							 
 						 });
@@ -1044,11 +1049,18 @@ app.ui={
 			$('#app-chart-top').addClass('app-chart-top').css('text-align','center');
 			$("<div></div>").attr('id','app-chart-center').appendTo('#app-chart-top');
 			$('#app-chart-center').addClass('app-chart-center');
+			var fileUpload=
+			'<form id="form-file-upload" name="form-file-upload" method="post" '
+			+	'action="" enctype="multipart/form-data" >'
+			+'<input type="file" id="file" name="file" />'
+			+'<input type="submit" id="btn-file-upload" value="파일업로드">'
+			+'</form>';
 			$('#app-chart-center').html(
 				'<div class="app-chart-center-center">처방전'+
 			        '<br/>'+
-			        '<img src="'+image+'/default-profile.jpg" style="width:200px; height:200px;"/>'+
-			    '</div>	');
+			        '<img src="'+image+'/default-profile.jpg" style="width:200px; height:200px;float: left;"/>'+
+			    '</div>	'+fileUpload);
+			$('#form-file-upload').css('margin-top','20px');
 			$("<div></div>").attr('id','app-chart-bottom').appendTo('#app-chart-center');
 			$('<table><thead id="thead"></thead><tbody id="tbody"></tbody></table>').attr('id','app-chart-bottom-table').appendTo('#app-chart-bottom');
 			var row = '<tr>';
@@ -1058,7 +1070,7 @@ app.ui={
 			}
 			row+='</tr>';
 			$('#thead').html(row);
-			var row = '<tr>';
+			var row = '<tr style="height:10px">';
 			for(var i=0;i<8;i++){
 				row+='<td>'+'example'+'</td>';
 			}

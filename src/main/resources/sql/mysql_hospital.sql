@@ -1,3 +1,11 @@
+/*
+========= app-algorithm ====
+@AUTHOR : pakjkwan@gmail.com
+@CREATE DATE : 2017-4-1
+@UPDATE DATE : 2017-4-1
+@DESC : 
+==============================
+*/
 mysql -u root -p
 -- input password
 create user 'hanbit' identified by 'hanbit';
@@ -5,6 +13,7 @@ exit
 GRANT ALL PRIVILEGES ON *.* TO 'hanbit' IDENTIFIED BY 'hanbit' WITH GRANT OPTION;
 CREATE DATABASE hanbit;
 mysql -u hanbit -p hanbit
+use hanbit
 -- input password
 SHOW TABLES;
 
@@ -273,8 +282,47 @@ WHERE t2.seq BETWEEN 11 AND 15;
 
 SELECT t2.*	FROM (SELECT ROWNUM seq,t.*	FROM (SELECT * FROM ARTICLE ORDER BY art_seq DESC) t) t2	WHERE t2.seq BETWEEN 1 AND 5;
 
+/*
+========= app-ChartView ====
+@AUTHOR : pakjkwan@gmail.com
+@CREATE DATE : 2017-4-1
+@UPDATE DATE : 2017-4-1
+@DESC : 
+==============================
+*/
 
+CREATE VIEW ChartView
+AS
+SELECT 
+  p.pat_id AS patientId,
+  p.nur_id AS nurseId,
+  p.doc_id AS doctorId,
+  p.pat_pass AS pass,
+  p.pat_name AS name,
+  p.pat_gen AS gen,
+  p.pat_jumin AS jumin,
+  p.pat_addr AS addr,
+  p.pat_phone AS phone,
+  p.pat_email AS email,
+  p.pat_job AS job,
+  c.chart_id AS chartId,
+  t.treat_id AS treatmentId,
+  c.chart_contents AS chartContents,
+  d.major_treat AS doctorMajor,
+  d.doc_name AS doctorName,
+  d.doc_position AS doctorPosition,
+  n.nur_name AS nurseName,
+  n.nur_position AS nursePosition,
+  t.treat_contents AS treatContents,
+  t.treat_date AS treatDate
+  FROM 
+  Patient p
+  LEFT JOIN Chart c ON c.pat_id = p.pat_id
+  LEFT join Doctor d ON d.doc_id = p.doc_id  
+  LEFT join Nurse n ON n.nur_id = p.nur_id
+  LEFT join Treatment t ON t.pat_id = p.pat_id 
 
+  SELECT * FROM ChartView;
 
 
 
