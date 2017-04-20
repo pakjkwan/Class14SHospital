@@ -13,6 +13,7 @@ app-component
 	app-component-list
 	app-component-table
 app-context
+app-cookie
 app-oop
 	app-oop-encapsulation
 	app-oop-inheritance
@@ -617,6 +618,33 @@ app.context=(function(){
 	
 })();
 /*
+========= app-cookie ====
+@AUTHOR : pakjkwan@gmail.com
+@CREATE DATE : 2017-4-1
+@UPDATE DATE : 2017-4-1
+@DESC : 
+==============================
+*/
+app.cookie={
+		setCookie:	function (name,value) {
+		 	document.cookie = name + "=" + value;
+		},
+		getCookie: function(name) {
+		    var nameEQ = name + "=";
+		    var ca = document.cookie.split(';');
+		    for(var i=0;i < ca.length;i++) {
+		        var c = ca[i];
+		        while (c.charAt(0)==' ') c = c.substring(1,c.length);
+		        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+		    }
+		    return null;
+		},
+		removeCookie: function(name) {
+		    createCookie(name,"",-1);
+		}
+}
+
+/*
 ========= app-oop ====
 @AUTHOR : pakjkwan@gmail.com
 @CREATE DATE : 2017-4-1
@@ -704,72 +732,8 @@ app.oop=(function(){
 */
 app.permission=(function(){
 	var execute=function(){
-		var context=app.session.getContextPath();
-		console.log('app.login context :'+context);
+		login();
 		
-		$('#login-submit').on('click',function(e){
-			e.preventDefault();
-			$.ajax({
-				 url: context+"/login",
-				 method: "POST",
-				 data: JSON.stringify({ 
-					 	id : $('#username').val(),
-					 	pass : $('#password').val()
-					 }),
-				 dataType: "json",
-				 contentType: 'application/json',
-				 success: function(data){
-					 if(data.result==='success'){
-						 $('#boot-nav').remove();
-						 $('#wrapper').html(app.ui.patientGnb());
-						 $('#wrapper').append(app.ui.patientDetail());
-						 $('#name').text(data.patient.name);
-						 $('#gen').text(data.patient.gen);
-						 $('#phone').text(data.patient.phone);
-						 $('#email').text(data.patient.email);
-						 $('#job').text(data.patient.job);
-						 $('#addr').text(data.patient.addr);
-						 $('#docID').text(data.patient.docID);
-						 var jumin=data.patient.jumin;
-						 console.log('jumin:'+jumin);
-						 var birth='';
-						 var age='';
-						 $('#birth').text(birth);
-						 $('#age').text(age);
-						 /*"id","pass","name","","phone","email","job","jumin","addr","docID","nurID"*/
-						 $('#btn-default').on('click',function(e){
-							 $('#wrapper').html(app.ui.patientGnb());
-							 $('#wrapper').append(app.ui.chart());
-							e.preventDefault();
-							$.ajax({
-								url : context+'/get/chart',
-								method : 'POST',
-								data : JSON.stringify({id : 'pkim'}),
-								dataType : 'json',
-								contentType : 'application/json',
-								success : function(data){
-									if(data.result==='fail'){
-										alert('차트 없슴');
-									}else{
-										alert('차트 있슴');
-									}
-								},
-								error : function(x,s,m){alert(m);}
-							});
-							 
-							 
-							 
-						 });
-						 
-					 }else{
-						 alert('조회된 ID 가 존재하지 않습니다.');
-					 }
-				 },
-				 error: function(xhr,status,msg) {
-					alert('로그인 실패이유:'+msg);
-				}
-			});
-		});
 	    $('#login-form-link').on('click',function(e) {
 			$("#login-form").delay(100).fadeIn(100);
 	 		$("#register-form").fadeOut(100);
@@ -833,7 +797,96 @@ app.permission=(function(){
 			e.preventDefault();
 		});
 	};
-	return {execute:execute};
+	var login = function(){
+		alert('000');
+		var context=app.session.getContextPath();
+		console.log('app.login context :'+context);
+	    var authId = $.cookie('authId');
+	    if(authId != undefined) {
+	    	$('#username').val(authId);
+	        $("#remember").prop("checked",true);
+	    }
+	    $('#login-submit').on('click',function(e){
+	        if($.trim($("#username").val()) == "") {
+	            alert("아이디를 입력하세요");
+	            return;
+	        } else {
+	            if($("#remember").prop("checked")) {
+	                $.cookie('authId', $("#username").val());
+	            } else {
+	                $.removeCookie("authId");
+	            }
+	            alert("로그인!!");
+	            e.preventDefault();
+	            $.ajax({
+					 url: context+"/login",
+					 method: "POST",
+					 data: JSON.stringify({ 
+						 	id : $('#username').val(),
+						 	pass : $('#password').val()
+						 }),
+					 dataType: "json",
+					 contentType: 'application/json',
+					 success: function(data){
+						 if(data.result==='success'){
+							 
+							 $('#boot-nav').remove();
+							 $('#wrapper').html(app.ui.patientGnb());
+							 $('#wrapper').append(app.ui.patientDetail());
+							 $('#name').text(data.patient.name);
+							 $('#gen').text(data.patient.gen);
+							 $('#phone').text(data.patient.phone);
+							 $('#email').text(data.patient.email);
+							 $('#job').text(data.patient.job);
+							 $('#addr').text(data.patient.addr);
+							 $('#docID').text(data.patient.docID);
+							 var jumin=data.patient.jumin;
+							 console.log('jumin:'+jumin);
+							 var birth='';
+							 var age='';
+							 $('#birth').text(birth);
+							 $('#age').text(age);
+							 /*"id","pass","name","","phone","email","job","jumin","addr","docID","nurID"*/
+							 $('#btn-default').on('click',function(e){
+								 $('#wrapper').html(app.ui.patientGnb());
+								 $('#wrapper').append(app.ui.chart());
+								e.preventDefault();
+								$.ajax({
+									url : context+'/get/chart',
+									method : 'POST',
+									data : JSON.stringify({id : $.cookie('authId')}),
+									dataType : 'json',
+									contentType : 'application/json',
+									success : function(data){
+										if(data.result==='fail'){
+											alert('차트 없슴');
+										}else{
+											alert('차트 있슴');
+										}
+									},
+									error : function(x,s,m){alert(m);}
+								});
+							 });
+							 
+						 }else{
+							 alert('조회된 ID 가 존재하지 않습니다.');
+						 }
+					 },
+					 error: function(xhr,status,msg) {
+						alert('로그인 실패이유:'+msg);
+					}
+				});
+	        }
+			
+		});
+	    $("#login_button").click(function(){
+	        
+	    })
+	};
+	return {
+		execute:execute,
+		login:login
+	};
 })();
 /*
 ========= app-person ====
@@ -1038,7 +1091,7 @@ app.ui={
 			
 			var table=
 				'<table>'
-				+'<tr><td rowspan="5" style="width:100px">환<br/>자<br/>정<br/>보</td><td class="app-chart-table-elem">이름</td><td colspan="3" class="app-chart-top-table"></td><td class="app-chart-table-elem">직업</td><td class="app-chart-top-table"></td></tr>'
+				+'<tr><td rowspan="5" style="width:100px">환<br/>자<br/>정<br/>보</td><td class="app-chart-table-elem">이름</td><td colspan="3" class="app-chart-top-table"></td><td class="app-chart-table-elem">나이</td><td class="app-chart-top-table"></td></tr>'
 				+'<tr><td class="app-chart-table-elem">생년월일</td><td class="app-chart-top-table"></td><td class="app-chart-col-table">키</td><td class="app-chart-top-table"></td><td class="app-chart-table-elem">직업</td><td class="app-chart-top-table"></td></tr>'       
 				+'<tr><td class="app-chart-table-elem">성별</td><td colspan="3" class="app-chart-top-table"></td><td class="app-chart-table-elem">몸무게</td><td class="app-chart-top-table"></td></tr>'
 			    +'<tr><td class="app-chart-table-elem">전화번호</td><td colspan="3" class="app-chart-top-table"></td><td class="app-chart-table-elem">혈액형</td><td class="app-chart-top-table"></td></tr>'

@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.SessionAttributes;
+
 import com.hospital.web.domain.Admin;
 import com.hospital.web.domain.Command;
 import com.hospital.web.domain.Doctor;
@@ -26,7 +28,6 @@ import com.hospital.web.service.IDeleteService;
 import com.hospital.web.service.IGetService;
 import com.hospital.web.service.IPostService;
 import com.hospital.web.service.PersonService;
-
 @RestController
 public class PersonController {
 	private static final Logger logger = LoggerFactory.getLogger(PersonController.class);
