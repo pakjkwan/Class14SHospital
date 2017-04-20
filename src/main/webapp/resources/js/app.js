@@ -732,8 +732,6 @@ app.oop=(function(){
 */
 app.permission=(function(){
 	var execute=function(){
-		login();
-		
 	    $('#login-form-link').on('click',function(e) {
 			$("#login-form").delay(100).fadeIn(100);
 	 		$("#register-form").fadeOut(100);
@@ -741,6 +739,7 @@ app.permission=(function(){
 			$(this).addClass('active');
 			e.preventDefault();
 		});
+	    login();
 		$('#register-form-link').on('click',function(e) {
 			$("#register-form").delay(100).fadeIn(100);
 	 		$("#login-form").fadeOut(100);
@@ -798,7 +797,6 @@ app.permission=(function(){
 		});
 	};
 	var login = function(){
-		alert('000');
 		var context=app.session.getContextPath();
 		console.log('app.login context :'+context);
 	    var authId = $.cookie('authId');
@@ -816,7 +814,6 @@ app.permission=(function(){
 	            } else {
 	                $.removeCookie("authId");
 	            }
-	            alert("로그인!!");
 	            e.preventDefault();
 	            $.ajax({
 					 url: context+"/login",
@@ -849,7 +846,6 @@ app.permission=(function(){
 							 /*"id","pass","name","","phone","email","job","jumin","addr","docID","nurID"*/
 							 $('#btn-default').on('click',function(e){
 								 $('#wrapper').html(app.ui.patientGnb());
-								 $('#wrapper').append(app.ui.chart());
 								e.preventDefault();
 								$.ajax({
 									url : context+'/get/chart',
@@ -859,9 +855,41 @@ app.permission=(function(){
 									contentType : 'application/json',
 									success : function(data){
 										if(data.result==='fail'){
-											alert('차트 없슴');
+											$('<div><h1 id="msg"></h1></div>').attr('id','chart-free').appendTo('#wrapper');
+											$('#chart-free').css('width','80%').css('margin-top','50px').addClass('app-margin-center');
+											$('#msg').text('등록된 차트가 없습니다');
 										}else{
-											alert('차트 있슴');
+											$('#wrapper').append(app.ui.chart());
+											$('#name').text(data.patient.name);
+											// mission
+											$("<div></div>").attr('id','app-chart-bottom').appendTo('#app-chart-center');
+											var chartList='<table><thead id="thead">';
+											var row = '<tr>';
+											var arr=['순서','진료일','진료 NO','담당의사','직책','진료과목','병명','처방내역'];
+											for(var i=0;i<8;i++){
+												row+='<th style="border:1px solid black">'+arr[i]+'</th>';
+											}
+											row+='</tr></thead><tbody id="tbody">';
+											chartList+=row;
+											row='';
+											//진료일 진료no 담당의사 직책 진료과목 병명 처방내역	
+											$.each(data.list,function(i,chart){
+												row+='<tr >'
+												+'<td style="border:1px solid black">'+(i+1)+'</td>'
+												+'<td style="border:1px solid black">'+chart.treatmentId+'</td>'
+												+'<td style="border:1px solid black">'+chart.treatDate+'</td>'
+												+'<td style="border:1px solid black">'+chart.doctorName+'</td>'
+												+'<td style="border:1px solid black">'+chart.doctorPosition+'</td>'
+												+'<td style="border:1px solid black">'+chart.doctorMajor+'</td>'
+												+'<td style="border:1px solid black">'+chart.chartContents+'</td>'
+												+'<td style="border:1px solid black">'+chart.treatContents+'</td>'
+											});
+											chartList+=row;
+											chartList+='</tbody></table>';
+											$('.row').css('border','1px solid black').addClass('app-text-center');
+											$(chartList).attr('id','chart-list')
+											.css('margin-top','20px').addClass('app-chart-bottom-table')
+											.appendTo('#app-chart-bottom');
 										}
 									},
 									error : function(x,s,m){alert(m);}
@@ -1091,7 +1119,7 @@ app.ui={
 			
 			var table=
 				'<table>'
-				+'<tr><td rowspan="5" style="width:100px">환<br/>자<br/>정<br/>보</td><td class="app-chart-table-elem">이름</td><td colspan="3" class="app-chart-top-table"></td><td class="app-chart-table-elem">나이</td><td class="app-chart-top-table"></td></tr>'
+				+'<tr><td rowspan="5" style="width:100px">환<br/>자<br/>정<br/>보</td><td class="app-chart-table-elem">이름</td><td id="name" colspan="3" class="app-chart-top-table"></td><td class="app-chart-table-elem">나이</td><td class="app-chart-top-table"></td></tr>'
 				+'<tr><td class="app-chart-table-elem">생년월일</td><td class="app-chart-top-table"></td><td class="app-chart-col-table">키</td><td class="app-chart-top-table"></td><td class="app-chart-table-elem">직업</td><td class="app-chart-top-table"></td></tr>'       
 				+'<tr><td class="app-chart-table-elem">성별</td><td colspan="3" class="app-chart-top-table"></td><td class="app-chart-table-elem">몸무게</td><td class="app-chart-top-table"></td></tr>'
 			    +'<tr><td class="app-chart-table-elem">전화번호</td><td colspan="3" class="app-chart-top-table"></td><td class="app-chart-table-elem">혈액형</td><td class="app-chart-top-table"></td></tr>'
@@ -1114,25 +1142,6 @@ app.ui={
 			        '<img src="'+image+'/default-profile.jpg" style="width:200px; height:200px;float: left;"/>'+
 			    '</div>	'+fileUpload);
 			$('#form-file-upload').css('margin-top','20px');
-			$("<div></div>").attr('id','app-chart-bottom').appendTo('#app-chart-center');
-			$('<table><thead id="thead"></thead><tbody id="tbody"></tbody></table>').attr('id','app-chart-bottom-table').appendTo('#app-chart-bottom');
-			var row = '<tr>';
-			var arr=['순서','진료일','진료 NO','담당의사','직책','진료과목','병명','처방내역'];
-			for(var i=0;i<8;i++){
-				row+='<th>'+arr[i]+'</th>';
-			}
-			row+='</tr>';
-			$('#thead').html(row);
-			var row = '<tr style="height:10px">';
-			for(var i=0;i<8;i++){
-				row+='<td>'+'example'+'</td>';
-			}
-			row+='</tr>';
-			$('#tbody').html(row);
-			$('#thead th').addClass('app-chart-table-elem').addClass('app-text-center');
-			$('#tbody td').addClass('app-chart-table-elem').addClass('app-text-center');
-			$('#app-chart-bottom-table').css('margin-top','20px').addClass('app-chart-bottom-table');
-		
 		}
 };
 /*
@@ -1148,12 +1157,12 @@ app.util={
 		validation : function(x) {
 		    return (x != "");
 		},
-		emailCheck : function emailcheck(strValue){
-			var regExp = /[0-9a-zA-Z][_0-9a-zA-Z-]*@[_0-9a-zA-Z-]+(\.[_0-9a-zA-Z-]+){1,2}$/;
+		emailCheck : function(x){
+			var r = /[0-9a-zA-Z][_0-9a-zA-Z-]*@[_0-9a-zA-Z-]+(\.[_0-9a-zA-Z-]+){1,2}$/;
 			//입력을 안했으면
-			if(strValue.lenght == 0){return false;}
+			if(x.lenght == 0){return false;}
 			//이메일 형식에 맞지않으면
-			if (!strValue.match(regExp)){return false;}
+			if (!x.match(r)){return false;}
 			return true;
 		}
 };	

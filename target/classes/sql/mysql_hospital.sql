@@ -159,6 +159,9 @@ INSERT INTO Treatment(treat_id, pat_id, doc_id, treat_contents, treat_date) VALU
 -- SELECT * FROM Chart;
 INSERT INTO Chart(chart_id, treat_id, doc_id, nur_id, pat_id, chart_contents) VALUES ('p_130516023', '130516023', 'dlee', 'nkim',  'pahn',  '\uAC10\uAE30 \uC8FC\uC0AC \uBC0F \uC57D \uCC98\uBC29' );
 INSERT INTO Chart(chart_id, treat_id, doc_id, nur_id, pat_id, chart_contents) VALUES ('d_130628100', '130628100', 'dahn',  'nyoon',  'pkim',   '\uD53C\uBD80 \uAC10\uC5FC \uBC29\uC9C0 \uC8FC\uC0AC' );
+INSERT INTO Chart(chart_id, treat_id, doc_id, nur_id, pat_id, chart_contents) VALUES ('d_130628101', '130628100', 'dahn',  'nyoon',  'pkim',   '\uD53C\uBD80 \uAC10\uC5FC \uBC29\uC9C0 \uC8FC\uC0AC' );
+INSERT INTO Chart(chart_id, treat_id, doc_id, nur_id, pat_id, chart_contents) VALUES ('d_130628102', '130628100', 'dahn',  'nyoon',  'pkim',   '\uD53C\uBD80 \uAC10\uC5FC \uBC29\uC9C0 \uC8FC\uC0AC' );
+INSERT INTO Chart(chart_id, treat_id, doc_id, nur_id, pat_id, chart_contents) VALUES ('d_130628103', '130628100', 'dahn',  'nyoon',  'pkim',   '\uD53C\uBD80 \uAC10\uC5FC \uBC29\uC9C0 \uC8FC\uC0AC' );
 INSERT INTO Chart(chart_id, treat_id, doc_id, nur_id, pat_id, chart_contents) VALUES ('r_131205056', '131205056', 'dkim',  'nshin',  'plee',   '\uC8FC\uC0AC \uCC98\uBC29' );
 INSERT INTO Chart(chart_id, treat_id, doc_id, nur_id, pat_id, chart_contents) VALUES ('p_131218024', '131218024', 'dlee2', 'nyou',   'pchoi',  '\uADD3\uC18D\uCCAD\uC18C \uBC0F \uC57D \uCC98\uBC29' );
 INSERT INTO Chart(chart_id, treat_id, doc_id, nur_id, pat_id, chart_contents) VALUES ('i_131224012', '131224012', 'dkim2', 'nla',    'pjeong', '\uC7A5\uC5FC \uC785\uC6D0\uCE58\uB8CC' );
@@ -290,7 +293,8 @@ SELECT t2.*	FROM (SELECT ROWNUM seq,t.*	FROM (SELECT * FROM ARTICLE ORDER BY art
 @DESC : 
 ==============================
 */
-
+/*진료일 진료no 담당의사 직책 진료과목 병명 처방내역	*/
+/*treatDate doctorName doctorPosition doctorMajor chartContents treatContents*/
 CREATE VIEW ChartView
 AS
 SELECT 

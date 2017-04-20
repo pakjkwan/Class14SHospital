@@ -19,6 +19,7 @@ import com.hospital.web.domain.Nurse;
 import com.hospital.web.domain.Patient;
 import com.hospital.web.mapper.Mapper;
 import com.hospital.web.service.ChartService;
+import com.hospital.web.service.PersonService;
 
 @RestController
 public class ChartController {
@@ -28,6 +29,7 @@ public class ChartController {
 	@Autowired Patient patient;
 	@Autowired Nurse nurse;
 	@Autowired ChartService chartService;
+	@Autowired PersonService personService;
 	@RequestMapping(value="/get/chart",
 			method=RequestMethod.POST,
 			consumes="application/json")
@@ -35,13 +37,13 @@ public class ChartController {
 			@RequestBody Patient p) throws Exception{
 		logger.info("ChartController-getChart() {} !!", "ENTER");
 		Map<String,Object>map=new HashMap<>();
-		map.put("id", p.getId());
+		map.put("value", p.getId());
 		List<Chart> list=chartService.chartList(map);
-		map.clear();
 		if(list.isEmpty()){
 			map.put("result", "fail");
 		}else{
 			map.put("result", "success");
+			map.put("patient", list.get(0));
 			map.put("list", list);
 		}
 		return map;

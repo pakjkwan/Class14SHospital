@@ -19,9 +19,8 @@ public class ChartService {
 	@Autowired Mapper mapper;
 	
 	@Transactional
-	@SuppressWarnings("unchecked")
 	public List<Chart> chartList(Map<?,?> paramMap)throws Exception{
-		IListService service= (map)->mapper.findChart(map); 
+		IListService service= (map)->mapper.chartList(map); 
 		List<Chart> list = service.execute(paramMap);
 		logger.info("ChartService-chartList() {} !!", list);
 		return list;
