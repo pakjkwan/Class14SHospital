@@ -13,6 +13,7 @@
   <link rel="stylesheet" href="${context}/resources/css/app.css">
   <script src="${context}/resources/js/app.js"></script>
   <script src="${context}/resources/js/cookie.js"></script>
+  <script src="${context}/resources/js/fileupload.js"></script>
 </head><body>
 <nav id="boot-nav" class="navbar navbar-inverse">
   <div class="container-fluid">

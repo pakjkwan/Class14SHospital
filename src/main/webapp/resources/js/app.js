@@ -890,6 +890,36 @@ app.permission=(function(){
 											$(chartList).attr('id','chart-list')
 											.css('margin-top','20px').addClass('app-chart-bottom-table')
 											.appendTo('#app-chart-bottom');
+											var chartId=data.patient.chartId;
+											var context=app.session.getContextPath();
+											$('#btn-file-upload').on('click',function(e){
+												e.preventDefault();
+												alert('########'+$('#form').attr('action'));
+												var url=$('#form').attr('action');
+												$.ajax({
+													url:context+'/post/chart/id',
+													data:JSON.stringify({chartId:chartId}),
+													dataType:'json',
+													contentType:'application/json',
+													method:'POST',
+													success:function(data){
+														alert('%%%%%%%%%'+data.result);
+														$('#form').ajaxForm({
+															url : url,
+															dataType : 'text', 
+															enctype: "multipart/form-data", 
+															
+													        beforeSubmit : function() {
+													        	alert("로딩화면 ! ");      
+													        },
+													        success : function(data) {
+													            alert("등록완료 ! "+data.result);            
+													        }
+														}).submit();
+													},
+													error:function(x,s,m){alert(m);}
+												});
+											});
 										}
 									},
 									error : function(x,s,m){alert(m);}
@@ -1112,7 +1142,8 @@ app.ui={
 		},
 
 		chart : function(){
-			var image = app.session.getImagePath();
+			var context=app.session.getContextPath();
+			var image=app.session.getImagePath();
 			$("<div></div>").attr('id','div-chart').appendTo('#wrapper');
 			$('#div-chart').css('width','80%').css('margin-top','50px').addClass('app-margin-center');
 			$("<div></div>").attr('id','app-chart-top').appendTo('#div-chart');
@@ -1131,8 +1162,8 @@ app.ui={
 			$("<div></div>").attr('id','app-chart-center').appendTo('#app-chart-top');
 			$('#app-chart-center').addClass('app-chart-center');
 			var fileUpload=
-			'<form id="form-file-upload" name="form-file-upload" method="post" '
-			+	'action="" enctype="multipart/form-data" >'
+			'<form id="form" name="form" '
+			+	'action="'+context+'/post/chart/image" enctype="multipart/form-data" >'
 			+'<input type="file" id="file" name="file" />'
 			+'<input type="submit" id="btn-file-upload" value="파일업로드">'
 			+'</form>';
@@ -1141,7 +1172,7 @@ app.ui={
 			        '<br/>'+
 			        '<img src="'+image+'/default-profile.jpg" style="width:200px; height:200px;float: left;"/>'+
 			    '</div>	'+fileUpload);
-			$('#form-file-upload').css('margin-top','20px');
+			$('#form').css('margin-top','20px');
 		}
 };
 /*

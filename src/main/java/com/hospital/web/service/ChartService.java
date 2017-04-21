@@ -25,5 +25,10 @@ public class ChartService {
 		logger.info("ChartService-chartList() {} !!", list);
 		return list;
 	}
+	@Transactional
+	public int registerChartFile(Chart o)throws Exception{
+		IPostService service=(param)->mapper.registerChartFile(param);
+		return service.execute(o);
+	}
 
 }

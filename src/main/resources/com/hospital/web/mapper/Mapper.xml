@@ -47,6 +47,10 @@
    <insert id="registNurse">
    INSERT INTO ${group}( ) VALUES (#{id}, #{name})
    </insert>
+   <insert id="registerChartFile">
+   		INSERT INTO Chart(chart_contents) VALUES (#{chartContents})
+   		WHERE chart_id = #{chartId}
+   </insert>
    <!-- TODO 
    <insert id="registArticle" parameterType="hashmap"> 
 		INSERT INTO Buy(write_date,patient_id,title)
