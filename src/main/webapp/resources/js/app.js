@@ -479,16 +479,26 @@ app.algorithm=(function(){
 */
 app.bbs=(function(){
 	var init=function(){
-		$('#bbs').on('click',function(e){e.preventDefault();
-			app.bbs.articleList(app.session.getContextPath(),
-					app.component.getWrapper(),
-					app.ui.bbs(),1);
+		$('#bbs').on('click',function(e){
+			e.preventDefault();
+			wrapper.html(app.ui.searchWindowOnArticles());
+			app.bbs.articleList(1);
 		});
 	};
-	var articleList=function(context,wrapper,table,pageNo){
-		wrapper.empty();
+	var articleList=function(pageNo){
+		var context=app.session.getContextPath();
+		wrapper.append(app.ui.articleTable());
+		var $thead=$('#thead');
+		var $tbody=$('#tbody');
+		var $count=$('#count');
+		var $pagination=$('#pagination');
+		var $searchWindowOnArticles=$('#searchWindowOnArticles');
+		$thead.remove();
+		$tbody.empty();
+		$count.empty();
+		$pagination.remove();
 		$.getJSON(context+'/list/bbs/'+pageNo,function(data){
-			count=data.count;
+			var theNumberOfArticles=data.count;
 			var row='';
 			$.each(data.list,function(i,item){
 				row+= '<tr><td>'+(i+1)+'</td>'
@@ -498,32 +508,28 @@ app.bbs=(function(){
 			    +'<td>'+item.readCount+'</td>'
 				+'</tr>';
 			});
-			table+=row;
-			table+='</tbody></table>'
-			wrapper.html(table);
-			$('#count').text('게시글 수'+data.count);
+			$tbody.html(row);
+			$count.text('게시글 수'+theNumberOfArticles);
 			var pagination='<nav id="pagination" aria-label="Page navigation" align="center"><ul class="pagination">'
 			var $table=$('#table');
 			var $pagination=$('#pagination');
-			// 170424
+			// dddd
 			var temp='';
 			if(data.prevBlock > 0){
-				temp+='<a href='+context+'"/list/bbs/'+data.prevBlock+'">◀prev</a>';
+				temp+='<li><a href="'+context+'/list/bbs/'+data.prevBlock+'">◀prev</a></li>';
 			}
 			pagination+=temp;
-			var li='<li>';
+			var li='';
 			for(var i=data.blockStart;i<=data.blockEnd;i++){
-				
 					if(i==data.pageNo){
-						li+='<a href="#"><font>'+i+'</font></a>'
+						li+='<li><a href="#"><font>'+i+'</font></a></li>';
 					}else{
-						li+='<a href="'+context+'/list/bbs/'+i+'">'+i+'</a>'
-						'<a onclick="customer.notice_list('+ i +')">' + ' ' + i + ' ' + '</a>'
+						li+='<li><a href="#" onclick="app.bbs.articleList('+i+')">'+i+'</a></li>';
 					}
 			}
 			pagination+=li;
 			if(data.nextBlock <= data.pageCount){
-				temp+='<a href="'+context+'/list/bbs/'+data.nextBlock+'">next▶</a>';	
+				temp+='<li><a href="'+context+'/list/bbs/'+data.nextBlock+'">next▶</a></li>';	
 			}
 			pagination+=temp;
 			pagination+='</ul></nav></div></div>';
@@ -932,7 +938,6 @@ app.permission=(function(){
 											var context=app.session.getContextPath();
 											$('#btn-file-upload').on('click',function(e){
 												e.preventDefault();
-												alert('########'+$('#form').attr('action'));
 												var url=$('#form').attr('action');
 												$.ajax({
 													url:context+'/post/chart/id',
@@ -1139,8 +1144,7 @@ app.ui={
 		},
 		patientDetail : function(){
 			var image = app.session.getImagePath();
-			var detail=
-			'<div class="app-patient-detail">'
+			var x='<div class="app-patient-detail">'
 			+     '<table id="app-table" class="app-table" >'
 			+          '<tr style="text-align: left;">'
 			+                 '<td colspan="5"><h3> 마이페이지</h3></td>'
@@ -1176,7 +1180,7 @@ app.ui={
 			+     '</table>'
 			+     '<input type="button" style="margin-top:20px" id="btn-default" class="btn btn-default" value="차트보기"/>'
 			+'</div>'
-			return detail;
+			return x;
 		},
 
 		chart : function(){
@@ -1186,8 +1190,7 @@ app.ui={
 			$('#div-chart').css('width','80%').css('margin-top','50px').addClass('app-margin-center');
 			$("<div></div>").attr('id','app-chart-top').appendTo('#div-chart');
 			
-			var table=
-				'<table>'
+			var table='<table>'
 				+'<tr><td rowspan="5" style="width:100px">환<br/>자<br/>정<br/>보</td><td class="app-chart-table-elem">이름</td><td id="name" colspan="3" class="app-chart-top-table"></td><td class="app-chart-table-elem">나이</td><td class="app-chart-top-table"></td></tr>'
 				+'<tr><td class="app-chart-table-elem">생년월일</td><td class="app-chart-top-table"></td><td class="app-chart-col-table">키</td><td class="app-chart-top-table"></td><td class="app-chart-table-elem">직업</td><td class="app-chart-top-table"></td></tr>'       
 				+'<tr><td class="app-chart-table-elem">성별</td><td colspan="3" class="app-chart-top-table"></td><td class="app-chart-table-elem">몸무게</td><td class="app-chart-top-table"></td></tr>'
@@ -1212,31 +1215,32 @@ app.ui={
 			    '</div>	'+fileUpload);
 			$('#form').css('margin-top','20px');
 		},
-		bbs : function(){
-				var bbs='<div id="container">'
-					+'<div>'
-					+'<select name="property" name="property">'
-					+'<option value="id">작성자</option>'
-					+'<option value="title">제목</option>'
-					+'</select>'
-					+'<input type="text" name="searchKeyword"/>'
-					+'<input type="button" value="검색"/>'
-					+'<table id="table"><thead>'
-					+'<tr>'
-					+'<td id="count" colspan="5">총게시글수: </td>'
-					+'</tr>'
-					+'<tr>'
-					+'<th>번호</th>'
-					+'<th>제목</th>'
-					+'<th>작성자</th>'
-					+'<th>날짜</th>'
-					+'<th>조회수</th>'
-					+'</tr></thead><tbody id="tbody">';
+		searchWindowOnArticles : function(){
+			var x='<div id="searchWindow" style="margin: 0 auto;width:300px;margin-bottom:30px;">'
+				+'<select name="property" name="property">'
+				+'<option value="id">작성자</option>'
+				+'<option value="title">제목</option>'
+				+'</select>'
+				+'<input type="text" name="searchKeyword"/>'
+				+'<input type="button" value="검색"/></div>';
+				return x;
 				
-					
-					
-					
-					return bbs;
+		},
+		// dddd
+		articleTable : function(){
+			var x='<table id="table"><thead id="thead">'
+				+'<tr>'
+				+'<td id="count" colspan="5">총게시글수: </td>'
+				+'</tr>'
+				+'<tr>'
+				+'<th>번호</th>'
+				+'<th>제목</th>'
+				+'<th>작성자</th>'
+				+'<th>날짜</th>'
+				+'<th>조회수</th>'
+				+'</tr></thead><tbody id="tbody"></tbody></table>';
+				return x;
+				
 		}
 };
 /*
