@@ -51,6 +51,7 @@ public class BoardController {
 		map.put("pageNumber", p.getPageNumber());
 		map.put("nextBlock", p.getNextBlock());
 		map.put("theNumberOfPages",p.getTheNumberOfPages());
+		logger.info("the Number of Pages is {}", p.getTheNumberOfPages());
 		return map;
 	}
 }

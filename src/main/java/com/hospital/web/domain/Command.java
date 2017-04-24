@@ -22,12 +22,11 @@ public class Command implements Orderable{
 	}
 
 	public Pagination getPageInfo() {
-		System.out.println("#### getPageInfo ENTER####");
+		
 		Pagination p = new Pagination();
-		Integer pageNumber = (Integer)map.get("pageNumber");
-		Integer theNumberOfRows =  (Integer)map.get("theNumberOfRows");
-		p.setTheNumberOfRows(theNumberOfRows);
-		p.setPageNumber(pageNumber);
+		System.out.println("#### after new Pagination()####");
+		p.setTheNumberOfRows(Integer.parseInt(map.get("theNumberOfRows").toString()));
+		p.setPageNumber(Integer.parseInt(map.get("pageNumber").toString()));
 		p.setStartRow();
 		p.setEndRow();
 		p.setTheNumberOfPages();
@@ -36,7 +35,8 @@ public class Command implements Orderable{
 		p.setPrevBlock();
 		p.setNextBlock();
 		p.setEndPage();
-		System.out.println("########"+p.getStartRow());
+		System.out.println("####Start####"+p.getStartRow());
+		System.out.println("####End####"+p.getEndRow());
 		return p;
 	}
 	public Person<? extends Info> getPersonInfo(){
@@ -76,26 +76,26 @@ public class Command implements Orderable{
 	
 
 	public class Pagination {
-		public static final int PAGE_SIZE = 5;
-		public static final int BLOCK_SIZE = 5;
+		public final Integer PAGE_SIZE = 5;
+		public final Integer BLOCK_SIZE = 5;
 		private int theNumberOfRows, pageNumber, startRow, endRow, 
 				theNumberOfPages, theNumberOfBlocks, startPage,
 				prevBlock, nextBlock, endPage;
 
-		public void setTheNumberOfRows(Integer theNumberOfRows) {
+		public void setTheNumberOfRows(int theNumberOfRows) {
 			this.theNumberOfRows = theNumberOfRows;
 		}
 
-		public void setPageNumber(Integer pageNumber) {
+		public void setPageNumber(int pageNumber) {
 			this.pageNumber = pageNumber;
 		}
 
 		public void setStartRow() {
-			this.startRow = (pageNumber - 1) * theNumberOfRows + 1;
+			this.startRow = (pageNumber - 1) * PAGE_SIZE + 1;
 		}
 
 		public void setEndRow() {
-			this.endRow = pageNumber * theNumberOfRows;
+			this.endRow = pageNumber * PAGE_SIZE;
 		}
 
 		

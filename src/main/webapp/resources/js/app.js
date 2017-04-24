@@ -504,7 +504,9 @@ app.bbs=(function(){
 			var theNumberOfArticles=data.count;
 			alert('theNumberOfArticles is "'+theNumberOfArticles+'"');
 			var row='';
+			console.log('pre each: '+data.count);
 			$.each(data.list,function(i,item){
+				console.log('item.title: '+item.title);
 				row+= '<tr><td>'+(i+1)+'</td>'
 			    +'<td>'+item.title+'</td>'
 			    +'<td>'+item.writerId+'</td>'
@@ -512,8 +514,10 @@ app.bbs=(function(){
 			    +'<td>'+item.readCount+'</td>'
 				+'</tr>';
 			});
+			console.log('row'+theNumberOfArticles);
 			$tbody.html(row);
-			$count.text('게시글 수'+theNumberOfArticles);
+			// $count.text('게시글 수'+theNumberOfArticles);
+			console.log('게시글 수'+theNumberOfArticles);
 			var pagination='<nav id="pagination" aria-label="Page navigation" align="center"><ul class="pagination">'
 			var $table=$('#table');
 			var $pagination=$('#pagination');
@@ -524,7 +528,8 @@ app.bbs=(function(){
 			}
 			pagination+=temp;
 			var li='';
-			for(var i=data.pageStart;i<=data.pageEnd;i++){
+			for(var i=data.startRow;i<=data.endRow;i++){
+				console.log('startRow: '+data.startRow);
 					if(i==data.pageNumber){
 						li+='<li><a href="#"><font>'+i+'</font></a></li>';
 					}else{
