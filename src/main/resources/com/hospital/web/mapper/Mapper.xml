@@ -36,7 +36,15 @@
 		<result property="major" column="major_job"/>
 		<result property="position" column="nur_position"/>
 	</resultMap>
-	
+	<resultMap id="Article" type="com.hospital.web.domain.Article">
+		 <id property="seq" column="art_seq"/>
+      <result property="writerId" column="writer_id"/>
+      <result property="name" column="name"/>
+      <result property="title" column="title"/>
+      <result property="content" column="content"/>
+      <result property="regDate" column="reg_date"/>
+      <result property="readCount" column="read_count"/>
+	</resultMap>
    <insert id="registPatient">
     INSERT INTO ${group}(pat_id,pat_pass,pat_name,pat_gen,pat_phone,pat_email,pat_job,pat_jumin,pat_addr,doc_id,nur_id) 
    VALUES ( #{id}, #{pass}, #{name}, #{gen}, #{phone}, #{email},#{job}, #{jumin}, #{addr}, #{docID}, #{nurID})
@@ -109,6 +117,20 @@
   	SELECT * FROM ChartView 
   	WHERE patientId = #{value} and chartId IS NOT NULL
   </select>
+  <select id="articleList" resultMap="Article" parameterType="hashMap">
+		select t2.*
+			from (select @ROWNUM := @ROWNUM + 1 AS rownum
+		            ,t.title 
+		            ,t.content 
+		            ,t.reg_date
+		            ,t.art_seq 
+     		from   Article t
+           ,(SELECT @ROWNUM := 0) R
+			     ORDER BY t.reg_date DESC
+		     ) t2
+		where t2.rownum between #{start} and #{end}
+		order by t2.rownum asc;
+	</select>
   <select id="count" resultType="int" parameterType="hashMap">
     	SELECT COUNT(*) FROM ${group}
   </select>

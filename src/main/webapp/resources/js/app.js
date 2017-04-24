@@ -1,35 +1,3 @@
-/*
-========= app-meta ==========
-app-algorithm 
-	app-algorithm-series
-	app-algorithm-array
-	app-algorithm-matrix
-	app-algorithm-math
-	app-algorithm-application
-app-component
-	app-component-button
-	app-component-input
-	app-component-alert
-	app-component-list
-	app-component-table
-app-context
-app-cookie
-app-oop
-	app-oop-encapsulation
-	app-oop-inheritance
-	app-oop-polymorphism
-app-permission
-app-person
-	app-person-patient
-	app-person-doctor
-	app-person-nurse
-	app-person-admin
-app-session
-app-treatment
-app-ui
-app-util
-==============================
-*/
 var app=app || {};
 /*
 ========= app-algorithm ====
@@ -502,6 +470,76 @@ app.algorithm=(function(){
 	};
 })();
 /*
+========= app-bbs ====
+@AUTHOR : pakjkwan@gmail.com
+@CREATE DATE : 2017-4-1
+@UPDATE DATE : 2017-4-1
+@DESC : 
+==============================
+*/
+app.bbs=(function(){
+	var init=function(){
+		$('#bbs').on('click',function(e){e.preventDefault();
+			app.bbs.articleList(app.session.getContextPath(),
+					app.component.getWrapper(),
+					app.ui.bbs(),1);
+		});
+	};
+	var articleList=function(context,wrapper,table,pageNo){
+		wrapper.empty();
+		$.getJSON(context+'/list/bbs/'+pageNo,function(data){
+			count=data.count;
+			var row='';
+			$.each(data.list,function(i,item){
+				row+= '<tr><td>'+(i+1)+'</td>'
+			    +'<td>'+item.title+'</td>'
+			    +'<td>'+item.writerId+'</td>'
+			    +'<td>'+item.regDate+'</td>'
+			    +'<td>'+item.readCount+'</td>'
+				+'</tr>';
+			});
+			table+=row;
+			table+='</tbody></table>'
+			wrapper.html(table);
+			$('#count').text('게시글 수'+data.count);
+			var pagination='<nav id="pagination" aria-label="Page navigation" align="center"><ul class="pagination">'
+			var $table=$('#table');
+			var $pagination=$('#pagination');
+			// 170424
+			var temp='';
+			if(data.prevBlock > 0){
+				temp+='<a href='+context+'"/list/bbs/'+data.prevBlock+'">◀prev</a>';
+			}
+			pagination+=temp;
+			var li='<li>';
+			for(var i=data.blockStart;i<=data.blockEnd;i++){
+				
+					if(i==data.pageNo){
+						li+='<a href="#"><font>'+i+'</font></a>'
+					}else{
+						li+='<a href="'+context+'/list/bbs/'+i+'">'+i+'</a>'
+						'<a onclick="customer.notice_list('+ i +')">' + ' ' + i + ' ' + '</a>'
+					}
+			}
+			pagination+=li;
+			if(data.nextBlock <= data.pageCount){
+				temp+='<a href="'+context+'/list/bbs/'+data.nextBlock+'">next▶</a>';	
+			}
+			pagination+=temp;
+			pagination+='</ul></nav></div></div>';
+			wrapper.append(pagination);
+			$('#container').addClass('app-width-full-size');
+			$('#container>div').addClass('app-margin-center').css('width','500px');
+			$table.addClass('app-table').addClass('app-margin-center').css('width','500px');
+			$pagination.css('"width','500px').css('margin','0 auto').css('text-align','center');
+			$pagination.find('a').css('text-decoration','none');
+			$pagination.find('li').css('text-align','center').css('width','38px').css('display','inline');
+			$pagination.find('font').css('color','red');
+		});
+	};
+	return {init:init,articleList:articleList};
+})();
+/*
 ========= app-component ====
 @AUTHOR : pakjkwan@gmail.com
 @CREATE DATE : 2017-4-1
@@ -604,7 +642,7 @@ app.context=(function(){
 		app.algorithm.init();
 		app.oop.init();
 		app.person.init();
-		
+		app.bbs.init();
 	};
 	var setContentView=function(){
 	};
@@ -1173,6 +1211,32 @@ app.ui={
 			        '<img src="'+image+'/default-profile.jpg" style="width:200px; height:200px;float: left;"/>'+
 			    '</div>	'+fileUpload);
 			$('#form').css('margin-top','20px');
+		},
+		bbs : function(){
+				var bbs='<div id="container">'
+					+'<div>'
+					+'<select name="property" name="property">'
+					+'<option value="id">작성자</option>'
+					+'<option value="title">제목</option>'
+					+'</select>'
+					+'<input type="text" name="searchKeyword"/>'
+					+'<input type="button" value="검색"/>'
+					+'<table id="table"><thead>'
+					+'<tr>'
+					+'<td id="count" colspan="5">총게시글수: </td>'
+					+'</tr>'
+					+'<tr>'
+					+'<th>번호</th>'
+					+'<th>제목</th>'
+					+'<th>작성자</th>'
+					+'<th>날짜</th>'
+					+'<th>조회수</th>'
+					+'</tr></thead><tbody id="tbody">';
+				
+					
+					
+					
+					return bbs;
 		}
 };
 /*
@@ -1197,4 +1261,36 @@ app.util={
 			return true;
 		}
 };	
-	
+/*
+========= app-meta ==========
+app-algorithm 
+	app-algorithm-series
+	app-algorithm-array
+	app-algorithm-matrix
+	app-algorithm-math
+	app-algorithm-application
+app-bbs
+app-component
+	app-component-button
+	app-component-input
+	app-component-alert
+	app-component-list
+	app-component-table
+app-context
+app-cookie
+app-oop
+	app-oop-encapsulation
+	app-oop-inheritance
+	app-oop-polymorphism
+app-permission
+app-person
+	app-person-patient
+	app-person-doctor
+	app-person-nurse
+	app-person-admin
+app-session
+app-treatment
+app-ui
+app-util
+==============================
+*/	

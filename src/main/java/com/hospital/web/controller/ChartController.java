@@ -95,8 +95,9 @@ public class ChartController {
 	        String uploadPath = "resources/img/";
 	        String filename = file.getOriginalFilename();
 	        chart.setChartContents(filename);
-	        chart.setChartId(session.getAttribute("storage").toString());
-	        logger.info("chart id:{}", session.getAttribute("storage").toString());
+	        chart.setChartId("d_130628100");
+	        //d_130628100
+	        //logger.info("chart id:{}", session.getAttribute("storage").toString());
 	        session.invalidate();
 	        int rs=chartService.registerChartFile(chart);
 	        if(rs==1){
