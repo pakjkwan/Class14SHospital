@@ -128,7 +128,7 @@
            ,(SELECT @ROWNUM := 0) R
 			     ORDER BY t.reg_date DESC
 		     ) t2
-		where t2.rownum between #{start} and #{end}
+		where t2.rownum between #{startRow} and #{endRow}
 		order by t2.rownum asc;
 	</select>
   <select id="count" resultType="int" parameterType="hashMap">

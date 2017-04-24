@@ -485,7 +485,7 @@ app.bbs=(function(){
 			app.bbs.articleList(1);
 		});
 	};
-	var articleList=function(pageNo){
+	var articleList=function(pageNumber){
 		var context=app.session.getContextPath();
 		wrapper.append(app.ui.articleTable());
 		var $thead=$('#thead');
@@ -497,8 +497,12 @@ app.bbs=(function(){
 		$tbody.empty();
 		$count.empty();
 		$pagination.remove();
-		$.getJSON(context+'/list/bbs/'+pageNo,function(data){
+		/*$('#searchBtn').on('click',function(){
+			alert('url is "'+context+'/list/bbs/'+pageNumber+"'");
+		});*/
+		$.getJSON(context+'/list/bbs/'+pageNumber,function(data){
 			var theNumberOfArticles=data.count;
+			alert('theNumberOfArticles is "'+theNumberOfArticles+'"');
 			var row='';
 			$.each(data.list,function(i,item){
 				row+= '<tr><td>'+(i+1)+'</td>'
@@ -520,15 +524,15 @@ app.bbs=(function(){
 			}
 			pagination+=temp;
 			var li='';
-			for(var i=data.blockStart;i<=data.blockEnd;i++){
-					if(i==data.pageNo){
+			for(var i=data.pageStart;i<=data.pageEnd;i++){
+					if(i==data.pageNumber){
 						li+='<li><a href="#"><font>'+i+'</font></a></li>';
 					}else{
 						li+='<li><a href="#" onclick="app.bbs.articleList('+i+')">'+i+'</a></li>';
 					}
 			}
 			pagination+=li;
-			if(data.nextBlock <= data.pageCount){
+			if(data.nextBlock <= data.theNumberOfPages){
 				temp+='<li><a href="'+context+'/list/bbs/'+data.nextBlock+'">next▶</a></li>';	
 			}
 			pagination+=temp;
@@ -1222,7 +1226,7 @@ app.ui={
 				+'<option value="title">제목</option>'
 				+'</select>'
 				+'<input type="text" name="searchKeyword"/>'
-				+'<input type="button" value="검색"/></div>';
+				+'<input id="searchBtn" type="button" value="검색"/></div>';
 				return x;
 				
 		},
