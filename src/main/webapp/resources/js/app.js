@@ -482,77 +482,77 @@ app.bbs=(function(){
 		$('#bbs').on('click',function(e){
 			e.preventDefault();
 			wrapper.html(app.ui.searchWindowOnArticles());
-			app.bbs.articleList(1);
+			app.bbs.articlesOnPage(1);
 		});
 	};
-	var articleList=function(pageNumber){
+	var articlesOnPage=function(pageNumber){
 		var context=app.session.getContextPath();
-		wrapper.append(app.ui.articleTable());
-		var $thead=$('#thead');
-		var $tbody=$('#tbody');
-		var $count=$('#count');
-		var $pagination=$('#pagination');
-		var $searchWindowOnArticles=$('#searchWindowOnArticles');
+		wrapper.empty();
+		wrapper.append(app.ui.searchWindowOnArticles());
+		wrapper.append(app.ui.articlesOnPage());
+		var $articlesOnPage=$('table#articlesOnPage'),
+		 	$thead=$articlesOnPage.find('thead'),
+		 	$tbody=$articlesOnPage.find('tbody'),
+		 	$theNumberOfArticles=$('#theNumberOfArticles'),
+			$searchWindowOnArticles=$('#searchWindowOnArticles');
 		$thead.remove();
 		$tbody.empty();
-		$count.empty();
-		$pagination.remove();
-		/*$('#searchBtn').on('click',function(){
-			alert('url is "'+context+'/list/bbs/'+pageNumber+"'");
-		});*/
-		$.getJSON(context+'/list/bbs/'+pageNumber,function(data){
-			var theNumberOfArticles=data.count;
-			alert('theNumberOfArticles is "'+theNumberOfArticles+'"');
-			var row='';
-			console.log('pre each: '+data.count);
-			$.each(data.list,function(i,item){
-				console.log('item.title: '+item.title);
-				row+= '<tr><td>'+(i+1)+'</td>'
-			    +'<td>'+item.title+'</td>'
-			    +'<td>'+item.writerId+'</td>'
-			    +'<td>'+item.regDate+'</td>'
-			    +'<td>'+item.readCount+'</td>'
+		$theNumberOfArticles.empty();
+		$.getJSON(context+'/get/articles/'+pageNumber,function(data){
+			var articlesOnPage=data.articlesOnPage,
+				theNumberOfRows=data.theNumberOfRows,
+				theNumberOfPages=data.theNumberOfPages,
+				prevBlock=data.prevBlock,
+				startPage=data.startPage,
+				endPage=data.endPage,
+				pageNumber=data.pageNumber,
+				nextBlock=data.nextBlock,
+				startRow=data.startRow,
+				endRow=data.endRow,
+				pageSize=data.pageSize,
+				blocksize=data.blockSize,
+				rows='',foo='',bar='',baz='',qux='';
+			$.each(articlesOnPage,function(i,article){
+				console.log('article.title: '+article.title);
+				rows+= '<tr><td>'+(i+1)+'</td>'
+			    +'<td>'+article.title+'</td>'
+			    +'<td>'+article.writerId+'</td>'
+			    +'<td>'+article.regDate+'</td>'
+			    +'<td>'+article.readCount+'</td>'
 				+'</tr>';
 			});
-			console.log('row'+theNumberOfArticles);
-			$tbody.html(row);
-			// $count.text('게시글 수'+theNumberOfArticles);
-			console.log('게시글 수'+theNumberOfArticles);
-			var pagination='<nav id="pagination" aria-label="Page navigation" align="center"><ul class="pagination">'
-			var $table=$('#table');
-			var $pagination=$('#pagination');
+			$tbody.html(rows);
+			var pagination=app.ui.pagination();
+			wrapper.append(pagination);
+			$pagination=$('#pagination ul');
 			// dddd
-			var temp='';
-			if(data.prevBlock > 0){
-				temp+='<li><a href="'+context+'/list/bbs/'+data.prevBlock+'">◀prev</a></li>';
+			if(prevBlock > 0){
+				foo+='<li><a href="'+context+'/get/articles/'+prevBlock+'">◀prev</a></li>';
 			}
-			pagination+=temp;
-			var li='';
-			for(var i=data.startRow;i<=data.endRow;i++){
-				console.log('startRow: '+data.startRow);
-					if(i==data.pageNumber){
-						li+='<li><a href="#"><font>'+i+'</font></a></li>';
+			for(var i=startPage;i<startPage+pageSize && i<=theNumberOfPages;i++){
+				console.log('startRow: '+startRow);
+					if(i==pageNumber){
+						foo+='<li><a href="#"><font>'+i+'</font></a></li>';
 					}else{
-						li+='<li><a href="#" onclick="app.bbs.articleList('+i+')">'+i+'</a></li>';
+						foo+='<li><a href="#" onclick="app.bbs.articlesOnPage('+i+')">'+i+'</a></li>';
 					}
 			}
-			pagination+=li;
-			if(data.nextBlock <= data.theNumberOfPages){
-				temp+='<li><a href="'+context+'/list/bbs/'+data.nextBlock+'">next▶</a></li>';	
+			if(nextBlock <= theNumberOfPages){
+				foo+='<li><a href="'+context+'/get/articles/'+nextBlock+'">next▶</a></li>';	
 			}
-			pagination+=temp;
-			pagination+='</ul></nav></div></div>';
+			$pagination.html(foo);
 			wrapper.append(pagination);
 			$('#container').addClass('app-width-full-size');
 			$('#container>div').addClass('app-margin-center').css('width','500px');
-			$table.addClass('app-table').addClass('app-margin-center').css('width','500px');
-			$pagination.css('"width','500px').css('margin','0 auto').css('text-align','center');
+			$articlesOnPage.addClass('app-table').addClass('app-margin-center').css('width','500px');
+			$pagination.css('"width','500px').css('margin','0 auto')
+			.css('margin-top','20px').css('text-align','center');
 			$pagination.find('a').css('text-decoration','none');
 			$pagination.find('li').css('text-align','center').css('width','38px').css('display','inline');
 			$pagination.find('font').css('color','red');
 		});
 	};
-	return {init:init,articleList:articleList};
+	return {init:init,articlesOnPage:articlesOnPage};
 })();
 /*
 ========= app-component ====
@@ -803,7 +803,7 @@ app.permission=(function(){
 		
 		/*
 		radio 체크 할때마다 incommon-info 의 화면이 변동됨
-		 * */
+		*/
 		
 		$('#register-patient').on('click',function(e){
 			e.preventDefault();
@@ -955,7 +955,6 @@ app.permission=(function(){
 													contentType:'application/json',
 													method:'POST',
 													success:function(data){
-														alert('%%%%%%%%%'+data.result);
 														$('#form').ajaxForm({
 															url : url,
 															dataType : 'text', 
@@ -999,7 +998,7 @@ app.permission=(function(){
 	};
 })();
 /*
-========= app-person ====
+========= app-person =========
 @AUTHOR : pakjkwan@gmail.com
 @CREATE DATE : 2017-4-1
 @UPDATE DATE : 2017-4-1
@@ -1143,12 +1142,12 @@ app.ui={
 /*app-ui-patient*/		
 		patientGnb : function(){
 			
-		    	   var gnb = '<div style="position: relative; "><ul id="app-gnb" class="app-gnb" >';
-		    	   var arr = ['home/홈으로','mypage/MY PAGE','treatlist/나의 진료기록','board/게시판','customer/고객참여마당','main/로그아웃'];
-		    	   for(var i=0; i<6; i++){
-		    		   gnb+='<li><a href="'+arr[i].split("/")[0]+'">'+arr[i].split("/")[1]+'</a></li>'   
-		    	   }
-				   gnb += '</ul></div>';
+    	   var gnb = '<div style="position: relative; "><ul id="app-gnb" class="app-gnb" >';
+    	   var arr = ['home/홈으로','mypage/MY PAGE','treatlist/나의 진료기록','board/게시판','customer/고객참여마당','main/로그아웃'];
+    	   for(var i=0; i<6; i++){
+    		   gnb+='<li><a href="'+arr[i].split("/")[0]+'">'+arr[i].split("/")[1]+'</a></li>'   
+    	   }
+		   gnb += '</ul></div>';
 			return gnb;
 		},
 		patientDetail : function(){
@@ -1188,7 +1187,7 @@ app.ui={
 			+           '</tr>'
 			+     '</table>'
 			+     '<input type="button" style="margin-top:20px" id="btn-default" class="btn btn-default" value="차트보기"/>'
-			+'</div>'
+			+'</div>';
 			return x;
 		},
 
@@ -1225,21 +1224,21 @@ app.ui={
 			$('#form').css('margin-top','20px');
 		},
 		searchWindowOnArticles : function(){
-			var x='<div id="searchWindow" style="margin: 0 auto;width:300px;margin-bottom:30px;">'
+			return'<div id="searchWindow" style="margin: 0 auto;width:300px;margin-bottom:30px;">'
 				+'<select name="property" name="property">'
 				+'<option value="id">작성자</option>'
 				+'<option value="title">제목</option>'
 				+'</select>'
 				+'<input type="text" name="searchKeyword"/>'
 				+'<input id="searchBtn" type="button" value="검색"/></div>';
-				return x;
+				
 				
 		},
 		// dddd
-		articleTable : function(){
-			var x='<table id="table"><thead id="thead">'
+		articlesOnPage : function(){
+			return'<table id="articlesOnPage"><thead>'
 				+'<tr>'
-				+'<td id="count" colspan="5">총게시글수: </td>'
+				+'<td id="theNumberOfArticles" colspan="5">총게시글수: </td>'
 				+'</tr>'
 				+'<tr>'
 				+'<th>번호</th>'
@@ -1247,9 +1246,12 @@ app.ui={
 				+'<th>작성자</th>'
 				+'<th>날짜</th>'
 				+'<th>조회수</th>'
-				+'</tr></thead><tbody id="tbody"></tbody></table>';
-				return x;
+				+'</tr></thead><tbody></tbody></table>';
 				
+		},
+		pagination : function(){
+			return'<nav id="pagination" aria-label="Page navigation" align="center"><ul class="pagination"></ul></nav></div></div>';
+			
 		}
 };
 /*

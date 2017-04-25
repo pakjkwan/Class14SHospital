@@ -76,8 +76,8 @@ public class Command implements Orderable{
 	
 
 	public class Pagination {
-		public final Integer PAGE_SIZE = 5;
-		public final Integer BLOCK_SIZE = 5;
+		public final int PAGE_SIZE = 5;
+		public final int BLOCK_SIZE = 5;
 		private int theNumberOfRows, pageNumber, startRow, endRow, 
 				theNumberOfPages, theNumberOfBlocks, startPage,
 				prevBlock, nextBlock, endPage;
@@ -154,6 +154,12 @@ public class Command implements Orderable{
 		}
 		public int getTheNumberOfRows() {
 			return theNumberOfRows;
+		}
+		public int getPageSize(){
+			return PAGE_SIZE;
+		}
+		public int getBlockSize(){
+			return BLOCK_SIZE;
 		}
 	}
 

@@ -24,33 +24,34 @@ public class BoardController {
 	@Autowired Article article;
 	@Autowired BoardService service;
 
-	@RequestMapping("/list/bbs/{pageNumber}")
+	@RequestMapping("/get/articles/{pageNumber}")
 	private @ResponseBody Map<?,?> articleList(
 			@PathVariable String pageNumber) throws Exception{
 		logger.info("It is entered in {} method of BoardController.", "articleList");
 		logger.info("Enter the page number is {}.", pageNumber);
 		Map<String,Object>map=new HashMap<>();
 		map.put("group", "Article");
-		Integer theNumberOfRows=service.getTheNumberOfArticles(map);
+		int theNumberOfRows=service.getTheNumberOfArticles(map);
 		map.put("theNumberOfRows",theNumberOfRows);
 		map.put("pageNumber",pageNumber);
 		Command command=new Command();
 		Pagination p=command.process(map).getPageInfo();
 		logger.info("startRow is {}", p.getStartRow());
-		Integer startRow=p.getStartRow();
-		Integer endRow=p.getEndRow();
+		int startRow=p.getStartRow();
+		int endRow=p.getEndRow();
 		map.put("startRow",startRow);
 		map.put("endRow", endRow);
-		List<Article> list = service.boardList(map);
-		logger.info("articleList is {}", list);
-		map.put("list", list);
-		map.put("count",p.getTheNumberOfRows());
+		List<Article> articlesOnPage = service.boardList(map);
+		logger.info("articlesOnPage is {}", articlesOnPage);
+		map.put("articlesOnPage", articlesOnPage);
+		map.put("theNumberOfPages",p.getTheNumberOfPages());
 		map.put("prevBlock", p.getPrevBlock());
 		map.put("startPage", p.getStartPage());
 		map.put("endPage", p.getEndPage());
 		map.put("pageNumber", p.getPageNumber());
 		map.put("nextBlock", p.getNextBlock());
-		map.put("theNumberOfPages",p.getTheNumberOfPages());
+		map.put("pageSize", p.getPageSize());
+		map.put("blockSize", p.getBlockSize());
 		logger.info("the Number of Pages is {}", p.getTheNumberOfPages());
 		return map;
 	}
