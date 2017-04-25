@@ -490,11 +490,11 @@ app.bbs=(function(){
 		wrapper.empty();
 		wrapper.append(app.ui.searchWindowOnArticles());
 		wrapper.append(app.ui.articlesOnPage());
-		var $articlesOnPage=$('table#articlesOnPage'),
+		var $articlesOnPage=$('table#articles-on-page'),
 		 	$thead=$articlesOnPage.find('thead'),
 		 	$tbody=$articlesOnPage.find('tbody'),
-		 	$theNumberOfArticles=$('#theNumberOfArticles'),
-			$searchWindowOnArticles=$('#searchWindowOnArticles');
+		 	$theNumberOfArticles=$('#the-number-of-articles'),
+			$searchWindowOnArticles=$('#search-window-on-articles');
 		$thead.remove();
 		$tbody.empty();
 		$theNumberOfArticles.empty();
@@ -511,7 +511,6 @@ app.bbs=(function(){
 				blockSize=data.blockSize,
 				rows='',squares='',squareNumber=0;
 			$.each(articlesOnPage,function(i,article){
-				console.log('article.title: '+article.title);
 				rows+= '<tr><td>'+(i+1)+'</td>'
 			    +'<td>'+article.title+'</td>'
 			    +'<td>'+article.writerId+'</td>'
@@ -535,10 +534,7 @@ app.bbs=(function(){
 				+'<span aria-hidden="true">PREV</span>'
 				+'</a></li>';
 			}
-			
-			//squares+='<li><a href="'+context+'/get/articles/'+prevBlock+'">◀prev</a></li>';
 			for(var i=startPage;i<startPage+pageSize && i<=theNumberOfPages;i++){
-				console.log('startRow: '+startRow);
 					if(i==pageNumber){
 						squares+='<li><a href="#"><font>'+i+'</font></a></li>';
 					}else{
@@ -1240,22 +1236,21 @@ app.ui={
 			    '</div>	'+fileUpload);
 			$('#form').css('margin-top','20px');
 		},
+		// dddd
 		searchWindowOnArticles : function(){
-			return'<div id="searchWindow" style="margin: 0 auto;width:300px;margin-bottom:30px;">'
+			return'<div id="search-window" style="margin: 0 auto;width:300px;margin-bottom:30px;">'
 				+'<select name="property" name="property">'
-				+'<option value="id">작성자</option>'
-				+'<option value="title">제목</option>'
+				+	'<option value="id">작성자</option>'
+				+   '<option value="title">제목</option>'
 				+'</select>'
 				+'<input type="text" name="searchKeyword"/>'
-				+'<input id="searchBtn" type="button" value="검색"/></div>';
-				
+				+'<input id="btn-search" type="button" value="검색"/></div>';
 				
 		},
-		// dddd
 		articlesOnPage : function(){
-			return'<table id="articlesOnPage"><thead>'
+			return'<table id="articles-on-page"><thead>'
 				+'<tr>'
-				+'<td id="theNumberOfArticles" colspan="5">총게시글수: </td>'
+				+'<td id="the-number-of-articles" colspan="5">총게시글수: </td>'
 				+'</tr>'
 				+'<tr>'
 				+'<th>번호</th>'
