@@ -32,8 +32,6 @@ public class Command implements Orderable{
 		p.setTheNumberOfPages();
 		p.setTheNumberOfBlocks();
 		p.setStartPage();
-		p.setPrevBlock();
-		p.setNextBlock();
 		p.setEndPage();
 		System.out.println("####Start####"+p.getStartRow());
 		System.out.println("####End####"+p.getEndRow());
@@ -79,8 +77,7 @@ public class Command implements Orderable{
 		public final int PAGE_SIZE = 5;
 		public final int BLOCK_SIZE = 5;
 		private int theNumberOfRows, pageNumber, startRow, endRow, 
-				theNumberOfPages, theNumberOfBlocks, startPage,
-				prevBlock, nextBlock, endPage;
+				theNumberOfPages, theNumberOfBlocks, startPage,endPage;
 
 		public void setTheNumberOfRows(int theNumberOfRows) {
 			this.theNumberOfRows = theNumberOfRows;
@@ -112,12 +109,6 @@ public class Command implements Orderable{
 		public void setStartPage() {
 			this.startPage = pageNumber - ((pageNumber - 1) % BLOCK_SIZE);
 		}
-		public void setPrevBlock() {
-			this.prevBlock = startPage - BLOCK_SIZE;
-		}
-		public void setNextBlock() {
-			this.nextBlock = startPage + BLOCK_SIZE;
-		}
 		public void setEndPage() {
 			if ((startPage + theNumberOfRows - 1) < theNumberOfPages) {
 				endPage = startPage + BLOCK_SIZE - 1;
@@ -142,12 +133,6 @@ public class Command implements Orderable{
 		}
 		public int getStartPage() {
 			return startPage;
-		}
-		public int getPrevBlock() {
-			return prevBlock;
-		}
-		public int getNextBlock() {
-			return nextBlock;
 		}
 		public int getEndPage() {
 			return endPage;

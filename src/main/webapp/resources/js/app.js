@@ -502,16 +502,14 @@ app.bbs=(function(){
 			var articlesOnPage=data.articlesOnPage,
 				theNumberOfRows=data.theNumberOfRows,
 				theNumberOfPages=data.theNumberOfPages,
-				prevBlock=data.prevBlock,
 				startPage=data.startPage,
 				endPage=data.endPage,
 				pageNumber=data.pageNumber,
-				nextBlock=data.nextBlock,
 				startRow=data.startRow,
 				endRow=data.endRow,
 				pageSize=data.pageSize,
-				blocksize=data.blockSize,
-				rows='',foo='',bar='',baz='',qux='';
+				blockSize=data.blockSize,
+				rows='',squares='',squareNumber=0;
 			$.each(articlesOnPage,function(i,article){
 				console.log('article.title: '+article.title);
 				rows+= '<tr><td>'+(i+1)+'</td>'
@@ -526,21 +524,40 @@ app.bbs=(function(){
 			wrapper.append(pagination);
 			$pagination=$('#pagination ul');
 			// dddd
-			if(prevBlock > 0){
-				foo+='<li><a href="'+context+'/get/articles/'+prevBlock+'">◀prev</a></li>';
+			if(pageNumber>blockSize){
+				var foo=(pageNumber%blockSize==0)?
+						(Math.floor(((pageNumber-blockSize)/blockSize))*blockSize)+1-blockSize:
+						(Math.floor(((pageNumber-blockSize)/blockSize))*blockSize)+1;
+				squares+='<li><a onclick="app.bbs.articlesOnPage(1)" aria-label="Previous">'
+				+'<<'
+				+'</a></li>'
+				+'<li><a onclick="app.bbs.articlesOnPage('+foo+')" aria-label="Previous">'
+				+'<span aria-hidden="true">PREV</span>'
+				+'</a></li>';
 			}
+			
+			//squares+='<li><a href="'+context+'/get/articles/'+prevBlock+'">◀prev</a></li>';
 			for(var i=startPage;i<startPage+pageSize && i<=theNumberOfPages;i++){
 				console.log('startRow: '+startRow);
 					if(i==pageNumber){
-						foo+='<li><a href="#"><font>'+i+'</font></a></li>';
+						squares+='<li><a href="#"><font>'+i+'</font></a></li>';
 					}else{
-						foo+='<li><a href="#" onclick="app.bbs.articlesOnPage('+i+')">'+i+'</a></li>';
+						squares+='<li><a href="#" onclick="app.bbs.articlesOnPage('+i+')">'+i+'</a></li>';
 					}
+					squareNumber=i;
 			}
-			if(nextBlock <= theNumberOfPages){
-				foo+='<li><a href="'+context+'/get/articles/'+nextBlock+'">next▶</a></li>';	
+			if(squareNumber!=theNumberOfPages){
+				var foo=(pageNumber%blockSize==0)?
+						(Math.floor(((pageNumber+blockSize)/blockSize))*blockSize)+1-blockSize:
+						(Math.floor(((pageNumber+blockSize)/blockSize))*blockSize)+1;
+				squares+='<li><a href="#" onclick="app.bbs.articlesOnPage('+theNumberOfPages+')" aria-label="Next">'
+				+'<span style="font-size:12px;margin-left:10px" aria-hidden="true">NEXT</span>'
+				+'</a></li>'
+				+'<li><a href="#" onclick="app.bbs.articlesOnPage('+foo+')" style="font-size:12px" aria-label="Next">'
+				+'>>'
+				+'</a></li>';
 			}
-			$pagination.html(foo);
+			$pagination.html(squares);
 			wrapper.append(pagination);
 			$('#container').addClass('app-width-full-size');
 			$('#container>div').addClass('app-margin-center').css('width','500px');

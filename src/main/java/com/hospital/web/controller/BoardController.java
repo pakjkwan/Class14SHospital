@@ -45,13 +45,13 @@ public class BoardController {
 		logger.info("articlesOnPage is {}", articlesOnPage);
 		map.put("articlesOnPage", articlesOnPage);
 		map.put("theNumberOfPages",p.getTheNumberOfPages());
-		map.put("prevBlock", p.getPrevBlock());
 		map.put("startPage", p.getStartPage());
 		map.put("endPage", p.getEndPage());
 		map.put("pageNumber", p.getPageNumber());
-		map.put("nextBlock", p.getNextBlock());
 		map.put("pageSize", p.getPageSize());
 		map.put("blockSize", p.getBlockSize());
+		System.out.println("blockSize"+p.getBlockSize());
+		System.out.println("pageSize"+p.getPageSize());
 		logger.info("the Number of Pages is {}", p.getTheNumberOfPages());
 		return map;
 	}
