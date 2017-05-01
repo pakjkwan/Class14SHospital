@@ -20,289 +20,170 @@ app.algorithm=(function(){
 	var onCreate=function(){
 		setContentView();
 		series();
-		arr();
+		sort();
 		matrix();
 		math();
 		appl();
 	};
 	var setContentView=function(){};
-/*app-algorithm-series*/	
 	var series=function(){
 		$('#series').on('click',function(){
 			wrapper.empty();
-			wrapper.append(app.ui.algorithmTable());
-			$('#tableLeft').html(app.ui.algorithmSeriesMenu());
-			var tableRight=$('#tableRight');
-			aSeries();
-			$('#aSeries').on('click',function(){aSeries();});
-			$('#swSeries').on('click',function(){
-				tableRight.empty();
-				app.component.inputText('inputText').attr('placeholder','한계값입력(100 -> -50)').appendTo(tableRight);
-				app.component.aButton('aButton','btn-success').html('스위치수열의 합').appendTo(tableRight)
-					.css('margin','10px auto')
-					.on('click',function(){
-					var limit=$('#inputText').val();
-					app.component.divAlert('alert-success').html('1부터'+limit+'까지 스위치수열의 합은'+swSeries(limit)+'입니다.').appendTo(tableRight);
+			$.getScript(js+'/algorithm.js',function(){
+				wrapper.append(algorithmTable());
+				var $right=$('#tableRight'), $left=$('#tableLeft');
+				$left.html(seriesMenu());
+				$('#aSeries').on('click',function(){
+					$.getScript(js+'/algorithm.js',function(){
+						arithmeticSeries();
+					});
 				});
-			});
-			$('#dSeries').on('click',function(){
-				tableRight.empty();
-				app.component.inputText('inputText').attr('placeholder','한계값입력(5 -> 25)').appendTo(tableRight);
-				app.component.aButton('aButton','btn-info').html('계차수열의 합').appendTo(tableRight)
-					.css('margin','10px auto')
-					.on('click',function(){
-					var limit=$('#inputText').val();
-					app.component.divAlert('alert-info').html('1부터'+limit+'계차수열의 합은'+dSeries(limit)+'입니다.').appendTo(tableRight);
+				$('#swSeries').on('click',function(){
+					$right.empty();
+					app.component.inputText('inputText').attr('placeholder','한계값입력(100 -> -50)').appendTo(tableRight);
+					app.component.aButton('aButton','btn-success').html('스위치수열의 합').appendTo(tableRight)
+						.css('margin','10px auto')
+						.on('click',function(){
+						var limit=$('#inputText').val();
+						$.getScript(js+'/component.js',function(){
+							divAlert('alert-success').html('1부터'+limit+'까지 스위치수열의 합은'+switchSeries(limit)+'입니다.').appendTo(tableRight);
+						});
+						
+					});
 				});
-			});
-			$('#factorial').on('click',function(){
-				tableRight.empty();
-				app.component.inputText('inputText').attr('placeholder','한계값입력(5 -> 153)').appendTo(tableRight);
-				app.component.aButton('aButton','btn-warning').html('팩토리얼수열의 합').appendTo(tableRight)
-					.css('margin','10px auto')
-					.on('click',function(){
-					var limit=$('#inputText').val();
-					app.component.divAlert('alert-warning').html('1부터'+limit+'팩토리얼수열의 합은'+factorial(limit)+'입니다.').appendTo(tableRight);
+				$('#dSeries').on('click',function(){
+					$right.empty();
+					app.component.inputText('inputText').attr('placeholder','한계값입력(5 -> 25)').appendTo(tableRight);
+					app.component.aButton('aButton','btn-info').html('계차수열의 합').appendTo(tableRight)
+						.css('margin','10px auto')
+						.on('click',function(){
+						var limit=$('#inputText').val();
+						$.getScript(js+'/component.js',function(){
+							divAlert('alert-info').html('1부터'+limit+'계차수열의 합은'+differenceSeries(limit)+'입니다.').appendTo(tableRight);
+						});
+					});
 				});
+				$('#factorial').on('click',function(){
+					$right.empty();
+					app.component.inputText('inputText').attr('placeholder','한계값입력(5 -> 153)').appendTo(tableRight);
+					app.component.aButton('aButton','btn-warning').html('팩토리얼수열의 합').appendTo(tableRight)
+						.css('margin','10px auto')
+						.on('click',function(){
+						var limit=$('#inputText').val();
+						app.component.divAlert('alert-warning').html('1부터'+limit+'팩토리얼수열의 합은'+factorial(limit)+'입니다.').appendTo(tableRight);
+					});
+				});
+				$('#fibonacci').on('click',function(){
+					$right.empty();
+					app.component.inputText('inputText').attr('placeholder','한계값입력((5 -> 12))').appendTo(tableRight);
+					app.component.aButton('aButton','btn-danger').html('피보나치수열의 합').appendTo(tableRight)
+						.css('margin','10px auto')
+						.on('click',function(){
+						var limit=$('#inputText').val();
+						app.component.divAlert('alert-danger').html('1부터'+limit+'피보나치수열의 합은'+fibonacci(limit)+'입니다.').appendTo(tableRight);
+					});
+				});
+			
 			});
-			$('#fibonacci').on('click',function(){
-				tableRight.empty();
-				app.component.inputText('inputText').attr('placeholder','한계값입력((5 -> 12))').appendTo(tableRight);
-				app.component.aButton('aButton','btn-danger').html('피보나치수열의 합').appendTo(tableRight)
-					.css('margin','10px auto')
-					.on('click',function(){
-					var limit=$('#inputText').val();
-					app.component.divAlert('alert-danger').html('1부터'+limit+'피보나치수열의 합은'+fibonacci(limit)+'입니다.').appendTo(tableRight);
+		});
+	};
+	var sort=function(){
+		$('#arr').on('click',function(){
+			wrapper.empty();
+			$.getScript(js+'/algorithm.js',function(){
+				wrapper.append(algorithmTable());
+				var $right=$('#tableRight'),$left=$('#tableLeft');
+				var str='';
+				$.each(sortMenu(),function(i,j){
+					str+='<li id="'+j.id+'" class="list-group-item"><a href="#">'+j.txt+'</a></li>';
+				});
+				$left.html(str);
+				$('#selectSort').on('click',function(){
+					$.getScript(js+'/component.js',function(){
+						$right.html(horList(selectSort(6,1,45),'default'));
+					});
+						
+				});
+				$('#bubbleSort').on('click',function(){
+					$.getScript(js+'/component.js',function(){
+						$right.html(horList(bubbleSort(6,1,45),'default'));
+					});
+				});
+				$('#insertSort').on('click',function(){
+					$.getScript(js+'/component.js',function(){
+						$right.html(horList(insertSort(6,1,45),'default'));
+					});
+				});
+				$('#ranking').on('click',function(){
+					var x=randomGen(6,1,45);
+					$.getScript(js+'/component.js',function(){
+						$right.html(horList(x,'default'));
+						$right.append(horList(ranking(x),'default'));
+					});
+				});
+				$('#binSearch').on('click',function(){
+					var arr=ascSort(randomGen(6,1,45));
+					$right.html(app.component.horList(arr,'default'));
+					app.component.inputText('inputText').attr('placeholder','찾을 숫자').appendTo($right);
+					app.component.aButton('aButton','btn-warning').html('찾기').appendTo($right)
+						.css('margin','10px auto')
+						.on('click',function(){
+							var x=$('#inputText').val();
+						//	binSearch(x,arr);
+						/*	var fnum=(arr.length-1)-(arr.length-2);
+							var pnum=arr.length-1;
+							var i=val*1;
+							for(i=0;i<pnum;i++){
+								if(fnum<=pnum){
+									var m=Math.floor((fnum+pnum)/2);
+									if(v==arr[m]){
+										var result=m;
+										break;
+									}
+									if(v<arr[m]){
+										fnum=m+1;
+									}else{
+										pnum=m-1;
+									}
+							}
+							}*/
+							app.component.divAlert('alert-danger').html('index=: 의 숫자는' +binSearch(x,arr)+ '입니다.').appendTo($right);
+						});					
+					
+				});
+				$('#merge').on('click',function(){ // notComplete
+					var num1=randomGen(3,1,50);
+					var num2=randomGen(3,51,99);
+					var arr1=ascSort(num1);
+					var arr2=ascSort(num2);
+					var arr=[];
+					var i=0;
+					var j=0;
+					$right.html(app.component.horList(arr1,'default'));
+					$right.append(app.component.horList(arr2,'default'));
+					app.component.aButton('aButton','btn-warning').html('병합').appendTo(tableRight)
+						.css('margin','10px auto')
+						.on('click',function(){
+					for(k=0;k<12;k++){
+						if(arr1[i]<arr2[j]){
+							arr[k]=arr1[i];
+							i++;
+						}else if(arr1[i]==arr2[2]){
+							arr[k]=arr1[i];
+							i++;
+						}else{
+							arr[k]=arr2[j];
+							j++;
+						}
+					}
+					$right.html(app.component.horList(arr,'default'));
+				  });
 				});
 			});
 			
 		});
 	};
-	var aSeries = function(){
-		$('#tableRight').empty();
-		app.component.inputText('inputText').attr('placeholder','시작값 한계값 공차(공백으로 구분)입력').appendTo(tableRight);
-		app.component.aButton('aButton','btn-primary').html('등차수열의 합').appendTo(tableRight)
-			.css('margin','10px auto')
-			.on('click',function(){
-				
-				var inputVal=$('#inputText').val();
-				console.log('inputVal:'+inputVal);
-				var arr=inputVal.split(' ');
-				var start=arr[0];
-				var limit=arr[1];
-				var diff=arr[2];
-				console.log('start:'+start+',limit:'+limit+',diff:'+diff);
-				var start=start*1,limit=limit*1,diff=diff*1;
-				var sum=0;
-				var rs="";
-				var i=start;
-				while(i<=limit){
-					rs+=(i+diff>limit)?i+"=":i+"+";
-					sum+=i;
-					i+=diff;
-				}
-				
-				app.component.divAlert('alert-danger').html(rs+sum).appendTo(tableRight);
-		});
 	
-	};
-	var swSeries = function(limit){
-		//1,-2,3,-4,5,-6
-		var sum = 0;
-		 var flag=-1;
-		 for(i=0;i<=limit;i++){
-			sum += flag*i;
-			flag = -1*flag;
-		 }
-		return sum;
-	};
-	var dSeries = function(limit){
-		//1,2,4,7,11
-		var sum = 1,total=0;
-		var total = 0;
-		for(i=0;i<limit;i++){
-			sum += i;
-			total += sum ;
-		}
-		return total;
-	};
-	var factorial = function(limit){
-		//1!,1!+2!,1!+2!+3!,1!+2!+3!+4!,1!+2!+3!+4!+5!
-		 var sum = 1, total = 0;
-		 for(i=1;i<=limit;i++){
-			 sum = sum*i;
-			 total += sum;
-		 }
-		 if(limit == 0){total = 0;}else if(limit == 1){total = 1;}
-		return total;
-	};
-	var fibonacci = function(limit){
-		//1,1,2,3,5,8,13,21,
-		 var sum = 2,a = 1,b = 1,c = 0;
-		 for(i=3;i<=limit;i++){
-			 c=a+b;
-			 sum+=c;
-			 a=b;
-			 b=c;
-		 }
-		 if(limit == 0){sum = 0;}else if(limit == 1){sum = 1;}else if(limit == 2){sum = 2;} 
-		return sum;
-	};
-/*app-algorithm-array*/	
-	var arr=function(){
-		$('#arr').on('click',function(){
-			wrapper.empty();
-			wrapper.append(app.ui.algorithmTable());
-			var arr=[{id:'selectSort',txt:'선택정렬'},
-				{id:'bubbleSort',txt:'버블정렬'},
-				{id:'insertSort',txt:'삽입정렬'},
-				{id:'ranking',txt:'석차구하기'},
-				{id:'binSearch',txt:'이분검색'},
-				{id:'merge',txt:'병합'},
-				{id:'stack',txt:'스택'}];
-			var str='';
-			$.each(arr,function(i,j){
-				str+='<li id="'+j.id+'" class="list-group-item"><a href="#">'+j.txt+'</a></li>';
-			});
-			$('#tableLeft').html(str);
-			$('#selectSort').on('click',function(){
-				var i=0,j=0,temp=0;
-				var arr=randomGen();
-				for(i=0;i<arr.length;i++){
-					for(j=i;j<arr.length;j++){
-						if(arr[i]>arr[j+1]){
-							temp = arr[i];
-							arr[i] = arr[j+1];
-							arr[j+1] = temp;
-						}
-					}
-				}
-				
-				$('#tableRight').html(app.component.horList(arr,'default'));	
-			});
-			$('#bubbleSort').on('click',function(){
-				
-				var arr=randomGen();
-				var num=0,i=0,j=0;
-				for(i=0;i<arr.length;i++){
-					for(j=0;j<arr.length;j++){
-						if(arr[j]>arr[j+1]){
-							num=arr[j];
-							arr[j]=arr[j+1];
-							arr[j+1]=num;
-						}
-					}
-				}
-				$('#tableRight').html(app.component.horList(arr,'default'));	
-			});
-			$('#insertSort').on('click',function(){
-				var arr=randomGen();
-				var i=0,j=0;
-				
-				
-				$('#tableRight').html(app.component.horList(arr,'default'));	
-			});
-			$('#ranking').on('click',function(){
-				var arr=randomGen();
-				var rank=[1,1,1,1,1,1];
-				for(var i=0;i<arr.length;i++){
-					for(var k=0;k<arr.length;k++){
-						if(arr[i]<arr[k]){
-							rank[i]++;
-						}
-					}
-				}
-				$('#tableRight').html(app.component.horList(arr,'default'));
-				$('#tableRight').append(app.component.horList(rank,'default'));
-			});
-			$('#binSearch').on('click',function(){
-				var num=randomGen();
-				var arr=sort(num);
-				$('#tableRight').html(app.component.horList(arr,'default'));
-				app.component.inputText('inputText').attr('placeholder','찾을 숫자').appendTo(tableRight);
-				app.component.aButton('aButton','btn-warning').html('찾기').appendTo(tableRight)
-					.css('margin','10px auto')
-					.on('click',function(){
-						var val=$('#inputText').val();
-						var fnum=(arr.length-1)-(arr.length-2);
-						var pnum=arr.length-1;
-						var i=val*1;
-						for(i=0;i<pnum;i++){
-							if(fnum<=pnum){
-								var m=Math.floor((fnum+pnum)/2);
-								if(v==arr[m]){
-									var result=m;
-									break;
-								}
-								if(v<arr[m]){
-									fnum=m+1;
-								}else{
-									pnum=m-1;
-								}
-						}
-						}
-						app.component.divAlert('alert-danger').html('index=: '+result + '의 숫자는' +arr[m]+ '입니다.').appendTo(tableRight);
-					});					
-				
-			});
-			$('#merge').on('click',function(){
-				var num1=randomGen();
-				var num2=randomGen();
-				var arr1=sort(randomGen());
-				var arr2=sort(randomGen());
-				var arr=[];
-				var i=0;
-				var j=0;
-				$('#tableRight').html(app.component.horList(arr1,'default'));
-				$('#tableRight').append(app.component.horList(arr2,'default'));
-				app.component.aButton('aButton','btn-warning').html('병합').appendTo(tableRight)
-					.css('margin','10px auto')
-					.on('click',function(){
-				for(k=0;k<12;k++){
-					if(arr1[i]<arr2[j]){
-						arr[k]=arr1[i];
-						i++;
-					}else if(arr1[i]==arr2[2]){
-						arr[k]=arr1[i];
-						i++;
-					}else{
-						arr[k]=arr2[j];
-						j++;
-					}
-				}
-				$('#tableRight').append(app.component.horList(arr,'default'));
-			  });
-			});
-		});
-	};
-	var randomGen=function(){
-		var i=0,k=0;
-		var arr=[];
-		for(;i<6;i++){
-			arr[i]=Math.floor(Math.random() * 45) + 1;
-			for(k=i;k>0;k--){
-				if(arr[i]==arr[k-1]){
-					i--;
-				}
-			}
-		}
-		return arr;
-	};
-	var sort=function(arr){
-		var i=0,j=0,temp=0;
-		var arr=randomGen();
-		for(i=0;i<arr.length;i++){
-			for(j=i;j<arr.length;j++){
-				if(arr[i]>arr[j+1]){
-					temp = arr[i];
-					arr[i] = arr[j+1];
-					arr[j+1] = temp;
-				}
-			}
-		}
-		return arr;
-	}
-/* app-algorithm-matrix */	
 	var matrix=function(){
 		$('#matrix').on('click',function(){
 			var wrapper=app.component.getWrapper();
@@ -453,13 +334,8 @@ app.algorithm=(function(){
 	return {
 		init : init,
 		series : series,
-		aSeries : aSeries,
-		swSeries : swSeries,
-		dSeries : dSeries,
-		factorial : factorial,
-		fibonacci : fibonacci,
-		arr : arr,
-		randomGen : randomGen,
+		sort : sort,
+		/*randomGen : randomGen,*/
 		sort:sort,
 		matrix : matrix,
 		basic : basic,
@@ -610,18 +486,8 @@ app.component=(function(){
 			return $('<input id="'+id+'" type="text" class="form-control" placeholder="example" aria-describedby="basic-addon1">');
 		},
 /*app-component-alert*/			
-		divAlert : function(type){ // alert-danger
-			return $('<div class="alert '+type+'" role="alert">example</div>');
-		},
-/*app-component-list*/			
-		horList : function(arr,type){
-			var list='<div class="btn-group" role="group" aria-label="...">';
-			$.each(arr,function(i,j){
-				list+='<button id="list-button-"'+i+' type="button" class="btn btn-'+type+'">'+arr[i]+'</button>';
-			});
-			list+='</div>';
-			return list;
-		},
+		
+
 /*app-component-table*/			
 		panelTable : function(jason,txt,type){
 			

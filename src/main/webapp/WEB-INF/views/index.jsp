@@ -68,11 +68,6 @@
 </div>
 </body>
 <script>
-$(function(){
-	$('#test').on('click',function(){
-		alert('success');
-	});
-});
 app.context.init('${context}');
 </script>  
 </html>
