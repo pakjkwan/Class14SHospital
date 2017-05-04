@@ -1,182 +1,184 @@
 var app=app || {};
-/*
-========= app-algorithm ====
-@AUTHOR : pakjkwan@gmail.com
-@CREATE DATE : 2017-4-1
-@UPDATE DATE : 2017-4-1
-@DESC : 
-==============================
-*/
 app.algorithm=(function(){
-	var wrapper,ctx,img,js,css;
-	var init=function(){
-		wrapper=app.component.getWrapper();
-		ctx=app.session.getContextPath();
-		img=app.session.getImagePath();
-		js=app.session.getJavascriptPath();
-		css=app.session.getStylePath();
-		onCreate();
-	};
+	var wrapper,context,algorithm,component;
 	var onCreate=function(){
+		wrapper=$('#wrapper');
+		context=$.context();
+		algorithm=$.javascript()+'/algorithm.js';
+		component=$.javascript()+'/component.js';
 		setContentView();
+	};
+	var setContentView=function(){
 		series();
 		sort();
 		matrix();
 		math();
 		appl();
 	};
-	var setContentView=function(){};
 	var series=function(){
 		$('#series').on('click',function(){
-			wrapper.empty();
-			$.getScript(js+'/algorithm.js',function(){
-				wrapper.append(algorithmTable());
+			$.getScript(component,function(){
+				wrapper.empty();
+				wrapper.append(createTable1By2());
 				var $right=$('#tableRight'), $left=$('#tableLeft');
-				$left.html(seriesMenu());
+				$left.html(createSeriesMenu());
 				$('#aSeries').on('click',function(){
-					$.getScript(js+'/algorithm.js',function(){
-						arithmeticSeries();
+						$('#tableRight').empty();
+						createInputText('input-val','form-control').attr('placeholder','INPUT START LIMIT DIFFERENCE (CATEGORIZED BY SPACE)').appendTo($right);
+						createATag('aButton','btn-primary').html('등차수열의 합').appendTo($right)
+							.css('margin','10px auto')
+							.on('click',function(){
+								$.getScript(algorithm, function(){
+									var arr=$('#input-val').val().split(' ');
+								createDivAlert('alert-danger').html(arithmeticSeries(arr[0],arr[1],arr[2])).appendTo($right);
+						});
 					});
 				});
 				$('#swSeries').on('click',function(){
 					$right.empty();
-					app.component.inputText('inputText').attr('placeholder','한계값입력(100 -> -50)').appendTo(tableRight);
-					app.component.aButton('aButton','btn-success').html('스위치수열의 합').appendTo(tableRight)
+					createInputText('limit','form-control').attr('placeholder','INPUT LIMIT(100 -> -50)').appendTo($right);
+					createATag('aButton','btn-success').html('스위치수열의 합').appendTo($right)
 						.css('margin','10px auto')
 						.on('click',function(){
-						var limit=$('#inputText').val();
-						$.getScript(js+'/component.js',function(){
-							divAlert('alert-success').html('1부터'+limit+'까지 스위치수열의 합은'+switchSeries(limit)+'입니다.').appendTo(tableRight);
+						var limit=$('#limit').val();
+						$.getScript(algorithm,function(){
+							createDivAlert('alert-success').html('1부터'+limit+'까지 스위치수열의 합은'+switchSeries(limit)+'입니다.').appendTo($right);
 						});
-						
 					});
 				});
 				$('#dSeries').on('click',function(){
 					$right.empty();
-					app.component.inputText('inputText').attr('placeholder','한계값입력(5 -> 25)').appendTo(tableRight);
-					app.component.aButton('aButton','btn-info').html('계차수열의 합').appendTo(tableRight)
+					createInputText('limit','form-control').attr('placeholder','한계값입력(5 -> 25)').appendTo($right);
+					createATag('aButton','btn-info').html('계차수열의 합').appendTo($right)
 						.css('margin','10px auto')
 						.on('click',function(){
-						var limit=$('#inputText').val();
-						$.getScript(js+'/component.js',function(){
-							divAlert('alert-info').html('1부터'+limit+'계차수열의 합은'+differenceSeries(limit)+'입니다.').appendTo(tableRight);
+						var limit=$('#limit').val();
+						$.getScript(algorithm,function(){
+							createDivAlert('alert-info').html('1부터'+limit+'계차수열의 합은'+differenceSeries(limit)+'입니다.').appendTo($right);
 						});
 					});
 				});
 				$('#factorial').on('click',function(){
 					$right.empty();
-					app.component.inputText('inputText').attr('placeholder','한계값입력(5 -> 153)').appendTo(tableRight);
-					app.component.aButton('aButton','btn-warning').html('팩토리얼수열의 합').appendTo(tableRight)
+					createInputText('limit','form-control').attr('placeholder','한계값입력(5 -> 153)').appendTo($right);
+					createATag('aButton','btn-warning').html('팩토리얼수열의 합').appendTo($right)
 						.css('margin','10px auto')
 						.on('click',function(){
-						var limit=$('#inputText').val();
-						app.component.divAlert('alert-warning').html('1부터'+limit+'팩토리얼수열의 합은'+factorial(limit)+'입니다.').appendTo(tableRight);
+						var limit=$('#limit').val();
+						$.getScript(algorithm,function(){
+							createDivAlert('alert-warning').html('From 1 To '+limit+', Sum of Factorial is '+factorial(limit)).appendTo($right);	
+						});
 					});
 				});
 				$('#fibonacci').on('click',function(){
 					$right.empty();
-					app.component.inputText('inputText').attr('placeholder','한계값입력((5 -> 12))').appendTo(tableRight);
-					app.component.aButton('aButton','btn-danger').html('피보나치수열의 합').appendTo(tableRight)
+					createInputText('inputText','form-control').attr('placeholder','한계값입력((5 -> 12))').appendTo($right);
+					createATag('aButton','btn-danger').html('피보나치수열의 합').appendTo($right)
 						.css('margin','10px auto')
 						.on('click',function(){
 						var limit=$('#inputText').val();
-						app.component.divAlert('alert-danger').html('1부터'+limit+'피보나치수열의 합은'+fibonacci(limit)+'입니다.').appendTo(tableRight);
+						$.getScript(algorithm,function(){
+							createDivAlert('alert-danger').html('1부터'+limit+'피보나치수열의 합은'+fibonacci(limit)+'입니다.').appendTo($right);
+						});
 					});
 				});
 			
 			});
 		});
 	};
+	
 	var sort=function(){
 		$('#arr').on('click',function(){
-			wrapper.empty();
-			$.getScript(js+'/algorithm.js',function(){
-				wrapper.append(algorithmTable());
+			$.getScript(component,function(){
+				wrapper.empty();
+				wrapper.append(createTable1By2());
 				var $right=$('#tableRight'),$left=$('#tableLeft');
 				var str='';
-				$.each(sortMenu(),function(i,j){
+				$.each(createSortMenu(),function(i,j){
 					str+='<li id="'+j.id+'" class="list-group-item"><a href="#">'+j.txt+'</a></li>';
 				});
 				$left.html(str);
 				$('#selectSort').on('click',function(){
-					$.getScript(js+'/component.js',function(){
-						$right.html(horList(selectSort(6,1,45),'default'));
+					$.getScript(algorithm,function(){
+						$right.html(createHorList(selectSort(6,1,45),'default'));
 					});
-						
 				});
 				$('#bubbleSort').on('click',function(){
-					$.getScript(js+'/component.js',function(){
-						$right.html(horList(bubbleSort(6,1,45),'default'));
+					$.getScript(algorithm,function(){
+						$right.html(createHorList(bubbleSort(6,1,45),'default'));
 					});
 				});
 				$('#insertSort').on('click',function(){
-					$.getScript(js+'/component.js',function(){
-						$right.html(horList(insertSort(6,1,45),'default'));
+					$.getScript(algorithm,function(){
+						$right.html(createHorList(insertSort(6,1,45),'default'));
 					});
 				});
 				$('#ranking').on('click',function(){
-					var x=randomGen(6,1,45);
-					$.getScript(js+'/component.js',function(){
-						$right.html(horList(x,'default'));
-						$right.append(horList(ranking(x),'default'));
+					$.getScript(algorithm,function(){
+						var x=randomGen(6,1,45);
+						$right.html(createHorList(x,'default'));
+						$right.append(createHorList(ranking(x),'default'));
 					});
 				});
 				$('#binSearch').on('click',function(){
-					var arr=ascSort(randomGen(6,1,45));
-					$right.html(app.component.horList(arr,'default'));
-					app.component.inputText('inputText').attr('placeholder','찾을 숫자').appendTo($right);
-					app.component.aButton('aButton','btn-warning').html('찾기').appendTo($right)
-						.css('margin','10px auto')
-						.on('click',function(){
-							var x=$('#inputText').val();
-						//	binSearch(x,arr);
-						/*	var fnum=(arr.length-1)-(arr.length-2);
-							var pnum=arr.length-1;
-							var i=val*1;
-							for(i=0;i<pnum;i++){
-								if(fnum<=pnum){
-									var m=Math.floor((fnum+pnum)/2);
-									if(v==arr[m]){
-										var result=m;
-										break;
-									}
-									if(v<arr[m]){
-										fnum=m+1;
-									}else{
-										pnum=m-1;
-									}
-							}
-							}*/
-							app.component.divAlert('alert-danger').html('index=: 의 숫자는' +binSearch(x,arr)+ '입니다.').appendTo($right);
-						});					
-					
+					$.getScript(algorithm,function(){
+						var arr=ascSort(randomGen(6,1,45));
+						$right.html(createHorList(arr,'default'));
+						createInputText('inputText','form-control').attr('placeholder','찾을 숫자').appendTo($right);
+						createATag('aButton','btn-warning').html('찾기').appendTo($right)
+							.css('margin','10px auto')
+							.on('click',function(){
+								var x=$('#inputText').val();
+							//	binSearch(x,arr);
+							/*	var fnum=(arr.length-1)-(arr.length-2);
+								var pnum=arr.length-1;
+								var i=val*1;
+								for(i=0;i<pnum;i++){
+									if(fnum<=pnum){
+										var m=Math.floor((fnum+pnum)/2);
+										if(v==arr[m]){
+											var result=m;
+											break;
+										}
+										if(v<arr[m]){
+											fnum=m+1;
+										}else{
+											pnum=m-1;
+										}
+								}
+								}*/
+								createDivAlert('alert-danger').html('index=: 의 숫자는' +binSearch(x,arr)+ '입니다.').appendTo($right);
+							});	
+					});
 				});
 				$('#merge').on('click',function(){ // notComplete
-					var num1=randomGen(3,1,50);
-					var num2=randomGen(3,51,99);
-					var arr1=ascSort(num1);
-					var arr2=ascSort(num2);
-					var arr=[];
-					var i=0;
-					var j=0;
-					$right.html(app.component.horList(arr1,'default'));
-					$right.append(app.component.horList(arr2,'default'));
-					app.component.aButton('aButton','btn-warning').html('병합').appendTo(tableRight)
-						.css('margin','10px auto')
-						.on('click',function(){
-					for(k=0;k<12;k++){
-						if(arr1[i]<arr2[j]){
-							arr[k]=arr1[i];
-							i++;
-						}else if(arr1[i]==arr2[2]){
-							arr[k]=arr1[i];
-							i++;
-						}else{
-							arr[k]=arr2[j];
-							j++;
+					$.getScript(algorithm,function(){
+						var num1=randomGen(3,1,50);
+						var num2=randomGen(3,51,99);
+						var arr1=ascSort(num1);
+						var arr2=ascSort(num2);
+						var arr=[];
+						var i=0;
+						var j=0;
+						$right.html(createHorList(arr1,'default'));
+						$right.append(createHorList(arr2,'default'));
+						createATag('aButton','btn-warning').html('병합').appendTo($right)
+							.css('margin','10px auto')
+							.on('click',function(){
+						for(k=0;k<12;k++){
+							if(arr1[i]<arr2[j]){
+								arr[k]=arr1[i];
+								i++;
+							}else if(arr1[i]==arr2[2]){
+								arr[k]=arr1[i];
+								i++;
+							}else{
+								arr[k]=arr2[j];
+								j++;
+							}
 						}
-					}
-					$right.html(app.component.horList(arr,'default'));
+						$right.html(createDivAlert(arr,'default'));
+					});
 				  });
 				});
 			});
@@ -186,377 +188,183 @@ app.algorithm=(function(){
 	
 	var matrix=function(){
 		$('#matrix').on('click',function(){
-			var wrapper=app.component.getWrapper();
-			wrapper.empty();
-			wrapper.append(app.ui.algorithmTable());
-			var arr=[{id:'basic',txt:'기본5X5'},
-				{id:'ziazag',txt:'지그재그'},
-				{id:'diamond',txt:'다이아몬드'},
-				{id:'sandGlass',txt:'모래시계'},
-				{id:'snail',txt:'달팽이'},
-				{id:'magicSquare',txt:'마방진'}];
-			var str='';
-			$.each(arr,function(i,j){
-				str+='<li id="'+j.id+'" class="list-group-item"><a href="#">'+j.txt+'</a></li>';
+			$.getScript(component,function(){
+				wrapper.empty();
+				wrapper.append(createTable1By2());
+				var $right=$('#tableRight'),$left=$('#tableLeft');
+				
+				var str='';
+				$.each(createMatrixMenu(),function(i,j){
+					str+='<li id="'+j.id+'" class="list-group-item"><a href="#">'+j.txt+'</a></li>';
+				});
+				$left.html(str);	
+				$('#basic').on('click',function(){
+					$.getScript(algorithm,function(){
+						$right.html(panelTable(fiveByFive(),'Basic','default'));
+					});
+							
+				});
+				// IncompleteSource!! add matrix click event
 			});
-			$('#tableLeft').html(str);	
-			basic();
+		
 		});
 		
 	};
-	var basic=function(){
-		$('#basic').on('click',function(){
-			var mtx = new Array(new Array(5), new Array(5),new Array(5), new Array(5),new Array(5));
-			var jason=[
-		        {
-		            a : 1,
-		            b : 2,
-		            c : 3,
-		            d : 4,
-		            e : 5
-		        },
-		        {
-		        	a : 6,
-		            b : 7,
-		            c : 8,
-		            d : 9,
-		            e : 10
-		        },
-		        {
-		        	a : 11,
-		            b : 12,
-		            c : 13,
-		            d : 14,
-		            e : 15
-		        },
-		        {
-		        	a : 16,
-		            b : 17,
-		            c : 18,
-		            d : 19,
-		            e : 20
-		        },
-		        {
-		        	a : 21,
-		            b : 22,
-		            c : 23,
-		            d : 24,
-		            e : 25
-		        }
-		    ];
-			$('#tableRight').html(app.component.panelTable(jason,'Basic','default'));
-		});
-		
-	};
-/* app-algorithm-math */	
 	var math=function(){
-		var wrapper=app.component.getWrapper();
 		$('#math').on('click',function(){
-			wrapper.empty();
-			wrapper.append(app.ui.algorithmTable());
-			var arr=[{id:'determinePrime',txt:'소수판별'},
-				{id:'primeSum',txt:'소수의합'},
-				{id:'primeCount',txt:'소수의개수'},
-				{id:'lcmGcd',txt:'최대최소공배수'},
-				{id:'euclid',txt:'유클리드 호제법'},
-				{id:'fatorization',txt:'약수구하기'},
-				{id:'primeFactor',txt:'소인수분해'},
-				{id:'multiSum',txt:'배수의 합'},
-				{id:'approx',txt:'근사값 구하기'}];
-			var str='';
-			$.each(arr,function(i,j){
-				str+='<li id="'+j.id+'" class="list-group-item"><a href="#">'+j.txt+'</a></li>';
+			$.getScript(component,function(){
+				wrapper.empty();
+				wrapper.append(createTable1By2());
+				var $right=$('#tableRight'),$left=$('#tableLeft');
+				var str='';
+				$.each(createMathMenu(),function(i,j){
+					str+='<li id="'+j.id+'" class="list-group-item"><a href="#">'+j.txt+'</a></li>';
+				});
+				$left.html(str);
+				$('#determinePrime').on('click',function(){
+					alert('determinePrime click');
+					createInputText('target','form-control').attr('placeholder','입력 값').appendTo($right);
+					createATag('btn','btn-warning').html('약수 구하기').appendTo($right)
+						.css('margin','10px auto');
+					// IncompleteSource
+				});
+				$('#primeFactor').on('click',function(){
+					createInputText('target','form-control').attr('placeholder','입력 값').appendTo($right);
+					createATag('btn','btn-warning').html('소인수 분해').appendTo($right)
+						.css('margin','10px auto');
+					$('#btn').on('click',function(){
+						$.getScript(algorithm,function(){
+							var target=$('#target').val()
+							var x=primefactor();
+							createDivAlert('alert-danger').html(target+'의 소인수 분해 :'+x.substr(0,x.lastIndexOf('*'))).appendTo($right);
+						});
+					});
+				});
+				$('#multiSum').on('click',function(){
+					$right.empty();
+					createInputText('target','form-control').attr('placeholder','Target p=5').appendTo($right);
+					createInputText('start','form-control').attr('placeholder','Start q=1').appendTo($right);
+					createInputText('end','form-control').attr('placeholder','End r=100').appendTo($right);
+					createATag('btn','btn-warning').html('Expected Count is 20, Sum is 1050').appendTo($right)
+						.css('margin','10px auto');
+					$('#btn').on('click',function(){
+						var p=$('#target').val(),q=$('#start').val(),r=$('#end').val();
+						$.getScript(algorithm,function(){
+							createDivAlert('alert-danger').html('The sum is '+sumOfMultiplesOfTargetFromStartToEnd(p,q,r)).appendTo($right);
+							
+						});
+					});
+				});
 			});
-			$('#tableLeft').html(str);
-			determinePrime();
-			primefactor();
-			multiSum();
-		});
-		
-	};
-	var determinePrime=function(){
-		$('#determinePrime').on('click',function(){
-			alert('determinePrime click');
 		});
 	};
-	var primefactor=function(){
-		$('#primeFactor').on('click',function(){
-			alert('소인수 분해!!!');
-			app.component.inputText('inputText').attr('placeholder','입력 값').appendTo(tableRight);
-			app.component.aButton('aButton','btn-warning').html('소인수 분해').appendTo(tableRight)
-				.css('margin','10px auto')
-				.on('click',function(){
-					var val=$('#inputText').val();
-					var prime=2;
-					var val=val;
-					var result='';
-					for(i=0;i<=val;i++){
-						if(val%prime!=0){
-							prime++;
-						}else{
-							val/=prime;
-							result+=prime+'*';
-						}
-					}
-					app.component.divAlert('alert-danger').html(val+'의 소인수 분해 :'+result.substr(0,result.lastIndexOf('*'))).appendTo(tableRight);
-				});
-		});
-	};
-	var multiSum=function(){
-		$('#multiSum').on('click',function(){
-			alert('소인수 분해!!!');
-			app.component.inputText('inputText').attr('placeholder','입력 값').appendTo(tableRight);
-			app.component.inputText('limit').attr('placeholder','한계 값').appendTo(tableRight);
-			app.component.aButton('aButton','btn-warning').html('배수의 합').appendTo(tableRight)
-				.css('margin','10px auto')
-				.on('click',function(){
-					var val=$('#inputText').val()*1;
-					var limit=$('#limit').val()*1;
-					var sum=0;
-					for(i=0;i<=limit;i++){
-						if(i%val==0){
-							sum+=i;
-						}
-						
-					}
-					app.component.divAlert('alert-danger').html(val+'의 배수의 합은:'+sum).appendTo(tableRight);
-				});
-			app.component.divAlert.empty();
-		});
-
-	}
-/* app-algorithm-application */	
 	var appl=function(){
 		$('#appl').on('click',function(){
 			alert('appl click');
 		});
 	};	
-	return {
-		init : init,
-		series : series,
-		sort : sort,
-		/*randomGen : randomGen,*/
-		sort:sort,
-		matrix : matrix,
-		basic : basic,
-		math : math,
-		determinePrime : determinePrime,
-		primefactor:primefactor,
-		appl : appl
-	};
+	return {onCreate : onCreate};
 })();
-/*
-========= app-bbs ====
-@AUTHOR : pakjkwan@gmail.com
-@CREATE DATE : 2017-4-1
-@UPDATE DATE : 2017-4-1
-@DESC : 
-==============================
-*/
-app.bbs=(function(){
-	var init=function(){
-		$('#bbs').on('click',function(e){
-			e.preventDefault();
-			wrapper.html(app.ui.searchWindowOnArticles());
-			app.bbs.articlesOnPage(1);
+app.noticeBoard=(function(){
+	var wrapper,noticeBoard,component;
+	var onCreate=function(){
+		wrapper=$('#wrapper');
+		context=$.context();
+		component=$.javascript()+'/component.js';
+		noticeBoard=$.javascript()+'/notice-board.js';
+		setContentView();
+	};
+	var setContentView=function(){
+		$('#notice-board').on('click',function(){
+			articlesOnPage(1);
 		});
 	};
 	var articlesOnPage=function(pageNumber){
-		var context=app.session.getContextPath();
-		wrapper.empty();
-		wrapper.append(app.ui.searchWindowOnArticles());
-		wrapper.append(app.ui.articlesOnPage());
-		var $articlesOnPage=$('table#articles-on-page'),
-		 	$thead=$articlesOnPage.find('thead'),
-		 	$tbody=$articlesOnPage.find('tbody'),
-		 	$theNumberOfArticles=$('#the-number-of-articles'),
-			$searchWindowOnArticles=$('#search-window-on-articles');
-		$thead.remove();
-		$tbody.empty();
-		$theNumberOfArticles.empty();
-		$.getJSON(context+'/get/articles/'+pageNumber,function(data){
-			var articlesOnPage=data.articlesOnPage,
-				theNumberOfRows=data.theNumberOfRows,
-				theNumberOfPages=data.theNumberOfPages,
-				startPage=data.startPage,
-				endPage=data.endPage,
-				pageNumber=data.pageNumber,
-				startRow=data.startRow,
-				endRow=data.endRow,
-				pageSize=data.pageSize,
-				blockSize=data.blockSize,
-				rows='',squares='',squareNumber=0;
-			$.each(articlesOnPage,function(i,article){
-				rows+= '<tr><td>'+(i+1)+'</td>'
-			    +'<td>'+article.title+'</td>'
-			    +'<td>'+article.writerId+'</td>'
-			    +'<td>'+article.regDate+'</td>'
-			    +'<td>'+article.readCount+'</td>'
-				+'</tr>';
-			});
-			$tbody.html(rows);
-			var pagination=app.ui.pagination();
-			wrapper.append(pagination);
-			$pagination=$('#pagination ul');
-			// dddd
-			if(pageNumber>blockSize){
-				var foo=(pageNumber%blockSize==0)?
-						(Math.floor(((pageNumber-blockSize)/blockSize))*blockSize)+1-blockSize:
-						(Math.floor(((pageNumber-blockSize)/blockSize))*blockSize)+1;
-				squares+='<li><a onclick="app.bbs.articlesOnPage(1)" aria-label="Previous">'
-				+'<<'
-				+'</a></li>'
-				+'<li><a onclick="app.bbs.articlesOnPage('+foo+')" aria-label="Previous">'
-				+'<span aria-hidden="true">PREV</span>'
-				+'</a></li>';
-			}
-			for(var i=startPage;i<startPage+pageSize && i<=theNumberOfPages;i++){
-					if(i==pageNumber){
-						squares+='<li><a href="#"><font>'+i+'</font></a></li>';
-					}else{
-						squares+='<li><a href="#" onclick="app.bbs.articlesOnPage('+i+')">'+i+'</a></li>';
-					}
-					squareNumber=i;
-			}
-			if(squareNumber!=theNumberOfPages){
-				var foo=(pageNumber%blockSize==0)?
-						(Math.floor(((pageNumber+blockSize)/blockSize))*blockSize)+1-blockSize:
-						(Math.floor(((pageNumber+blockSize)/blockSize))*blockSize)+1;
-				squares+='<li><a href="#" onclick="app.bbs.articlesOnPage('+theNumberOfPages+')" aria-label="Next">'
-				+'<span style="font-size:12px;margin-left:10px" aria-hidden="true">NEXT</span>'
-				+'</a></li>'
-				+'<li><a href="#" onclick="app.bbs.articlesOnPage('+foo+')" style="font-size:12px" aria-label="Next">'
-				+'>>'
-				+'</a></li>';
-			}
-			$pagination.html(squares);
-			wrapper.append(pagination);
-			$('#container').addClass('app-width-full-size');
-			$('#container>div').addClass('app-margin-center').css('width','500px');
-			$articlesOnPage.addClass('app-table').addClass('app-margin-center').css('width','500px');
-			$pagination.css('"width','500px').css('margin','0 auto')
-			.css('margin-top','20px').css('text-align','center');
-			$pagination.find('a').css('text-decoration','none');
-			$pagination.find('li').css('text-align','center').css('width','38px').css('display','inline');
-			$pagination.find('font').css('color','red');
-		});
-	};
-	return {init:init,articlesOnPage:articlesOnPage};
-})();
-/*
-========= app-component ====
-@AUTHOR : pakjkwan@gmail.com
-@CREATE DATE : 2017-4-1
-@UPDATE DATE : 2017-4-1
-@DESC : 
-==============================
-*/
-app.component=(function(){
-	var _body,_wrapper;
-	var setBody=function(body){this._body=body;}
-	var getBody=function(){return this._body;}
-	var setWrapper=function(wrapper){this._wrapper=wrapper;}
-	var getWrapper=function(){return this._wrapper;}
-	var init=function(){onCreate();};
-	var onCreate=function(){
-		setContentView();
-	};
-	var setContentView=function(){
-		app.component.setWrapper($('#wrapper'));
-		app.component.setBody($('body'));
-	};
-	return {
-		init : init,
-		getWrapper : getWrapper,
-		setWrapper : setWrapper,
-		getBody : getBody,
-		setBody : setBody,
-		div : function(id){
-			return $(id);
-		},
-/*app-component-button*/
-		aButton : function(id,type){
-			return $('<a href="#" id="'+id+'" class="btn '+type+'" role="button">example</a>');
-		},
-		bButton : function(){
-			return $('<button id="bButton" type="button" class="btn btn-default">example</button>');
-		},
-/*app-component-input*/		
-		inputText : function(id){
-			return $('<input id="'+id+'" type="text" class="form-control" placeholder="example" aria-describedby="basic-addon1">');
-		},
-/*app-component-alert*/			
-		
-
-/*app-component-table*/			
-		panelTable : function(jason,txt,type){
-			
-		    var table = 
-				'<div class="panel panel-'+type+'">'
-				+'<div class="panel-heading">행렬</div>'
-				+'<table id="table">'
-				+'<tr style="width:250px">'
-				+'<th colspan="5">'+txt+'</th>'
-				+'</tr>'
-				+'<tbody>';
-				$.each(jason, function(i,j){
-					table +=
-						'<tr>'
-						+'<td style="width:20%">'+j.a+'</td>'
-						+'<td style="width:20%">'+j.b+'</td>'
-						+'<td style="width:20%">'+j.c+'</td>'
-						+'<td style="width:20%">'+j.d+'</td>'
-						+'<td style="width:20%">'+j.e+'</td>'
-						+'</tr>';
+			wrapper.empty();
+			$.getScript(component,function(){
+				wrapper.append(createSearchWindowOnArticles());
+				wrapper.append(createArticlesOnPage());
+				$.getScript(noticeBoard,function(){
+					var $articlesOnPage=$('table#articles-on-page'),
+				 	$thead=$articlesOnPage.find('thead'),
+				 	$tbody=$articlesOnPage.find('tbody'),
+				 	$theNumberOfArticles=$('#the-number-of-articles'),
+					$searchWindowOnArticles=$('#search-window-on-articles');
+					$thead.remove();
+					$tbody.empty();
+					$theNumberOfArticles.empty();
+					$.getJSON(context+'/get/articles/'+pageNumber,function(data){
+						var articlesOnPage=data.articlesOnPage,
+							theNumberOfRows=data.theNumberOfRows,
+							theNumberOfPages=data.theNumberOfPages,
+							startPage=data.startPage,
+							endPage=data.endPage,
+							pageNumber=data.pageNumber,
+							startRow=data.startRow,
+							endRow=data.endRow,
+							pageSize=data.pageSize,
+							blockSize=data.blockSize,
+							rows='',squares='',squareNumber=0;
+						$.each(articlesOnPage,function(i,article){
+							rows+= '<tr><td>'+(i+1)+'</td>'
+						    +'<td>'+article.title+'</td>'
+						    +'<td>'+article.writerId+'</td>'
+						    +'<td>'+article.regDate+'</td>'
+						    +'<td>'+article.readCount+'</td>'
+							+'</tr>';
+						});
+						$tbody.html(rows);
+						var pagination=createPagination();
+						wrapper.append(pagination);
+						$pagination=$('#pagination ul');
+						// dddd
+						if(pageNumber>blockSize){
+							var foo=(pageNumber%blockSize==0)?
+									(Math.floor(((pageNumber-blockSize)/blockSize))*blockSize)+1-blockSize:
+									(Math.floor(((pageNumber-blockSize)/blockSize))*blockSize)+1;
+							squares+='<li><a onclick="app.noticeBoard.articlesOnPage(1)" aria-label="Previous">'
+							+'<<'
+							+'</a></li>'
+							+'<li><a onclick="app.noticeBoard.articlesOnPage('+foo+')" aria-label="Previous">'
+							+'<span aria-hidden="true">PREV</span>'
+							+'</a></li>';
+						}
+						for(var i=startPage;i<startPage+pageSize && i<=theNumberOfPages;i++){
+								if(i==pageNumber){
+									squares+='<li><a href="#"><font>'+i+'</font></a></li>';
+								}else{
+									squares+='<li><a href="#" onclick="app.noticeBoard.articlesOnPage('+i+')">'+i+'</a></li>';
+								}
+								squareNumber=i;
+						}
+						if(squareNumber!=theNumberOfPages){
+							var foo=(pageNumber%blockSize==0)?
+									(Math.floor(((pageNumber+blockSize)/blockSize))*blockSize)+1-blockSize:
+									(Math.floor(((pageNumber+blockSize)/blockSize))*blockSize)+1;
+							squares+='<li><a href="#" onclick="app.noticeBoard.articlesOnPage('+theNumberOfPages+')" aria-label="Next">'
+							+'<span style="font-size:12px;margin-left:10px" aria-hidden="true">NEXT</span>'
+							+'</a></li>'
+							+'<li><a href="#" onclick="app.noticeBoard.articlesOnPage('+foo+')" style="font-size:12px" aria-label="Next">'
+							+'>>'
+							+'</a></li>';
+						}
+						$pagination.html(squares);
+						wrapper.append(pagination);
+						$('#container').addClass('app-width-full-size');
+						$('#container>div').addClass('app-margin-center').css('width','500px');
+						$articlesOnPage.addClass('app-table').addClass('app-margin-center').css('width','500px');
+						$pagination.css('"width','500px').css('margin','0 auto')
+						.css('margin-top','20px').css('text-align','center');
+						$pagination.find('a').css('text-decoration','none');
+						$pagination.find('li').css('text-align','center').css('width','38px').css('display','inline');
+						$pagination.find('font').css('color','red');
+					});
 				});
-				
-				table += '</tbody></table>'
-		    
-			return table;
-		}
-		
-	};
-})();
-/*
-========= app-context ====
-@AUTHOR : pakjkwan@gmail.com
-@CREATE DATE : 2017-4-1
-@UPDATE DATE : 2017-4-1
-@DESC : 
-==============================
-*/
-app.context=(function(){
-	var init=function(context){
-		app.session.init(context);
-		onCreate();
-	};
-	var onCreate=function(){
-		setContentView();
-		app.component.init();
-		app.algorithm.init();
-		app.oop.init();
-		app.person.init();
-		app.bbs.init();
-	};
-	var setContentView=function(){
-	};
+			});
 	
-	return {
-		init : init,
-		setContentView : setContentView,
-		onCreate : onCreate
-		
 	};
-	
+	return {onCreate:onCreate,articlesOnPage:articlesOnPage};
 })();
-/*
-========= app-cookie ====
-@AUTHOR : pakjkwan@gmail.com
-@CREATE DATE : 2017-4-1
-@UPDATE DATE : 2017-4-1
-@DESC : 
-==============================
-*/
 app.cookie={
 		setCookie:	function (name,value) {
 		 	document.cookie = name + "=" + value;
@@ -575,57 +383,53 @@ app.cookie={
 		    createCookie(name,"",-1);
 		}
 }
-
-/*
-========= app-oop ====
-@AUTHOR : pakjkwan@gmail.com
-@CREATE DATE : 2017-4-1
-@UPDATE DATE : 2017-4-1
-@DESC : 
-==============================
-*/
-app.oop=(function(){
-	var init=function(){
-		onCreate();
-	};
+app.member=(function(){
+	var wrapper,context,algorithm,component;
 	var onCreate=function(){
+		wrapper=$('#wrapper');
+		context=$.context();
+		domain=$.javascript()+'/domain.js';
+		component=$.javascript()+'/component.js';
 		setContentView();
-		encap();
-		inherit();
 	};
-	var setContentView=function(){};
-/*app-oop-encapsulation*/	
-	var encap=function(){
+	var setContentView=function(){
+		encapsulation();
+		inheritance();
+	};
+	var encapsulation=function(){
 		$('#encap').on('click',function(){
-			var wrapper=app.component.getWrapper();
-			wrapper.empty()
-			.append(app.ui.algorithmTable());
-			$('#tableLeft').html(app.ui.oopMenu());
-			var tableRight=$('#tableRight');
-			app.component.inputText('inputText').attr('placeholder','이름 나이 성별 직업(공백으로 구분)입력').appendTo(tableRight);
-			app.component.aButton('aButton','btn-primary').html('스펙보기').appendTo(tableRight)
-				.css('margin','10px auto')
-				.on('click',function(){
-					var inputVal=$('#inputText').val();
-					var arr=inputVal.split(' ');
-					console.log(inputVal);
-					var doctor=new app.Person();
-					doctor.setId(arr[0]);
-					doctor.setPass(arr[1]);
-					doctor.setName(arr[2]);
-					doctor.setGen(arr[3]);
-					console.log(doctor);
-					var spec='<h5>'+doctor.toString()+'</h5>';
-					app.component.divAlert('alert-danger').html(spec).appendTo(tableRight);
+			$.getScript(component,function(){
+				var wrapper=$('#wrapper');
+				wrapper.empty().append(createTable1By2());
+				var $right=$('#tableRight'),$left=$('#tableLeft');
+				$right.html(createMemberMenu());
+				createInputText('target','form-control').attr('placeholder','이름 나이 성별 직업(공백으로 구분)입력').appendTo(tableRight);
+				createATag('btn','btn-primary').html('스펙보기').appendTo($right)
+					.css('margin','10px auto')
+					.on('click',function(){
+						
+						$.getScript(domain,function(){
+							var target=$('#target').val();
+							var arr=target.split(' ');
+							var doctor=new Person();
+							doctor.setId(arr[0]);
+							doctor.setPass(arr[1]);
+							doctor.setName(arr[2]);
+							doctor.setGen(arr[3]);
+							console.log(doctor);
+							var spec='<h5>'+doctor.toString()+'</h5>';
+							createDivAlert('alert-danger').html(spec).appendTo($right);
+						});
+					
+				});
 			});
 		});
 	};
-/*app-oop-inheritance*/		
-	var inherit=function(){
+	var inheritance=function(){
 		$('#inherit').on('click',function(){
 			var wrapper=app.component.getWrapper();
 			wrapper.empty()
-			.append(app.ui.algorithmTable());
+			.append(createTable1By2());
 			$('#tableLeft').html(app.oop.OOP_MENU);
 			var tableRight=$('#tableRight');
 			app.component.inputText('inputText').attr('placeholder','이름 나이 성별 직업(공백으로 구분)입력').appendTo(tableRight);
@@ -646,23 +450,20 @@ app.oop=(function(){
 			});
 		});
 	};
-/*app-oop-polymorphism*/			
-	return {
-		init : init,
-		encap : encap,
-		inherit : inherit,
-		poly : function(){}
-	};
+	return {onCreate : onCreate};
 })();
-/*
-========= app-permission ====
-@AUTHOR : pakjkwan@gmail.com
-@CREATE DATE : 2017-4-1
-@UPDATE DATE : 2017-4-1
-@DESC : 
-==============================
-*/
 app.permission=(function(){
+	var wrapper,context,permission,component;
+	var onCreate=function(){
+		wrapper=$('#wrapper');
+		context=$.context();
+		permission=$.javascript()+'/permission.js';
+		component=$.javascript()+'/component.js';
+		setContentView();
+	};
+	var setContentView=function(){
+		execute();
+	};
 	var execute=function(){
 	    $('#login-form-link').on('click',function(e) {
 			$("#login-form").delay(100).fadeIn(100);
@@ -729,8 +530,6 @@ app.permission=(function(){
 		});
 	};
 	var login = function(){
-		var context=app.session.getContextPath();
-		console.log('app.login context :'+context);
 	    var authId = $.cookie('authId');
 	    if(authId != undefined) {
 	    	$('#username').val(authId);
@@ -760,8 +559,8 @@ app.permission=(function(){
 						 if(data.result==='success'){
 							 
 							 $('#boot-nav').remove();
-							 $('#wrapper').html(app.ui.patientGnb());
-							 $('#wrapper').append(app.ui.patientDetail());
+							 $('#wrapper').html(createPatientGnb());
+							 $('#wrapper').append(createPatientDetail());
 							 $('#name').text(data.patient.name);
 							 $('#gen').text(data.patient.gen);
 							 $('#phone').text(data.patient.phone);
@@ -777,7 +576,7 @@ app.permission=(function(){
 							 $('#age').text(age);
 							 /*"id","pass","name","","phone","email","job","jumin","addr","docID","nurID"*/
 							 $('#btn-default').on('click',function(e){
-								 $('#wrapper').html(app.ui.patientGnb());
+								 $('#wrapper').html(createPatientGnb());
 								e.preventDefault();
 								$.ajax({
 									url : context+'/get/chart',
@@ -791,7 +590,7 @@ app.permission=(function(){
 											$('#chart-free').css('width','80%').css('margin-top','50px').addClass('app-margin-center');
 											$('#msg').text('등록된 차트가 없습니다');
 										}else{
-											$('#wrapper').append(app.ui.chart());
+											$('#wrapper').append(createChart());
 											$('#name').text(data.patient.name);
 											// mission
 											$("<div></div>").attr('id','app-chart-bottom').appendTo('#app-chart-center');
@@ -872,18 +671,10 @@ app.permission=(function(){
 	    })
 	};
 	return {
-		execute:execute,
-		login:login
+		onCreate:onCreate,
+		execute:execute
 	};
 })();
-/*
-========= app-person =========
-@AUTHOR : pakjkwan@gmail.com
-@CREATE DATE : 2017-4-1
-@UPDATE DATE : 2017-4-1
-@DESC : 
-==============================
-*/
 app.info=function() { 
 	var _id,_pass,_name,_gen,_phone,_email;
 	return {
@@ -913,234 +704,6 @@ app.Info2=(function(){
 
     return Constructor;
 })();
-/*app-person*/
-app.person=(function(){
-	var init=function(){
-		wrapper=app.component.getWrapper();
-		ctx=app.session.getContextPath();
-		img=app.session.getImagePath();
-		js=app.session.getJavascriptPath();
-		css=app.session.getStylePath();
-		$('#wrapper').load(ctx+'/permission/form');
-	};
-	return {
-		init : init
-/*app-person-patient*/		
-	};
-})();
-/*
-========= app-session ====
-@AUTHOR : pakjkwan@gmail.com
-@CREATE DATE : 2017-4-1
-@UPDATE DATE : 2017-4-1
-@DESC : 
-==============================
-*/
-app.session=(function(){
-	var init=function(context){
-		sessionStorage.setItem('context',context);
-		sessionStorage.setItem('js',context+'/resources/js');
-		sessionStorage.setItem('css',context+'/resources/css');
-		sessionStorage.setItem('img',context+'/resources/img');
-	};
-	var getContextPath=function(){return sessionStorage.getItem('context');};
-	var getJavascriptPath=function(){return sessionStorage.getItem('js');};
-	var getStylePath=function(){return sessionStorage.getItem('css');};
-	var getImagePath=function(){return sessionStorage.getItem('img');};
-	return {
-		init : init,
-		getContextPath : getContextPath,
-		getJavascriptPath : getJavascriptPath,
-		getStylePath : getStylePath,
-		getImagePath : getImagePath
-	};
-})();
-
-/*
-========= app-ui ====
-@AUTHOR : pakjkwan@gmail.com
-@CREATE DATE : 2017-4-1
-@UPDATE DATE : 2017-4-1
-@DESC : 
-==============================
-*/
-app.ui={
-		
-/*app-ui-algorithm*/
-		algorithmArrayTable : function(){
-			return '<div class="row">'
-		    +'<div class="col-sm-12">'
-		    +'<div class="panel colourable">'
-		    +'<div class="panel-heading">'
-		    +'<span class="panel-title">IDC 2D Map</span>'
-		    +'</div>'
-		    +'<div class="panel-body">'
-		    +    '<div class="init-table">'
-		    +        '<span>Make Map</span>'
-		    +        '<input type="text" id="mRow" placeholder="가로 행">'
-		    +        '<input type="text" id="mCol" placeholder="세로 열">'
-		    +        '<button type="submit" class="tc-btn btn btn-default">Create</button>'
-		    +    '</div>'
-		    +    '<div class="control-box" style="display: none;">'
-		    +        '<span class="btn mRow-add">가로 행 추가 <i class="fa fa-plus"></i></span>'
-		    +        '<span class="btn mRow-del">가로 행 제거 <i class="fa fa-minus"></i></span>'
-		    +        '<span class="btn mCol-add">세로 열 추가 <i class="fa fa-plus"></i></span>'
-		    +        '<span class="btn mCol-del">세로 열 제거 <i class="fa fa-minus"></i></span>'
-		    +    '</div>'
-		    +    '<div class="show-map text-center" style="padding-top: 15px;"><span>Not exist map. first, create map.</span></div>'
-		    +'</div>'
-		    +'</div>'
-		    +'</div>'
-		    +'</div>';
-		},
-		algorithmTable : function(){
-			return '<table id="table" style="width:800px;height:300px;border-collapse: collapse;border: 1px solid black;margin:0 auto">'
-			+	'<tr style="border: 1px solid black;">'
-			+		'<td id="tableLeft" style="width: 50%;border: 1px solid black;"></td>'
-			+		'<td id="tableRight" style="width: 50%;border: 1px solid black;"></td>'
-			+	'</tr>'
-			+'</table>';
-		},
-		algorithmSeriesMenu : function(){
-			return '<ul class="list-group">'
-			+	'<li id="aSeries" class="list-group-item"><a href="#">등차수열 합</a></li>'
-			+	'<li id="swSeries" class="list-group-item"><a href="#">스위치수열 합</a></li>'
-			+	'<li id="dSeries" class="list-group-item"><a href="#">계차수열 합</a></li>'
-			+	'<li id="factorial" class="list-group-item"><a href="#">팩토리얼수열 합</a></li>'
-			+	'<li id="fibonacci" class="list-group-item"><a href="#">피보나치수열 합</a></li>'
-			+'</ul>';
-		},
-/*app-ui-oop*/		
-		oopMenu : function(){
-			return '<ul class="list-group">'
-			+	'<li id="encap" class="list-group-item"><a href="#">캡슐화</a></li>'
-			+	'<li id="inherit" class="list-group-item"><a href="#">상 속</a></li>'
-			+	'<li id="poly" class="list-group-item"><a href="#">다형성</a></li>'
-			+'</ul>';
-		},
-/*app-ui-patient*/		
-		patientGnb : function(){
-			
-    	   var gnb = '<div style="position: relative; "><ul id="app-gnb" class="app-gnb" >';
-    	   var arr = ['home/홈으로','mypage/MY PAGE','treatlist/나의 진료기록','board/게시판','customer/고객참여마당','main/로그아웃'];
-    	   for(var i=0; i<6; i++){
-    		   gnb+='<li><a href="'+arr[i].split("/")[0]+'">'+arr[i].split("/")[1]+'</a></li>'   
-    	   }
-		   gnb += '</ul></div>';
-			return gnb;
-		},
-		patientDetail : function(){
-			var image = app.session.getImagePath();
-			var x='<div class="app-patient-detail">'
-			+     '<table id="app-table" class="app-table" >'
-			+          '<tr style="text-align: left;">'
-			+                 '<td colspan="5"><h3> 마이페이지</h3></td>'
-			+           '</tr><tr>'
-			+                '<td style="width: 100px" rowspan="5"><img src="'+image+'/default-profile.jpg" alt="" /></td>'
-			+                '<td style="width: 100px" >이름</td>'
-			+                 '<td id="name" style="width: 150px"></td>'
-			+                 '<td style="width: 100px">직업</td>'
-			+                 '<td id="job" style="width: 150px"></td></tr>'
-			+ 			'<tr><td>생년월일</td>'
-			+                 '<td id="jumin"></td>'
-			+                 '<td>키</td>'
-			+                 '<td>170cm </td></tr> <tr>'
-			+                 '<td>성별</td>'
-			+                 '<td id="gen"></td>'
-			+                 '<td>나이/몸무게</td>'
-			+                 '<td id="age">  / 80kg </td>'
-			+           '</tr>'
-			+           '<tr>'
-			+                 '<td>전화번호</td>'
-			+                 '<td id="phone"></td>'
-			+                 '<td>이메일</td>'
-			+                 '<td id="email"></td>'
-			+           '</tr>'
-			+           '<tr>'
-			+                 '<td>주소</td>'
-			+                 '<td id="addr"></td>'
-			+                 '<td>주치의</td>'
-			+                 '<td>'
-			+					'<a id="docID" onclick="docDetail()" href="#"> 한석규</a>'
-			+                 '</td>'
-			+           '</tr>'
-			+     '</table>'
-			+     '<input type="button" style="margin-top:20px" id="btn-default" class="btn btn-default" value="차트보기"/>'
-			+'</div>';
-			return x;
-		},
-
-		chart : function(){
-			var context=app.session.getContextPath();
-			var image=app.session.getImagePath();
-			$("<div></div>").attr('id','div-chart').appendTo('#wrapper');
-			$('#div-chart').css('width','80%').css('margin-top','50px').addClass('app-margin-center');
-			$("<div></div>").attr('id','app-chart-top').appendTo('#div-chart');
-			
-			var table='<table>'
-				+'<tr><td rowspan="5" style="width:100px">환<br/>자<br/>정<br/>보</td><td class="app-chart-table-elem">이름</td><td id="name" colspan="3" class="app-chart-top-table"></td><td class="app-chart-table-elem">나이</td><td class="app-chart-top-table"></td></tr>'
-				+'<tr><td class="app-chart-table-elem">생년월일</td><td class="app-chart-top-table"></td><td class="app-chart-col-table">키</td><td class="app-chart-top-table"></td><td class="app-chart-table-elem">직업</td><td class="app-chart-top-table"></td></tr>'       
-				+'<tr><td class="app-chart-table-elem">성별</td><td colspan="3" class="app-chart-top-table"></td><td class="app-chart-table-elem">몸무게</td><td class="app-chart-top-table"></td></tr>'
-			    +'<tr><td class="app-chart-table-elem">전화번호</td><td colspan="3" class="app-chart-top-table"></td><td class="app-chart-table-elem">혈액형</td><td class="app-chart-top-table"></td></tr>'
-			    +'<tr><td class="app-chart-table-elem">주소</td><td colspan="3" class="app-chart-top-table"></td><td class="app-chart-table-elem">주치의</td><td class="app-chart-top-table"></td></tr>'
-				+'</table>';			 
-			$(table).attr('id','app-chart-top-table').appendTo('#app-chart-top');
-			$('#app-chart-top-table').css('width','800px');
-			$('#app-chart-top').addClass('app-chart-top').css('text-align','center');
-			$("<div></div>").attr('id','app-chart-center').appendTo('#app-chart-top');
-			$('#app-chart-center').addClass('app-chart-center');
-			var fileUpload=
-			'<form id="form" name="form" '
-			+	'action="'+context+'/post/chart/image" enctype="multipart/form-data" >'
-			+'<input type="file" id="file" name="file" />'
-			+'<input type="submit" id="btn-file-upload" value="파일업로드">'
-			+'</form>';
-			$('#app-chart-center').html(
-				'<div class="app-chart-center-center">처방전'+
-			        '<br/>'+
-			        '<img src="'+image+'/default-profile.jpg" style="width:200px; height:200px;float: left;"/>'+
-			    '</div>	'+fileUpload);
-			$('#form').css('margin-top','20px');
-		},
-		// dddd
-		searchWindowOnArticles : function(){
-			return'<div id="search-window" style="margin: 0 auto;width:300px;margin-bottom:30px;">'
-				+'<select name="property" name="property">'
-				+	'<option value="id">작성자</option>'
-				+   '<option value="title">제목</option>'
-				+'</select>'
-				+'<input type="text" name="searchKeyword"/>'
-				+'<input id="btn-search" type="button" value="검색"/></div>';
-				
-		},
-		articlesOnPage : function(){
-			return'<table id="articles-on-page"><thead>'
-				+'<tr>'
-				+'<td id="the-number-of-articles" colspan="5">총게시글수: </td>'
-				+'</tr>'
-				+'<tr>'
-				+'<th>번호</th>'
-				+'<th>제목</th>'
-				+'<th>작성자</th>'
-				+'<th>날짜</th>'
-				+'<th>조회수</th>'
-				+'</tr></thead><tbody></tbody></table>';
-				
-		},
-		pagination : function(){
-			return'<nav id="pagination" aria-label="Page navigation" align="center"><ul class="pagination"></ul></nav></div></div>';
-			
-		}
-};
-/*
-========= app-util ====
-@AUTHOR : pakjkwan@gmail.com
-@CREATE DATE : 2017-4-1
-@UPDATE DATE : 2017-4-1
-@DESC : 
-==============================
-*/
-
 app.util={
 		validation : function(x) {
 		    return (x != "");
@@ -1154,36 +717,15 @@ app.util={
 			return true;
 		}
 };	
-/*
-========= app-meta ==========
-app-algorithm 
-	app-algorithm-series
-	app-algorithm-array
-	app-algorithm-matrix
-	app-algorithm-math
-	app-algorithm-application
-app-bbs
-app-component
-	app-component-button
-	app-component-input
-	app-component-alert
-	app-component-list
-	app-component-table
-app-context
-app-cookie
-app-oop
-	app-oop-encapsulation
-	app-oop-inheritance
-	app-oop-polymorphism
-app-permission
-app-person
-	app-person-patient
-	app-person-doctor
-	app-person-nurse
-	app-person-admin
-app-session
-app-treatment
-app-ui
-app-util
-==============================
-*/	
+app.context=(function(){
+	return {init : function(context){
+				$.getScript(context+'/resources/js/domain.js',function(){
+				$.extend(new Session(context));
+				app.algorithm.onCreate();
+				app.member.onCreate();
+				app.noticeBoard.onCreate();
+				app.permission.onCreate();
+				$('#wrapper').load($.context()+'/permission/form');
+		})
+	}};
+})();
