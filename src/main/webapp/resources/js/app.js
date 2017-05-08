@@ -1,4 +1,5 @@
 var app=app || {};
+
 app.algorithm=(function(){
 	var wrapper,context,algorithm,component;
 	var onCreate=function(){
@@ -717,15 +718,76 @@ app.util={
 			return true;
 		}
 };	
+app.administrator=(function(){
+	var wrapper,context,component;
+	var onCreate=function(){
+		wrapper=$('#wrapper');
+		context=$.context();
+		component=$.javascript()+'/component.js';
+		setContentView();
+	};
+	var onCreate=function(){
+		setContentView();
+	};
+	var setContentView=function(){
+			/*$('#administrator-register').magnificPopup({
+				items: {
+			        src: '<div class="white-popup" ><button id="test">TEST2</button>Dynamically created popup</div>',
+			        type: 'inline',
+			        callbacks:function() { 
+						$('#test').on('click',function(){
+							alert('aaaxxx');
+						});
+						// Will fire when this exact popup is opened 
+						// this - is Magnific Popup object 
+					}
+			    },
+			preloader: true, 
+			
+				
+			});*/
+		/*var id = $(this).attr('rel');
+	    url = '/test-ajax.php?id=' + id;
+	    $.ajax({
+	        type: "POST",
+	        url: url,
+	        success: function(result) {
+	            $('.simple-ajax-popup-align-top').magnificPopup({
+	                alignTop: true,
+	                overflowY: 'scroll',
+	                items: {
+	                    src: result,
+	                    type: 'inline'
+	                }
+	            }).magnificPopup('open');
+	        },
+	    });*/
+		
+		$('#administrator-register').magnificPopup({
+			 items: {
+                 src: '<div class="white-popup" ><button id="test">TEST3</button>Dynamically created popup</div>',
+                 type: 'inline'
+             },
+             callbacks:function() { 
+			}
+		});
+		/*$('#test').on('click',function(){
+			alert('aaaa');
+		})*/;
+	};
+	return {onCreate : onCreate};
+	
+})();
 app.context=(function(){
 	return {init : function(context){
 				$.getScript(context+'/resources/js/domain.js',function(){
-				$.extend(new Session(context));
-				app.algorithm.onCreate();
-				app.member.onCreate();
-				app.noticeBoard.onCreate();
-				app.permission.onCreate();
-				$('#wrapper').load($.context()+'/permission/form');
-		})
-	}};
+						$.extend(new Session(context));
+						app.administrator.onCreate();
+						app.algorithm.onCreate();
+						app.member.onCreate();
+						app.noticeBoard.onCreate();
+						app.permission.onCreate();
+						$('#wrapper').load($.context()+'/permission/form');
+				})
+			}};
 })();

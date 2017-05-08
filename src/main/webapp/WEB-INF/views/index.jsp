@@ -9,11 +9,13 @@
   <script src="https://d1p7wdleee1q2z.cloudfront.net/post/search.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" >
-  <link rel="stylesheet" href="${context}/resources/css/reset.css">
+ <%--  <link rel="stylesheet" href="${context}/resources/css/reset.css"> --%>
   <link rel="stylesheet" href="${context}/resources/css/app.css">
+  <link rel="stylesheet" href="${context}/resources/css/popup.css">
   <script src="${context}/resources/js/app.js"></script>
   <script src="${context}/resources/js/cookie.js"></script>
   <script src="${context}/resources/js/fileupload.js"></script>
+  <script src="${context}/resources/js/popup.js"></script> 
 </head><body>
 <nav id="boot-nav" class="navbar navbar-inverse">
   <div class="container-fluid">
@@ -51,9 +53,17 @@
         <button type="submit" class="btn btn-default">Submit</button>
       </form>
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="#">Link</a></li>
         <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">OOP<span class="caret"></span></a>
+        	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+          		<span class="glyphicon glyphicon-user" >Administrator</span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a id="administrator-register" href="#aaaa" class="administrator-register">REGISTER</a></li>
+            <li><a id="administrator-access" href="#administrator-access-form" class="popup-open">LOGIN</a></li>
+          </ul>
+        </li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+          	<span class="caret">OOP</span></a>
           <ul class="dropdown-menu">
             <li><a id="encap" href="#">Encapsulation</a></li>
             <li><a id="inherit" href="#">Inheritance</a></li>
@@ -65,9 +75,43 @@
   </div><!-- /.container-fluid -->
 </nav>
 <div id="wrapper">
+<div id="aaaa" class="white-popup-block mfp-hide auto bg-white w-500 h-500">
+	
+	<h2>AAAAAAAAAA</h2>
+	<%--  <jsp:include page="administrator/register.jsp"></jsp:include>   --%>
+
 </div>
+<div id="administrator-access-form" class="white-popup-block mfp-hide bg-white w-500 h-300 auto">
+	
+	  <jsp:include page="administrator/access.jsp"></jsp:include>  
+
+</div>
+</div>
+	
 </body>
 <script>
-app.context.init('${context}');
+/*$('.popup-open').magnificPopup({
+	items: {
+        src: '<div class="white-popup">Dynamically created popup</div>',
+        type: 'inline'
+    }
+   preloader : false,
+	 focus : '#username', 
+	modal : true,
+	closeContentPos : true,
+	fixedContentPos: true,
+	  alignTop: false,  최상단위치 
+	showCloseBtn: true
+});
+*/
+$('.popup-close').click(function(e) {
+	e.preventDefault();
+	$.magnificPopup.close();
+});
+$('document').click(function(e) {
+	e.preventDefault();
+	$.magnificPopup.close();
+});
+ app.context.init('${context}');  
 </script>  
 </html>
