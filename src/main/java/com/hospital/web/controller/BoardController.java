@@ -24,7 +24,7 @@ public class BoardController {
 	@Autowired Article article;
 	@Autowired BoardService service;
 
-	@RequestMapping("/get/articles/{pageNumber}")
+	@RequestMapping("/articles/{pageNumber}")
 	private @ResponseBody Map<?,?> articleList(
 			@PathVariable String pageNumber) throws Exception{
 		logger.info("It is entered in {} method of BoardController.", "articleList");

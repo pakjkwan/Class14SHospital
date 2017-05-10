@@ -285,7 +285,6 @@ app.noticeBoard=(function(){
 			$.getScript(component,function(){
 				wrapper.append(createSearchWindowOnArticles());
 				wrapper.append(createArticlesOnPage());
-				$.getScript(noticeBoard,function(){
 					var $articlesOnPage=$('table#articles-on-page'),
 				 	$thead=$articlesOnPage.find('thead'),
 				 	$tbody=$articlesOnPage.find('tbody'),
@@ -294,7 +293,7 @@ app.noticeBoard=(function(){
 					$thead.remove();
 					$tbody.empty();
 					$theNumberOfArticles.empty();
-					$.getJSON(context+'/get/articles/'+pageNumber,function(data){
+					$.getJSON(context+'/articles/'+pageNumber,function(data){
 						var articlesOnPage=data.articlesOnPage,
 							theNumberOfRows=data.theNumberOfRows,
 							theNumberOfPages=data.theNumberOfPages,
@@ -318,7 +317,6 @@ app.noticeBoard=(function(){
 						var pagination=createPagination();
 						wrapper.append(pagination);
 						$pagination=$('#pagination ul');
-						// dddd
 						if(pageNumber>blockSize){
 							var foo=(pageNumber%blockSize==0)?
 									(Math.floor(((pageNumber-blockSize)/blockSize))*blockSize)+1-blockSize:
@@ -360,11 +358,17 @@ app.noticeBoard=(function(){
 						$pagination.find('li').css('text-align','center').css('width','38px').css('display','inline');
 						$pagination.find('font').css('color','red');
 					});
-				});
+					$('#btn-search').on('click',function(){
+						app.noticeBoard.searchOnArticles($('#search-option').val(),$('#search-keyword').val());
+					});
+				
 			});
 	
 	};
-	return {onCreate:onCreate,articlesOnPage:articlesOnPage};
+	searchOnArticles = function(searchOption){
+		$.getJSON($.context()+'/get/articles/'+pageNumber,function(){});
+	};
+	return {onCreate:onCreate,articlesOnPage:articlesOnPage,searchOnArticles:searchOnArticles};
 })();
 app.cookie={
 		setCookie:	function (name,value) {
@@ -454,12 +458,13 @@ app.member=(function(){
 	return {onCreate : onCreate};
 })();
 app.permission=(function(){
-	var wrapper,context,permission,component;
+	var wrapper,context,permission,component,image;
 	var onCreate=function(){
 		wrapper=$('#wrapper');
 		context=$.context();
 		permission=$.javascript()+'/permission.js';
 		component=$.javascript()+'/component.js';
+		image=$.image();
 		setContentView();
 	};
 	var setContentView=function(){
@@ -557,24 +562,45 @@ app.permission=(function(){
 					 dataType: "json",
 					 contentType: 'application/json',
 					 success: function(data){
+						 var state = { 'page_id': 1, 'user_id': data.id }; 
+						 //var title = 'Hello World'; 
+						 var url = context+"/login"; 
+						 history.pushState(state, null, url);
+
 						 if(data.result==='success'){
-							 
-							 $('#boot-nav').remove();
-							 $('#wrapper').html(createPatientGnb());
-							 $('#wrapper').append(createPatientDetail());
-							 $('#name').text(data.patient.name);
-							 $('#gen').text(data.patient.gen);
-							 $('#phone').text(data.patient.phone);
-							 $('#email').text(data.patient.email);
-							 $('#job').text(data.patient.job);
-							 $('#addr').text(data.patient.addr);
-							 $('#docID').text(data.patient.docID);
-							 var jumin=data.patient.jumin;
-							 console.log('jumin:'+jumin);
-							 var birth='';
-							 var age='';
-							 $('#birth').text(birth);
-							 $('#age').text(age);
+							 $.getScript(component,function(){
+								 $('#boot-nav').remove();
+								 $('#wrapper').html(createPatientGnb());
+								 $('#wrapper').append(createPatientDetail());
+								 $('#name').text(data.patient.name);
+								 $('#gen').text(data.patient.gen);
+								 $('#phone').text(data.patient.phone);
+								 $('#email').text(data.patient.email);
+								 $('#job').text(data.patient.job);
+								 $('#addr').text(data.patient.addr);
+								 $('#docID').text(data.patient.docID);
+								 var jumin=data.patient.jumin;
+								 console.log('jumin:'+jumin);
+								 var birth='';
+								 var age='';
+								 $('#birth').text(birth);
+								 $('#age').text(age);
+								 $('img').attr('src',image+'/default-profile.jpg');
+									
+									    //alert("location: " + document.location + ", state: " + JSON.stringify(event.state));
+								 $(window).on('popstate',function(e){
+									 alert('999999');
+									    var state = e.originalEvent.state;
+									    if(state != null){
+									        if(state.hasOwnProperty('window')){
+									        	
+									            //callback on window
+									            window[state.window].call(window,state);
+									        }
+									    }
+									});
+							 });
+					
 							 /*"id","pass","name","","phone","email","job","jumin","addr","docID","nurID"*/
 							 $('#btn-default').on('click',function(e){
 								 $('#wrapper').html(createPatientGnb());

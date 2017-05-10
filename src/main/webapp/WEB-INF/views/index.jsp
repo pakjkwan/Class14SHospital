@@ -75,43 +75,43 @@
   </div><!-- /.container-fluid -->
 </nav>
 <div id="wrapper">
-<div id="aaaa" class="white-popup-block mfp-hide auto bg-white w-500 h-500">
-	
-	<h2>AAAAAAAAAA</h2>
-	<%--  <jsp:include page="administrator/register.jsp"></jsp:include>   --%>
-
 </div>
-<div id="administrator-access-form" class="white-popup-block mfp-hide bg-white w-500 h-300 auto">
-	
-	  <jsp:include page="administrator/access.jsp"></jsp:include>  
-
-</div>
-</div>
-	
 </body>
 <script>
-/*$('.popup-open').magnificPopup({
-	items: {
-        src: '<div class="white-popup">Dynamically created popup</div>',
-        type: 'inline'
-    }
-   preloader : false,
-	 focus : '#username', 
-	modal : true,
-	closeContentPos : true,
-	fixedContentPos: true,
-	  alignTop: false,  최상단위치 
-	showCloseBtn: true
-});
-*/
-$('.popup-close').click(function(e) {
-	e.preventDefault();
-	$.magnificPopup.close();
-});
-$('document').click(function(e) {
-	e.preventDefault();
-	$.magnificPopup.close();
-});
  app.context.init('${context}');  
+/*  window.onpopstate = function(event) {
+		alert('00000000');
+	    //alert("location: " + document.location + ", state: " + JSON.stringify(event.state));
+
+	    loadStateContent(event.state);
+ }
+ */
+
+
+ /* $(document).keydown(function(e) {
+	    key = (e) ? e.keyCode : event.keyCode;
+	     
+	    var t = document.activeElement;
+	     
+	    if (key == 8 || key == 116 || key == 17 || key == 82) {
+	        if (key == 8) {
+	            if (t.tagName != "INPUT") {
+	                if (e) {
+	                    e.preventDefault();
+	                } else {
+	                    event.keyCode = 0;
+	                    event.returnValue = false;
+	                }
+	            }
+	        } else {
+	            if (e) {
+	                e.preventDefault();
+	            } else {
+	                event.keyCode = 0;
+	                event.returnValue = false;
+	            }
+	        }
+	    }
+	});  */
 </script>  
 </html>

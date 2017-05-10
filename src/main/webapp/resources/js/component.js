@@ -90,11 +90,11 @@ function createInputText(x,y){ // general use form-control
 }
 function createSearchWindowOnArticles(){
 	return'<div id="search-window" style="margin: 0 auto;width:300px;margin-bottom:30px;">'
-		+'<select name="property" name="property">'
-		+	'<option value="id">작성자</option>'
-		+   '<option value="title">제목</option>'
+		+'<select id="search-option" name="search-option">'
+		+	'<option value="writerId">작성자</option>'
+		+   '<option value="articleTitle">제목</option>'
 		+'</select>'
-		+'<input type="text" name="searchKeyword"/>'
+		+'<input type="text" id="search-keyword"/>'
 		+'<input id="btn-search" type="button" value="검색"/></div>';
 		
 }
@@ -151,13 +151,12 @@ function createPatientGnb(){
 		return gnb;
 }
 function createPatientDetail(){
-	var image = app.session.getImagePath();
 	var x='<div class="app-patient-detail">'
 	+     '<table id="app-table" class="app-table" >'
 	+          '<tr style="text-align: left;">'
 	+                 '<td colspan="5"><h3> 마이페이지</h3></td>'
 	+           '</tr><tr>'
-	+                '<td style="width: 100px" rowspan="5"><img src="'+image+'/default-profile.jpg" alt="" /></td>'
+	+                '<td style="width: 100px" rowspan="5"><img  /></td>'
 	+                '<td style="width: 100px" >이름</td>'
 	+                 '<td id="name" style="width: 150px"></td>'
 	+                 '<td style="width: 100px">직업</td>'

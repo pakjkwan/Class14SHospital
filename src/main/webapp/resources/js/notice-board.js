@@ -1,9 +1,8 @@
-var articlesOnPage=function(pageNumber,wrapper,context,component,noticeBoard){
+function articlesOnPage(pageNumber,wrapper,context,component){
 			wrapper.empty();
 			$.getScript(component,function(){
 				wrapper.append(createSearchWindowOnArticles());
 				wrapper.append(createArticlesOnPage());
-				$.getScript(noticeBoard,function(){
 					var $articlesOnPage=$('table#articles-on-page'),
 				 	$thead=$articlesOnPage.find('thead'),
 				 	$tbody=$articlesOnPage.find('tbody'),
@@ -78,7 +77,6 @@ var articlesOnPage=function(pageNumber,wrapper,context,component,noticeBoard){
 						$pagination.find('li').css('text-align','center').css('width','38px').css('display','inline');
 						$pagination.find('font').css('color','red');
 					});
-				});
 			});
 	
 	};
