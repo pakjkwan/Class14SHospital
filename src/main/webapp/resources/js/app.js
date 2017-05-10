@@ -730,50 +730,64 @@ app.administrator=(function(){
 		setContentView();
 	};
 	var setContentView=function(){
-			/*$('#administrator-register').magnificPopup({
-				items: {
-			        src: '<div class="white-popup" ><button id="test">TEST2</button>Dynamically created popup</div>',
-			        type: 'inline',
-			        callbacks:function() { 
-						$('#test').on('click',function(){
-							alert('aaaxxx');
-						});
-						// Will fire when this exact popup is opened 
-						// this - is Magnific Popup object 
-					}
-			    },
-			preloader: true, 
-			
-				
-			});*/
-		/*var id = $(this).attr('rel');
-	    url = '/test-ajax.php?id=' + id;
-	    $.ajax({
-	        type: "POST",
-	        url: url,
-	        success: function(result) {
-	            $('.simple-ajax-popup-align-top').magnificPopup({
-	                alignTop: true,
-	                overflowY: 'scroll',
-	                items: {
-	                    src: result,
-	                    type: 'inline'
-	                }
-	            }).magnificPopup('open');
-	        },
-	    });*/
-		
-		$('#administrator-register').magnificPopup({
-			 items: {
-                 src: '<div class="white-popup" ><button id="test">TEST3</button>Dynamically created popup</div>',
-                 type: 'inline'
-             },
-             callbacks:function() { 
-			}
+		$('#administrator-register').on('click',function(){
+			$.magnificPopup.open({
+				closeBtnInside:true,
+				closeOnContentClick:false,
+				alignTop: true,
+				fixedBgPos:true,
+				fixedContentPos:false,
+				items:{src:
+					'<form class="white-popup">'
+					+	'<div class="form-group">'
+					+       '<label for="text">Access Code:</label>'
+			    	+		'<input type="text" class="form-control" id="code">'
+		    		+	'</div>'
+				    +   '<div class="form-group">'
+					+		'<label for="pwd">Password:</label>'
+					+		'<input type="password" class="form-control" id="pass">'
+				    +   '</div>'
+				    +	'<button type="submit" class="btn btn-default">Submit</button>'
+					+'</form>'
+				},
+				midClick:true,
+				overflowY:'auto',
+				removalDelay:'0',
+				type:'inline'}); 
+			$('.btn').on('click',function(){
+				alert($('#code').val());
+			});
+			return false;
 		});
-		/*$('#test').on('click',function(){
-			alert('aaaa');
-		})*/;
+		$('#administrator-access').on('click',function(){
+			$.magnificPopup.open({
+				closeBtnInside:true,
+				closeOnContentClick:false,
+				alignTop: true,
+				fixedBgPos:true,
+				fixedContentPos:false,
+				items:{src:
+					'<form class="white-popup">'
+					+	'<div class="form-group">'
+					+       '<label for="text">Access Code:</label>'
+			    	+		'<input type="text" class="form-control" id="code">'
+		    		+	'</div>'
+				    +   '<div class="form-group">'
+					+		'<label for="pwd">Password:</label>'
+					+		'<input type="password" class="form-control" id="pass">'
+				    +   '</div>'
+				    +	'<button type="submit" class="btn btn-default">Submit</button>'
+					+'</form>'
+				},
+				midClick:true,
+				overflowY:'auto',
+				removalDelay:'0',
+				type:'inline'}); 
+			$('.btn').on('click',function(){
+				alert($('#code').val());
+			});
+			return false;
+		});
 	};
 	return {onCreate : onCreate};
 	

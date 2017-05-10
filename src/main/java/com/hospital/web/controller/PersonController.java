@@ -47,8 +47,14 @@ public class PersonController {
 		map.put("name", p.getName());
 		return map;
 	}
+	@RequestMapping(value = "/move/{type}/{dest}")
+	public String move(
+			@PathVariable("type") String type,
+			@PathVariable("dest") String dest) throws Exception {
+		logger.info("The page to move is {} !!", type+"/"+dest+".jsp");
+		return type+"/"+dest+".jsp";
+	}
 	@RequestMapping("/get/{group}/{target}")
-	// get/patient/hong
 	public @ResponseBody Object get(
 			@PathVariable("group") String group,
 			@PathVariable("target") String target) throws Exception{
@@ -192,5 +198,7 @@ public class PersonController {
 		}
 		return map;
 	}
+
+
 	
 }
